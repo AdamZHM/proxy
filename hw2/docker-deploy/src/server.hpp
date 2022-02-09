@@ -32,7 +32,7 @@ public:
   void add_to_client_connection_fd_vector(int fd){this->client_connection_fd_vector.push_back(fd);}
 
   int create_server(const char *port);
-  void accept_connection();
+  char* accept_connection();
 };
 
 #endif
