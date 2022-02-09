@@ -8,7 +8,7 @@ int Server::create_server(const char *port){
   struct addrinfo host_info; //hints
   struct addrinfo *host_info_list; //results
   const char *hostname = "vcm-24353.vm.duke.edu";
-  // const char *port     = "4444";
+  const char *port     = "12345";
 
   memset(&host_info, 0, sizeof(host_info));
 
@@ -21,7 +21,7 @@ int Server::create_server(const char *port){
     cerr << "Error: cannot get address info for host" << endl;
     cerr << "  (" << hostname << "," << port << ")" << endl;
     exit(EXIT_FAILURE);
-  } //if
+  } 
 
   // use os randomly assigned port.
   if (port == NULL){
