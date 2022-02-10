@@ -32,6 +32,9 @@ int main(int argc, char * argv[]){
 
   send(proxy_server.get_client_connection_fd_vector()[0], response, sizeof(response), 0);
 
-  
+  free(client_ip);
+  proxy_as_client.close_socket_fd();
+  proxy_server.close_socket_fd();
+  proxy_server.close_client_connection_fd_vector();
   return EXIT_SUCCESS;
 }

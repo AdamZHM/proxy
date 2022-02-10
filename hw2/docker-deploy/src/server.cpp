@@ -75,3 +75,9 @@ char* Server::accept_connection(){
   this->add_to_client_connection_fd_vector(client_connection_fd);
   return ip;
 }
+
+void Server::close_client_connection_fd_vector(){
+  for (int i = 0; i < this->client_connection_fd_vector.size(); i++){
+    close(client_connection_fd_vector[i]);
+  }
+}

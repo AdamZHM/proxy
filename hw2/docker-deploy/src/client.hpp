@@ -24,6 +24,8 @@ public:
   void set_socket_fd(int socket_fd){this->socket_fd = socket_fd;}
 
   int createClient(const char * hostname, const char * port);
+
+  void close_socket_fd(){close(socket_fd);}
 };
 
 
