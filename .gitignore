@@ -1,0 +1,7 @@
+# ignore all .o files
+*.o
+
+# ignore httpproxy excutable file
+./hw2/docker-deploy/src/httpproxy
+
+./hw2/.vscode

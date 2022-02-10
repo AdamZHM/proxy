@@ -33,6 +33,9 @@ public:
 
   int create_server(const char *port);
   char* accept_connection();
+
+  void close_socket_fd(){close(socket_fd);}
+  void close_client_connection_fd_vector();
 };
 
 #endif

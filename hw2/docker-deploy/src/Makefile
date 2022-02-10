@@ -2,9 +2,9 @@ PROGS=httpproxy
 OBJS=$(patsubst %,%.o,$(PROGS)) server.o helper.o client.o
 all: $(PROGS)
 httpproxy: httpproxy.o server.o helper.o client.o
-	g++ $(CPPFLAGS) -o $@ $^
+	g++ $(CPPFLAGS) -o $@ $^ -g
 %.o: %.cpp
-	g++ $(CPPFLAGS) -c $<
+	g++ $(CPPFLAGS) -c $< -g
 
 .PHONY: clean
 clean:
