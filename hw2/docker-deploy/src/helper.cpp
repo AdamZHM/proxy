@@ -8,7 +8,7 @@ int check_recv(int byte_count){
     exit(EXIT_FAILURE);
   }
   if (byte_count == 0) { //connection shut down
-    cout << "connection shut down" << endl;
+    cerr << "connection shut down" << endl;
     exit(EXIT_FAILURE);
   }
   return byte_count;
