@@ -10,25 +10,24 @@ int main(int argc, char * argv[]){
 
   Server proxy_server;
   proxy_server.create_server(port);
-  proxy_server.accept_connection();
+  char* client_ip = proxy_server.accept_connection();
+  cout << client_ip << endl;
   char buffer[buffer_size] = {'\0'};
-  memset(buffer, 0, sizeof(buffer));
-
+  // memset(buffer, 0, sizeof(buffer));
   check_recv(recv(proxy_server.get_client_connection_fd_vector()[0], buffer, sizeof(buffer), 0));
-
-  cout << buffer << endl << endl;
+  // parseRequest(client_ip,buffer); // return first line of log
+  cout << buffer << endl;
 
   Client proxy_as_client;
-  proxy_as_client.createClient("vcm-24353.vm.duke.edu", "8000");
-
-  cout << proxy_as_client.get_socket_fd() << endl;
+  proxy_as_client.createClient("info.cern.ch", "80");
 
   check_send(send(proxy_as_client.get_socket_fd(), buffer, sizeof(buffer), 0));
 
-  char response[buffer_size];
+  char response[buffer_size] = {'\0'};
   memset(response, 0, sizeof(response));
 
-  check_recv(recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0));
+  check_recv(recv(proxy_as_client.get_socket_fd(), response, sizeof(response), MSG_WAITALL));
+  
   cout << response << endl;
 
   send(proxy_server.get_client_connection_fd_vector()[0], response, sizeof(response), 0);

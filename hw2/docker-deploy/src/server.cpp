@@ -7,8 +7,8 @@ int Server::create_server(const char *port){
   int socket_fd;
   struct addrinfo host_info; //hints
   struct addrinfo *host_info_list; //results
-  const char *hostname = "vcm-24353.vm.duke.edu";
-  const char *port     = "12345";
+  const char *hostname = "vcm-24373.vm.duke.edu";
+  //const char *port     = "12345";
 
   memset(&host_info, 0, sizeof(host_info));
 
@@ -60,7 +60,7 @@ int Server::create_server(const char *port){
   return socket_fd;
 }
 
-void Server::accept_connection(){
+char* Server::accept_connection(){
   struct sockaddr_in * socket_addr;
   socklen_t socket_addr_len = sizeof(socket_addr);
   int client_connection_fd = accept(this->socket_fd, (struct sockaddr *)&socket_addr, &socket_addr_len);
@@ -68,5 +68,10 @@ void Server::accept_connection(){
     cerr << "Error: cannot accept connection on socket" << endl;
     exit(EXIT_FAILURE);
   } //if
+  struct sockaddr_in* pV4Addr = (struct sockaddr_in*)&socket_addr;
+  struct in_addr ipAddr = pV4Addr->sin_addr;
+  char* ip = (char *)malloc(INET_ADDRSTRLEN);
+  inet_ntop(AF_INET, &ipAddr, ip, INET_ADDRSTRLEN);
   this->add_to_client_connection_fd_vector(client_connection_fd);
+  return ip;
 }

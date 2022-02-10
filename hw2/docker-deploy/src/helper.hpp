@@ -14,7 +14,7 @@
 #include <vector>
 #include <algorithm>
 
-void check_recv(int byte_count);
-void check_send(int byte_count);
+int check_recv(int byte_count);
+int check_send(int byte_count);
 
 #endif
