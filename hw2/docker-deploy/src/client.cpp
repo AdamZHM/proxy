@@ -13,12 +13,13 @@ int Client::createClient(const char * hostname, const char * port){
   memset(&host_info, 0, sizeof(host_info));
   host_info.ai_family   = AF_UNSPEC;
   host_info.ai_socktype = SOCK_STREAM;
-  cout << "See hostname before getaddrinfo\n";
-  std::string hostname_string(hostname);
-  cout << "THE SIZE FOT STRING IS     \n";
-  cout << hostname_string.size();
-
-  cout << "Up\n";
+  host_info.ai_flags = AI_PASSIVE;    /* For wildcard IP address */
+  host_info.ai_protocol = 0;  
+  int i = 0;
+  // while (1){
+  //   if ()
+  // }
+  const char * test = "info.cern.ch";
   status = getaddrinfo(hostname, port, &host_info, &host_info_list);
   if (status != 0) {
     cerr << "Error: cannot get address info for host" << endl;

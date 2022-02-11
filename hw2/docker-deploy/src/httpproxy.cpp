@@ -16,8 +16,8 @@ int main(int argc, char* argv[]) {
 
   client_ip = proxy_server.accept_connection();
   proxy_server.deal_with_get_request(proxy_server);
-  client_ip = proxy_server.accept_connection();
-  proxy_server.deal_with_get_request(proxy_server);
+  // client_ip = proxy_server.accept_connection();
+  // proxy_server.deal_with_get_request(proxy_server);
 
   proxy_server.close_socket_fd();
   return EXIT_SUCCESS;

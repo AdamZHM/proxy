@@ -3,7 +3,7 @@ PROGS=httpproxy
 OBJS=$(patsubst %,%.o,$(PROGS)) server.o helper.o client.o httpheader.o
 all: $(PROGS)
 httpproxy: httpproxy.o server.o helper.o client.o httpheader.o
-	g++ $(CPPFLAGS) -o $@ $^ -g
+	g++ $(CPPFLAGS) -o $@ $^ -g -lssl -lcrypto
 %.o: %.cpp
 	g++ $(CPPFLAGS) -c $< -g
 

@@ -1,7 +1,7 @@
 #include "httpheader.hpp"
 
-char * convertStringToChar(const std::string & s) {
-  char * m_array = new char[s.length()];
+char* convertStringToChar(const std::string& s) {
+  char* m_array = (char *) malloc(s.length());
   std::strcpy(m_array, s.c_str());
   return m_array;
 }
@@ -12,33 +12,30 @@ HttpHeader::HttpHeader(const char * buffer) {
   std::string line;
   int i = 0;
   while (std::getline(ss, line)) {
-    if (i == 0) {  //first line
-      if (line[0] == 'G') {
-        method = convertStringToChar(std::string("GET"));
+    if (i == 0) {
+      in start = line.find(' ')+1;
+      if(line.find("\r")!=string::nops){
+        cout << "YES! WE FIND A r here\n"
+        url = convertStringToChar(line.substr(start,line.find("\r") - start);
+      }else{
+        cout << "NO FINDING \n";
       }
-      else if (line[0] == 'P') {
-        method = convertStringToChar(std::string("POST"));
-      }
-      else if (line[0] == 'C') {
-        method = convertStringToChar(std::string("CONNECT"));
-      }
-      else {
-        std::cerr << "Can't recogonize this HTTP method" << '\n';
-        exit(EXIT_FAILURE);
-      }
-      url = convertStringToChar(line.substr(line.find(' ')+1));
+
     }
-    else {
-      int index = line.find("Host");
-      if (index == 0) {  // The line that starts with Host
-        std::cout << "Now this is a new line -----------\n";
-        std::cout<<line<<'\n';
-        host = convertStringToChar(line.substr(line.find(": ")+2));
-        break;
-      }
+    if (line.find("GET") == 0) {  // first line
+      method = convertStringToChar(std::string("GET"));
+    } else if (line.find("POST") == 0) {
+      method = convertStringToChar(std::string("POST"));
+    } else if (line.find("CONNECT") == 0) {
+      method = convertStringToChar(std::string("CONNECT"));
+    } else if (line.find("Host") == 0) {
+      int startIdx = line.find(":") + 2;
+      host = convertStringToChar(line.substr(startIdx, line.find("\r") - startIdx));
+    } else {
+      break;
     }
-    i++;
   }
+  i++;
 }
 
 
