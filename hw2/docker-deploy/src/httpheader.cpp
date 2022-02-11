@@ -1,7 +1,7 @@
 #include "httpheader.hpp"
 
 char* convertStringToChar(const std::string& s) {
-  char* m_array = (char *) malloc(s.length());
+  char* m_array = (char*)malloc(s.length());
   std::strcpy(m_array, s.c_str());
   return m_array;
 }
@@ -12,6 +12,9 @@ HttpHeader::HttpHeader(const char* buffer) {
   std::string line;
   int i = 0;
   while (std::getline(ss, line)) {
+    if (line.find("\r") == 0){
+      break;
+    }
     if (i == 0) {
       url = convertStringToChar(line.substr(line.find(' ')));
     }
@@ -23,10 +26,13 @@ HttpHeader::HttpHeader(const char* buffer) {
       method = convertStringToChar(std::string("CONNECT"));
     } else if (line.find("Host") == 0) {
       int startIdx = line.find(":") + 2;
-      host = convertStringToChar(
-          line.substr(startIdx, line.find("\r") - startIdx));
-    } else {
-      break;
+      if (strcmp("CONNECT", method) == 0) {
+        host = convertStringToChar(
+            line.substr(startIdx, line.find(":443") - startIdx));
+      } else {
+        host = convertStringToChar(
+            line.substr(startIdx, line.find("\r") - startIdx));
+      }
     }
   }
   i++;
