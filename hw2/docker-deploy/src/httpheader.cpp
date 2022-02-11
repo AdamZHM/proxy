@@ -1,4 +1,4 @@
-#include "HttpHeader.hpp"
+#include "httpheader.hpp"
 
 #include <cstring>
 #include <ctime>
@@ -36,7 +36,7 @@ HttpHeader::HttpHeader(const char * buffer) {
     else {
       int index = line.find("Host");
       if (index == 0) {  // The line that starts with Host
-        host = convertStringToChar(line.substr(line.find(": "), line.find('\n')));
+        host = convertStringToChar(line.substr(line.find(": ") + 2, line.find("\r\n")));
         break;
       }
     }

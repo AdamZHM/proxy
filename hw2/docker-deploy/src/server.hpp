@@ -1,41 +1,50 @@
 #ifndef __SERVER_HPP__
 #define __SERVER_HPP__
 
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/epoll.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
-#include <iostream>
 #include <cstring>
-#include <netdb.h>
-#include <unistd.h>
-#include <sys/epoll.h>
+#include <iostream>
 #include <vector>
-#include <algorithm>
+
+#include "helper.hpp"
 
 using namespace std;
 
-class Server{
-private:
+class Server {
+ private:
   int socket_fd;
   const char *port;
-  vector<int> client_connection_fd_vector;
-public:
-  int get_socket_fd(){return this->socket_fd;}
-  void set_socket_fd(int socket_fd){this->socket_fd = socket_fd;}
+  int client_connection_fd;
+  vector<char> client_request;
 
-  const char* get_port(){return this->port;}
-  void set_port(const char *port){this->port = port;}
+ public:
+  int get_socket_fd() { return this->socket_fd; }
+  void set_socket_fd(int socket_fd) { this->socket_fd = socket_fd; }
 
-  vector<int> get_client_connection_fd_vector(){return client_connection_fd_vector;}
-  void add_to_client_connection_fd_vector(int fd){this->client_connection_fd_vector.push_back(fd);}
+  const char *get_port() { return this->port; }
+  void set_port(const char *port) { this->port = port; }
+
+  int get_client_connection_fd() { return client_connection_fd; }
+  void set_client_connection_fd(int fd) { this->client_connection_fd = fd; }
 
   int create_server(const char *port);
-  char* accept_connection();
+  char *accept_connection();
 
-  void close_socket_fd(){close(socket_fd);}
-  void close_client_connection_fd_vector();
+  // int data_from_client();
+  void deal_with_get_request(Server proxy_server);
+  void deal_with_post_request(Server proxy_server){deal_with_get_request(proxy_server);};
+
+  void close_socket_fd() { close(socket_fd); }
+  void close_client_connection_fd();
 };
 
 #endif

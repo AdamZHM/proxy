@@ -15,4 +15,5 @@ class HttpHeader {
     delete url;
     delete host;
   }
+  char * get_host(){return host;}
 };

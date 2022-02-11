@@ -1,4 +1,5 @@
 #include "server.hpp"
+#include "client.hpp"
 
 using namespace std;
 
@@ -7,7 +8,7 @@ int Server::create_server(const char *port){
   int socket_fd;
   struct addrinfo host_info; //hints
   struct addrinfo *host_info_list; //results
-  const char *hostname = "vcm-24373.vm.duke.edu";
+  const char *hostname = "vcm-24353.vm.duke.edu";
   //const char *port     = "12345";
 
   memset(&host_info, 0, sizeof(host_info));
@@ -72,12 +73,53 @@ char* Server::accept_connection(){
   struct in_addr ipAddr = pV4Addr->sin_addr;
   char* ip = (char *)malloc(INET_ADDRSTRLEN);
   inet_ntop(AF_INET, &ipAddr, ip, INET_ADDRSTRLEN);
-  this->add_to_client_connection_fd_vector(client_connection_fd);
+  this->set_client_connection_fd(client_connection_fd);
   return ip;
 }
 
-void Server::close_client_connection_fd_vector(){
-  for (int i = 0; i < this->client_connection_fd_vector.size(); i++){
-    close(client_connection_fd_vector[i]);
+void Server::close_client_connection_fd(){
+  close(this->client_connection_fd);
+}
+
+void Server::deal_with_get_request(Server proxy_server){
+  Client proxy_as_client;
+  int buffer_size = 10000;
+  char buffer[buffer_size];
+  char response[buffer_size];
+  while (1){
+    memset(buffer, 0, sizeof(buffer));
+    memset(response, 0, sizeof(response));
+    if (recv(proxy_server.get_client_connection_fd(), buffer, sizeof(buffer), 0) == 0){
+      proxy_server.close_client_connection_fd();
+      break;
+    }
+    cout << buffer << endl;
+    // TODO: parse header here
+    proxy_as_client.createClient("httpbin.org", "80");
+    check_send(send(proxy_as_client.get_socket_fd(), buffer, sizeof(buffer), 0));
+    check_recv(recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0));
+    cout << response << endl;
+    send(proxy_server.get_client_connection_fd(), response, sizeof(response), 0);
+    proxy_as_client.close_socket_fd();
   }
 }
+
+// int Server::data_from_client(){
+//   int buffer_size = 10000;
+//   char buffer[buffer_size];
+//   memset(buffer, 0, buffer_size);
+//   int all_bytes_received;
+//   while (1){
+//     int byte_received = recv(this->client_connection_fd, buffer, buffer_size, 0);
+//     if (byte_received < 0){
+//       cerr << "Error: cannot recv data from client" << endl;
+//       exit(EXIT_FAILURE);
+//     }
+//     else if(byte_received == 0){
+//       return all_bytes_received;
+//     }
+//     else{
+//       all_bytes_received += byte_received;
+//     }
+//   }
+// }
