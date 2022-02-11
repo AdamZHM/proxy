@@ -1,3 +1,4 @@
+CPPFLAGS = -ggdb3
 PROGS=httpproxy
 OBJS=$(patsubst %,%.o,$(PROGS)) server.o helper.o client.o httpheader.o
 all: $(PROGS)
