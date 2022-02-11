@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <openssl/ssl.h>
 #include <sys/epoll.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -41,7 +42,10 @@ class Server {
 
   // int data_from_client();
   void deal_with_get_request(Server proxy_server);
-  void deal_with_post_request(Server proxy_server){deal_with_get_request(proxy_server);};
+  void deal_with_post_request(Server proxy_server) {
+    deal_with_get_request(proxy_server);
+  }
+  void deal_with_connect_request(Server proxy_server);
 
   void close_socket_fd() { close(socket_fd); }
   void close_client_connection_fd();
