@@ -1,5 +1,6 @@
 #include "server.hpp"
 #include "client.hpp"
+#include "httpheader.hpp"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ int Server::create_server(const char *port){
   host_info.ai_family   = AF_UNSPEC;
   host_info.ai_socktype = SOCK_STREAM;
   host_info.ai_flags    = AI_PASSIVE;
+
 
   status = getaddrinfo(hostname, port, &host_info, &host_info_list);
   if (status != 0) {
@@ -93,12 +95,13 @@ void Server::deal_with_get_request(Server proxy_server){
       proxy_server.close_client_connection_fd();
       break;
     }
-    cout << buffer << endl;
     // TODO: parse header here
-    proxy_as_client.createClient("httpbin.org", "80");
+    HttpHeader httpHeader(buffer);
+    char * host = httpHeader.get_host();
+    cout << host << endl;
+    proxy_as_client.createClient(host, "80");
     check_send(send(proxy_as_client.get_socket_fd(), buffer, sizeof(buffer), 0));
     check_recv(recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0));
-    cout << response << endl;
     send(proxy_server.get_client_connection_fd(), response, sizeof(response), 0);
     proxy_as_client.close_socket_fd();
   }

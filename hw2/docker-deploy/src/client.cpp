@@ -13,7 +13,7 @@ int Client::createClient(const char * hostname, const char * port){
   memset(&host_info, 0, sizeof(host_info));
   host_info.ai_family   = AF_UNSPEC;
   host_info.ai_socktype = SOCK_STREAM;
-
+  cout << hostname << endl;
   status = getaddrinfo(hostname, port, &host_info, &host_info_list);
   if (status != 0) {
     cerr << "Error: cannot get address info for host" << endl;
