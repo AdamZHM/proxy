@@ -13,7 +13,7 @@ HttpHeader::HttpHeader(const char * buffer) {
   std::string bufferStr(buffer);
   std::istringstream ss(buffer);
   std::string line;
-  int i = -1;
+  int i = 0;
   while (std::getline(ss, line)) {
     if (line.find("\r") == 0){
       break;
@@ -44,9 +44,7 @@ HttpHeader::HttpHeader(const char * buffer) {
       std::cout << "--------------------------------------------------\n";
       std::cout << cache_control<<'*';
       std::cout <<'\n';
-    } else {
-      continue;
-    }
+    } 
   }
 }
 
