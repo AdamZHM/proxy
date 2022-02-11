@@ -1,5 +1,5 @@
 #include "client.hpp"
-
+#include <string>
 using namespace std;
 
 int Client::createClient(const char * hostname, const char * port){
@@ -13,11 +13,24 @@ int Client::createClient(const char * hostname, const char * port){
   memset(&host_info, 0, sizeof(host_info));
   host_info.ai_family   = AF_UNSPEC;
   host_info.ai_socktype = SOCK_STREAM;
-  cout << hostname << endl;
+  cout << "See hostname before getaddrinfo\n";
+  std::string hostname_string(hostname);
+  cout << "THE SIZE FOT STRING IS     \n";
+  cout << hostname_string.size();
+
+  cout << "Up\n";
   status = getaddrinfo(hostname, port, &host_info, &host_info_list);
   if (status != 0) {
     cerr << "Error: cannot get address info for host" << endl;
     cerr << "  (" << hostname << "," << port << ")" << endl;
+    cerr << "The host name is \n";
+    cerr << hostname << '!';
+    cerr << "**************************\n";
+    cerr << "print it again \n"; 
+    cerr << hostname << '\n';
+    cerr << "WE want check \\n is wokring\r"<<'\n' <<"XIAOWEIBA";
+    cerr << "**************************\n";
+    cerr << port ;
     exit(EXIT_FAILURE);
   } //if
 

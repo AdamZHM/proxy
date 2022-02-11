@@ -9,7 +9,7 @@ int Server::create_server(const char *port){
   int socket_fd;
   struct addrinfo host_info; //hints
   struct addrinfo *host_info_list; //results
-  const char *hostname = "vcm-24353.vm.duke.edu";
+  const char *hostname = "vcm-24373.vm.duke.edu";
   //const char *port     = "12345";
 
   memset(&host_info, 0, sizeof(host_info));
@@ -88,6 +88,7 @@ void Server::deal_with_get_request(Server proxy_server){
   int buffer_size = 10000;
   char buffer[buffer_size];
   char response[buffer_size];
+  int count =0;
   while (1){
     memset(buffer, 0, sizeof(buffer));
     memset(response, 0, sizeof(response));
@@ -95,15 +96,28 @@ void Server::deal_with_get_request(Server proxy_server){
       proxy_server.close_client_connection_fd();
       break;
     }
+    std::cout<<buffer<<'\n';
     // TODO: parse header here
     HttpHeader httpHeader(buffer);
     char * host = httpHeader.get_host();
-    cout << host << endl;
+    const char* test = "info.cern.ch";
+    if(strcmp(host,test)==0){
+    cout << "!!!!!!!!!!!!!! they are same\n";
+  }else{
+    cout << "They are not same!\n";
+  }
+    std::cout << host << endl;
+    std::cout <<"-------------------------------------------------\n";
+    std::cout << "PARSE FINISHED"<<'\n';
     proxy_as_client.createClient(host, "80");
+    std::cout << "create clint correctly " << count <<'\n';
+    std::cout <<"-------------------------------------------------";
+
     check_send(send(proxy_as_client.get_socket_fd(), buffer, sizeof(buffer), 0));
     check_recv(recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0));
     send(proxy_server.get_client_connection_fd(), response, sizeof(response), 0);
     proxy_as_client.close_socket_fd();
+    count ++;
   }
 }
 
