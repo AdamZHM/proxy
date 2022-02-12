@@ -24,13 +24,6 @@ int Client::createClient(const char * hostname, const char * port){
   if (status != 0) {
     cerr << "Error: cannot get address info for host" << endl;
     cerr << "  (" << hostname << "," << port << ")" << endl;
-    cerr << "The host name is \n";
-    cerr << hostname << '!';
-    cerr << "**************************\n";
-    cerr << "print it again \n"; 
-    cerr << hostname << '\n';
-    cerr << "WE want check \\n is wokring\r"<<'\n' <<"XIAOWEIBA";
-    cerr << "**************************\n";
     cerr << port << endl;
     exit(EXIT_FAILURE);
   } //if

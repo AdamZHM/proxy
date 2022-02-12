@@ -20,6 +20,7 @@ HttpHeader::HttpHeader(const char * buffer) {
     }
     if (i == 0) {
       int startIdx = line.find(' ')+1;
+      //for connction 
       url = convertStringToChar(line.substr(startIdx, line.find('\r') - startIdx));
     }
     if (line.find("GET") == 0) {  // first line

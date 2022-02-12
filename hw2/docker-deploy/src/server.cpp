@@ -10,7 +10,8 @@ int Server::create_server(const char *port) {
   int socket_fd;
   struct addrinfo host_info; //hints
   struct addrinfo *host_info_list; //results
-  const char *hostname = "vcm-24353.vm.duke.edu";
+  const char *hostname = "vcm-24373.vm.duke.edu";
+  // const char *hostname = "vcm-24353.vm.duke.edu";
   //const char *port     = "12345";
 
   memset(&host_info, 0, sizeof(host_info));
@@ -97,23 +98,25 @@ void Server::deal_with_get_request(const char *host, char *buffer) {
 }
 
 void Server::deal_with_connect_request(const char *host, char *buffer) {
+  std::string msg("HTTP/1.1 200 OK\r\n\r\n");
+  check_send(send(this->get_client_connection_fd(), msg.c_str(), sizeof(msg), 0));
   Client proxy_as_client;
   int buffer_size = 50000;
   char response[buffer_size];
   memset(response, 0, buffer_size);
   cout << buffer << endl;
   proxy_as_client.createClient(host, "443");
-
+  std::cout<< "_________THIS IS CONNECT REQUEST_______\n" <<buffer << std::endl;
   fd_set readfds;
   int max_fd =
       proxy_as_client.get_socket_fd() > this->get_client_connection_fd()
           ? proxy_as_client.get_socket_fd() + 1
           : this->get_client_connection_fd() + 1;
-  check_send(send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
-  cout << proxy_as_client.get_socket_fd() << " " << host <<  endl;
-  check_recv(recv(proxy_as_client.get_socket_fd(), response,
-                          buffer_size, 0));
-  cout << response << endl;
+  // check_send(send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
+  // cout << proxy_as_client.get_socket_fd() << " " << host <<  endl;
+  // check_recv(recv(proxy_as_client.get_socket_fd(), response,
+  //                         buffer_size, 0));
+  // cout << response << endl;
 
   // while (true) {
   //   FD_ZERO(&readfds);
@@ -156,19 +159,33 @@ void Server::handle_request() {
   char buffer[buffer_size];
   memset(buffer, 0, sizeof(buffer));
   client_ip = this->accept_connection();
-  if (recv(this->get_client_connection_fd(), buffer, buffer_size, 0) == 0) {
+  if (recv(this->get_client_connection_fd(), buffer, buffer_size, 0) == -1) {
     this->close_client_connection_fd();
+    std::cout<< "_________RETURN_______\n" << std::endl;
     return;
   }
+  std::cout<< "_________THIS IS USER REQUEST_______\n" <<buffer << std::endl;
   HttpHeader httpHeader(buffer);
   const char *host = httpHeader.get_host();
   char *method = httpHeader.get_method();
+
+  // std::string method1("CONNECT");
+  // char* m_array = (char*)malloc(method1.length());
+  // std::strcpy(m_array, method1.c_str());
+
+
   if (strcmp(method, "GET") == 0) {
+    std::cout<< "_________THIS IS GET______\n" << std::endl;
     this->deal_with_get_request(host, buffer);
   } else if (strcmp(method, "POST") == 0) {
     this->deal_with_post_request(host, buffer);
-  } else if (strcmp(method, "CONNECT") == 0) {
+  } else if (strcmp(method, "CONNECT") == 0) {//
+    std::cout<< "_________THIS IS CONNECT______\n" << std::endl;
     this->deal_with_connect_request(host, buffer);
+  }
+  else{
+        std::cout<< "_________THIS IS NOTHING______\n" << std::endl;
+
   }
 }
 
