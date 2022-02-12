@@ -13,6 +13,7 @@ class HttpHeader {
   char* url;     // the destination web path
   char* host;    // the destination web server name// using it as pk to find in cache
   char* cache_control;
+  char* port;
  public:
   HttpHeader() : method(nullptr), url(nullptr), host(nullptr){};
   explicit HttpHeader(const char* buffer);
