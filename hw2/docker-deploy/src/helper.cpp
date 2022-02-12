@@ -9,7 +9,7 @@ int check_recv(int byte_count) {
   }
   if (byte_count == 0) { //connection shut down
     cerr << "connection shut down" << endl;
-    // exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE);
   }
   return byte_count;
 }

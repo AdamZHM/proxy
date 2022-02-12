@@ -63,7 +63,7 @@ int Server::create_server(const char *port) {
   return socket_fd;
 }
 
-char *Server::accept_connection() {
+string Server::accept_connection() {
   struct sockaddr_in *socket_addr;
   socklen_t socket_addr_len = sizeof(socket_addr);
   int client_connection_fd = accept(
@@ -77,132 +77,122 @@ char *Server::accept_connection() {
   char *ip = (char *)malloc(INET_ADDRSTRLEN);
   inet_ntop(AF_INET, &ipAddr, ip, INET_ADDRSTRLEN);
   this->set_client_connection_fd(client_connection_fd);
-  return ip;
+  string ans(ip);
+  free(ip);
+  return ans;
 }
 
 void Server::close_client_connection_fd() { close(this->client_connection_fd); }
 
-void Server::deal_with_get_request(const char *host, char *buffer) {
+void Server::deal_with_get_request(const char *host, const char *port,
+                                   char *buffer) {
   Client proxy_as_client;
-  int buffer_size = 50000;
-  char response[buffer_size];
-  memset(response, 0, buffer_size);
-  cout << buffer << endl;
-  proxy_as_client.createClient(host, "80");
-  check_send(send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
-  check_recv(recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0));
-  send(this->get_client_connection_fd(), response, buffer_size, 0);
-  proxy_as_client.close_socket_fd();
-  cout << response << endl;
-  this->close_client_connection_fd();
-}
-
-void Server::deal_with_connect_request(const char *host, const char *port,
-                                       char *buffer) {
-  std::string msg("HTTP/1.1 200 OK\r\n\r\n");
-  check_send(
-      send(this->get_client_connection_fd(), msg.c_str(), sizeof(msg), 0));
-  Client proxy_as_client;
-  int buffer_size = 50000;
+  int buffer_size = 65536;
   char response[buffer_size];
   memset(response, 0, buffer_size);
   cout << buffer << endl;
   proxy_as_client.createClient(host, port);
-  std::cout << "_________THIS IS CONNECT REQUEST_______\n"
-            << buffer << std::endl;
+  if (send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0) < 0) {
+    cerr << "Error : send data to server in GET" << endl;
+    exit(EXIT_FAILURE);
+  }
+  int bytes_recv =
+      recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
+  if (bytes_recv == 0) {
+    cout << "Server shut down the connection" << endl;
+    proxy_as_client.close_socket_fd();
+    this->close_client_connection_fd();
+    return;
+  } else if (bytes_recv < 0) {
+    cerr << "Error: recv data from server" << endl;
+    exit(EXIT_FAILURE);
+  }
+  if (send(this->get_client_connection_fd(), response, buffer_size, 0) < 0) {
+    cerr << "Error in send data to client in GET" << endl;
+    exit(EXIT_FAILURE);
+  }
+  cout << response << endl;
+  proxy_as_client.close_socket_fd();
+  this->close_client_connection_fd();
+}
+
+void Server::deal_with_connect_request(const char *host, const char *port) {
+  const char *msg = "HTTP/1.1 200 OK\r\n\r\n";
+  if (send(this->get_client_connection_fd(), msg, 19, 0) < 0) {
+    cerr << "Error send data in connect " << endl;
+    exit(EXIT_FAILURE);
+  }
+  Client proxy_as_client;
+  int buffer_size = 65536;
+  proxy_as_client.createClient(host, port);
+  vector<int> fd_vector = {proxy_as_client.get_socket_fd(),
+                      this->get_client_connection_fd()};
   fd_set readfds;
   int max_fd =
-      proxy_as_client.get_socket_fd() > this->get_client_connection_fd()
-          ? proxy_as_client.get_socket_fd() + 1
-          : this->get_client_connection_fd() + 1;
-  // check_send(send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
-  // cout << proxy_as_client.get_socket_fd() << " " << host <<  endl;
-  // check_recv(recv(proxy_as_client.get_socket_fd(), response,
-  //                         buffer_size, 0));
-  // cout << response << endl;
-
-  while (true) {
+      fd_vector[0] > fd_vector[1] ? fd_vector[0] + 1 : fd_vector[1] + 1;
+  while (1) {
     FD_ZERO(&readfds);
-    FD_SET(proxy_as_client.get_socket_fd(), &readfds);
-    FD_SET(this->get_client_connection_fd(), &readfds);
-    select(max_fd, &readfds, NULL, NULL, NULL);
-    int signal = 0;
-    if (FD_ISSET(proxy_as_client.get_socket_fd(), &readfds)) {
-      if (check_recv(recv(proxy_as_client.get_socket_fd(), response,
-                          buffer_size, 0)) > 0) {
-        cout << "response: " << endl;
-        cout << response << endl;
-        check_send(
-            send(this->get_client_connection_fd(), response, buffer_size, 0));
-      } else {
-        proxy_as_client.close_socket_fd();
+    for (int i = 0; i < 2; i++) {
+      FD_SET(fd_vector[i], &readfds);
+    }
+    int status = select(max_fd, &readfds, NULL, NULL, NULL);
+    if (status == -1) {
+      cerr << "Error in select" << endl;
+      exit(EXIT_FAILURE);
+    }
+    for (int i = 0; i < 2; i++) {
+      char buffer[buffer_size];
+      memset(buffer, 0, buffer_size);
+      if (FD_ISSET(fd_vector[i], &readfds)) {
+        int bytes_recv = recv(fd_vector[i], buffer, buffer_size, 0);
+        if (bytes_recv == 0) {
+          this->close_client_connection_fd();
+          proxy_as_client.close_socket_fd();
+          return;
+        } else if (bytes_recv < 0) {
+          cerr << "Error : recv data error" << endl;
+          exit(EXIT_FAILURE);
+        }
+        buffer[bytes_recv] = '\0';
+
+        if (send(fd_vector[(i + 1) % 2], buffer, bytes_recv, 0) < 0) {
+          cerr << "Error : send data error" << endl;
+          exit(EXIT_FAILURE);
+        }
       }
     }
-    if (FD_ISSET(this->get_client_connection_fd(), &readfds)) {
-      if (check_recv(
-              recv(this->get_client_connection_fd(), buffer, buffer_size, 0))) {
-        cout << "request: " << endl;
-        cout << buffer << endl;
-        check_send(
-            send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
-      } else {
-        this->close_client_connection_fd();
-      }
-    }
-    memset(buffer, 0, buffer_size);
-    memset(response, 0, buffer_size);
   }
 }
 
 void Server::handle_request() {
-  char *client_ip;
-  int buffer_size = 50000;
+  string client_ip;
+  int buffer_size = 65536;
   char buffer[buffer_size];
   memset(buffer, 0, sizeof(buffer));
   client_ip = this->accept_connection();
-  if (recv(this->get_client_connection_fd(), buffer, buffer_size, 0) == -1) {
+  int byte_recv =
+      recv(this->get_client_connection_fd(), buffer, buffer_size, 0);
+  if (byte_recv == -1) {
     this->close_client_connection_fd();
     std::cout << "_________RETURN_______\n" << std::endl;
     return;
   }
+  buffer[byte_recv] = '\0';
   std::cout << "_________THIS IS USER REQUEST_______\n" << buffer << std::endl;
   HttpHeader httpHeader(buffer);
   const char *host = httpHeader.get_host();
-  char *method = httpHeader.get_method();
-  char *port = httpHeader.get_port();
-  // std::string method1("CONNECT");
-  // char* m_array = (char*)malloc(method1.length());
-  // std::strcpy(m_array, method1.c_str());
+  const char *method = httpHeader.get_method();
+  const char *port = httpHeader.get_port();
 
   if (strcmp(method, "GET") == 0) {
     std::cout << "_________THIS IS GET______\n" << std::endl;
-    this->deal_with_get_request(host, buffer);
+    this->deal_with_get_request(host, port, buffer);
   } else if (strcmp(method, "POST") == 0) {
-    this->deal_with_post_request(host, buffer);
+    this->deal_with_post_request(host, port, buffer);
   } else if (strcmp(method, "CONNECT") == 0) {  //
     std::cout << "_________THIS IS CONNECT______\n" << std::endl;
-    this->deal_with_connect_request(host, port, buffer);
+    this->deal_with_connect_request(host, port);
   } else {
     std::cout << "_________THIS IS NOTHING______\n" << std::endl;
   }
 }
-
-// int Server::data_from_client(){
-//   int buffer_size = 10000;
-//   char buffer[buffer_size];
-//   memset(buffer, 0, buffer_size);
-//   int all_bytes_received;
-//   while (1){
-//     int byte_received = recv(this->client_connection_fd, buffer,
-//     buffer_size, 0); if (byte_received < 0){
-//       cerr << "Error: cannot recv data from client" << endl;
-//       exit(EXIT_FAILURE);
-//     }
-//     else if(byte_received == 0){
-//       return all_bytes_received;
-//     }
-//     else{
-//       all_bytes_received += byte_received;
-//     }
-//   }
-// }

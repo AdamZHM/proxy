@@ -8,6 +8,7 @@
 #include <sys/epoll.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <string>
 
 #include <algorithm>
 #include <cstdio>
@@ -38,19 +39,18 @@ class Server {
   void set_client_connection_fd(int fd) { this->client_connection_fd = fd; }
 
   int create_server(const char* port);
-  char* accept_connection();
+  string accept_connection();
 
   // int data_from_client();
   void handle_request();
-  void deal_with_get_request(const char* host,
+  void deal_with_get_request(const char* host, const char* port,
                              char* buffer);
-  void deal_with_post_request(const char* host,
+  void deal_with_post_request(const char* host, const char* port,
                               char* buffer) {
-    deal_with_get_request(host, buffer);
+    deal_with_get_request(host, port, buffer);
   }
   void deal_with_connect_request(const char* host,
-                                const char* port,
-                                 char* buffer);
+                                const char* port);
 
   void close_socket_fd() { close(socket_fd); }
   void close_client_connection_fd();

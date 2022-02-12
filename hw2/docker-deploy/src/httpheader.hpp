@@ -9,22 +9,15 @@
 // parse request info into first line in log format
 class HttpHeader {
  public:
-  char* method;  // ("get"/"post"/"connect")
-  char* url;     // the destination web path
-  char* host;    // the destination web server name// using it as pk to find in cache
-  char* cache_control;
-  char* port;
+  std::string method;  // ("get"/"post"/"connect")
+  std::string url;     // the destination web path
+  std::string host;    // the destination web server name// using it as pk to find in cache
+  std::string cache_control;
+  std::string port;
  public:
-  HttpHeader() : method(nullptr), url(nullptr), host(nullptr){};
   explicit HttpHeader(const char* buffer);
   char* parseInLogFormat(const char* client_ip);
-  ~HttpHeader() {
-    delete method;
-    delete url;
-    delete host;
-    delete port;
-  }
-  char* get_host() { return host; }
-  char* get_method() { return method; }
-  char* get_port() { return port;}
+  const char* get_host() { return host.c_str(); }
+  const char* get_method() { return method.c_str(); }
+  const char* get_port() { return port.c_str();}
 };
