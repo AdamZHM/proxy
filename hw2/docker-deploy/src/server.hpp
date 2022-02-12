@@ -49,6 +49,7 @@ class Server {
     deal_with_get_request(host, buffer);
   }
   void deal_with_connect_request(const char* host,
+                                const char* port,
                                  char* buffer);
 
   void close_socket_fd() { close(socket_fd); }

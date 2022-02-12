@@ -97,7 +97,7 @@ void Server::deal_with_get_request(const char *host, char *buffer) {
   this->close_client_connection_fd();
 }
 
-void Server::deal_with_connect_request(const char *host, char *buffer) {
+void Server::deal_with_connect_request(const char *host, const char* port, char *buffer) {
   std::string msg("HTTP/1.1 200 OK\r\n\r\n");
   check_send(send(this->get_client_connection_fd(), msg.c_str(), sizeof(msg), 0));
   Client proxy_as_client;
@@ -105,7 +105,7 @@ void Server::deal_with_connect_request(const char *host, char *buffer) {
   char response[buffer_size];
   memset(response, 0, buffer_size);
   cout << buffer << endl;
-  proxy_as_client.createClient(host, "443");
+  proxy_as_client.createClient(host, port);
   std::cout<< "_________THIS IS CONNECT REQUEST_______\n" <<buffer << std::endl;
   fd_set readfds;
   int max_fd =
@@ -118,39 +118,39 @@ void Server::deal_with_connect_request(const char *host, char *buffer) {
   //                         buffer_size, 0));
   // cout << response << endl;
 
-  // while (true) {
-  //   FD_ZERO(&readfds);
-  //   FD_SET(proxy_as_client.get_socket_fd(), &readfds);
-  //   FD_SET(this->get_client_connection_fd(), &readfds);
-  //   select(max_fd, &readfds, NULL, NULL, NULL);
-  //   int signal = 0;
-  //   cout << 234 << endl;
-  //   if (FD_ISSET(proxy_as_client.get_socket_fd(), &readfds)) {
+  while (true) {
+    FD_ZERO(&readfds);
+    FD_SET(proxy_as_client.get_socket_fd(), &readfds);
+    FD_SET(this->get_client_connection_fd(), &readfds);
+    select(max_fd, &readfds, NULL, NULL, NULL);
+    int signal = 0;
+    cout << 234 << endl;
+    if (FD_ISSET(proxy_as_client.get_socket_fd(), &readfds)) {
 
-  //     cout << 2 << endl;
-  //     if (check_recv(recv(proxy_as_client.get_socket_fd(), response,
-  //                         buffer_size, 0)) > 0) {
-  //       check_send(
-  //           send(this->get_client_connection_fd(), response, buffer_size,
-  //           0));
-  //     } else {
-  //       proxy_as_client.close_socket_fd();
-  //     }
-  //   }
-  //   if (FD_ISSET(this->get_client_connection_fd(), &readfds)) {
-  //     cout << 1 << endl;
-  //     if (check_recv(
-  //             recv(this->get_client_connection_fd(), buffer, buffer_size,
-  //             0))) {
-  //       check_send(
-  //           send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
-  //     } else {
-  //       this->close_client_connection_fd();
-  //     }
-  //   }
-  //   memset(buffer, 0, buffer_size);
-  //   memset(response, 0, buffer_size);
-  // }
+      cout << 2 << endl;
+      if (check_recv(recv(proxy_as_client.get_socket_fd(), response,
+                          buffer_size, 0)) > 0) {
+        check_send(
+            send(this->get_client_connection_fd(), response, buffer_size,
+            0));
+      } else {
+        proxy_as_client.close_socket_fd();
+      }
+    }
+    if (FD_ISSET(this->get_client_connection_fd(), &readfds)) {
+      cout << 1 << endl;
+      if (check_recv(
+              recv(this->get_client_connection_fd(), buffer, buffer_size,
+              0))) {
+        check_send(
+            send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
+      } else {
+        this->close_client_connection_fd();
+      }
+    }
+    memset(buffer, 0, buffer_size);
+    memset(response, 0, buffer_size);
+  }
 }
 
 void Server::handle_request() {
@@ -168,7 +168,7 @@ void Server::handle_request() {
   HttpHeader httpHeader(buffer);
   const char *host = httpHeader.get_host();
   char *method = httpHeader.get_method();
-
+  char* port = httpHeader.get_port();
   // std::string method1("CONNECT");
   // char* m_array = (char*)malloc(method1.length());
   // std::strcpy(m_array, method1.c_str());
@@ -181,7 +181,7 @@ void Server::handle_request() {
     this->deal_with_post_request(host, buffer);
   } else if (strcmp(method, "CONNECT") == 0) {//
     std::cout<< "_________THIS IS CONNECT______\n" << std::endl;
-    this->deal_with_connect_request(host, buffer);
+    this->deal_with_connect_request(host,port, buffer);
   }
   else{
         std::cout<< "_________THIS IS NOTHING______\n" << std::endl;

@@ -22,7 +22,9 @@ class HttpHeader {
     delete method;
     delete url;
     delete host;
+    delete port;
   }
   char* get_host() { return host; }
   char* get_method() { return method; }
+  char* get_port() { return port;}
 };
