@@ -37,7 +37,6 @@ HttpHeader::HttpHeader(const char * buffer) {
         host = convertStringToChar(
             line.substr(startIdx, line.find("\r") - startIdx));
       }
-      host = convertStringToChar(line.substr(startIdx, line.find("\r") - startIdx));
     } else if(line.find("Cache-Control") == 0){
       int startIdx = line.find(':') + 2;
       cache_control = convertStringToChar(line.substr(startIdx, line.find("\r") - startIdx));

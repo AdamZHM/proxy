@@ -31,7 +31,7 @@ int Client::createClient(const char * hostname, const char * port){
     cerr << hostname << '\n';
     cerr << "WE want check \\n is wokring\r"<<'\n' <<"XIAOWEIBA";
     cerr << "**************************\n";
-    cerr << port ;
+    cerr << port << endl;
     exit(EXIT_FAILURE);
   } //if
 
