@@ -1,11 +1,11 @@
+#include <algorithm>
 #include <cstdlib>
-#include <string>
-#include <vector>
 #include <cstring>
 #include <ctime>
 #include <iostream>
 #include <sstream>
-#include <algorithm>
+#include <string>
+#include <vector>
 // parse request info into first line in log format
 class HttpHeader {
  private:
@@ -23,4 +23,5 @@ class HttpHeader {
     delete host;
   }
   char* get_host() { return host; }
+  char* get_method() { return method; }
 };

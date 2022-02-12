@@ -10,7 +10,7 @@ int Server::create_server(const char *port) {
   int socket_fd;
   struct addrinfo host_info; //hints
   struct addrinfo *host_info_list; //results
-  const char *hostname = "vcm-24373.vm.duke.edu";
+  const char *hostname = "vcm-24353.vm.duke.edu";
   //const char *port     = "12345";
 
   memset(&host_info, 0, sizeof(host_info));
@@ -81,68 +81,97 @@ char *Server::accept_connection() {
 
 void Server::close_client_connection_fd() { close(this->client_connection_fd); }
 
-void Server::deal_with_get_request(Server proxy_server) {
+void Server::deal_with_get_request(const char *host, char *buffer) {
   Client proxy_as_client;
-  int buffer_size = 10000;
-  char buffer[buffer_size];
+  int buffer_size = 50000;
   char response[buffer_size];
-  while (1) {
-    memset(buffer, 0, sizeof(buffer));
-    memset(response, 0, sizeof(response));
-    if (recv(proxy_server.get_client_connection_fd(), buffer, sizeof(buffer),
-             0) == 0) {
-      proxy_server.close_client_connection_fd();
-      break;
-    }
-    std::cout<<buffer<<'\n';
-    // TODO: parse header here
-    cout << buffer << endl;
-    HttpHeader httpHeader(buffer);
-    char *host = httpHeader.get_host();
-    proxy_as_client.createClient(host, "80");
-    check_send(
-        send(proxy_as_client.get_socket_fd(), buffer, sizeof(buffer), 0));
-    check_recv(
-        recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0));
-    send(proxy_server.get_client_connection_fd(), response, sizeof(response),
-         0);
-    proxy_as_client.close_socket_fd();
-    cout << response << endl;
+  memset(response, 0, buffer_size);
+  cout << buffer << endl;
+  proxy_as_client.createClient(host, "80");
+  check_send(send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
+  check_recv(recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0));
+  send(this->get_client_connection_fd(), response, buffer_size, 0);
+  proxy_as_client.close_socket_fd();
+  cout << response << endl;
+  this->close_client_connection_fd();
+}
+
+void Server::deal_with_connect_request(const char *host, char *buffer) {
+  Client proxy_as_client;
+  int buffer_size = 50000;
+  char response[buffer_size];
+  memset(response, 0, buffer_size);
+  cout << buffer << endl;
+  proxy_as_client.createClient(host, "443");
+
+  fd_set readfds;
+  int max_fd =
+      proxy_as_client.get_socket_fd() > this->get_client_connection_fd()
+          ? proxy_as_client.get_socket_fd() + 1
+          : this->get_client_connection_fd() + 1;
+  check_send(send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
+  cout << proxy_as_client.get_socket_fd() << " " << host <<  endl;
+  check_recv(recv(proxy_as_client.get_socket_fd(), response,
+                          buffer_size, 0));
+  cout << response << endl;
+
+  // while (true) {
+  //   FD_ZERO(&readfds);
+  //   FD_SET(proxy_as_client.get_socket_fd(), &readfds);
+  //   FD_SET(this->get_client_connection_fd(), &readfds);
+  //   select(max_fd, &readfds, NULL, NULL, NULL);
+  //   int signal = 0;
+  //   cout << 234 << endl;
+  //   if (FD_ISSET(proxy_as_client.get_socket_fd(), &readfds)) {
+
+  //     cout << 2 << endl;
+  //     if (check_recv(recv(proxy_as_client.get_socket_fd(), response,
+  //                         buffer_size, 0)) > 0) {
+  //       check_send(
+  //           send(this->get_client_connection_fd(), response, buffer_size,
+  //           0));
+  //     } else {
+  //       proxy_as_client.close_socket_fd();
+  //     }
+  //   }
+  //   if (FD_ISSET(this->get_client_connection_fd(), &readfds)) {
+  //     cout << 1 << endl;
+  //     if (check_recv(
+  //             recv(this->get_client_connection_fd(), buffer, buffer_size,
+  //             0))) {
+  //       check_send(
+  //           send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0));
+  //     } else {
+  //       this->close_client_connection_fd();
+  //     }
+  //   }
+  //   memset(buffer, 0, buffer_size);
+  //   memset(response, 0, buffer_size);
+  // }
+}
+
+void Server::handle_request() {
+  char *client_ip;
+  int buffer_size = 50000;
+  char buffer[buffer_size];
+  memset(buffer, 0, sizeof(buffer));
+  client_ip = this->accept_connection();
+  if (recv(this->get_client_connection_fd(), buffer, buffer_size, 0) == 0) {
+    this->close_client_connection_fd();
+    return;
+  }
+  HttpHeader httpHeader(buffer);
+  const char *host = httpHeader.get_host();
+  char *method = httpHeader.get_method();
+  if (strcmp(method, "GET") == 0) {
+    this->deal_with_get_request(host, buffer);
+  } else if (strcmp(method, "POST") == 0) {
+    this->deal_with_post_request(host, buffer);
+  } else if (strcmp(method, "CONNECT") == 0) {
+    this->deal_with_connect_request(host, buffer);
   }
 }
 
-void Server::deal_with_connect_request(Server proxy_server) {
-  Client proxy_as_client;
-  int buffer_size = 50000;
-  char buffer[buffer_size];
-  char response[buffer_size];
-  SSL_load_error_strings();
-  SSL_library_init();
-  SSL_CTX *ssl_ctx = SSL_CTX_new(SSLv23_client_method());
-  SSL *conn = SSL_new(ssl_ctx);
-  while (1) {
-    memset(buffer, 0, sizeof(buffer));
-    memset(response, 0, sizeof(response));
-    if (recv(proxy_server.get_client_connection_fd(), buffer, sizeof(buffer),
-             0) == 0) {
-      proxy_server.close_client_connection_fd();
-      break;
-    }
-    cout << buffer << endl;
-    proxy_as_client.createClient("www.google.com", "443");
-    SSL_set_fd(conn, proxy_as_client.get_socket_fd());
-    int err = SSL_connect(conn);
-    if (err != 1) {
-      abort();
-    }
-    SSL_write(conn, buffer, buffer_size);
-    SSL_read(conn, response, sizeof(response));
-    send(proxy_server.get_client_connection_fd(), response, sizeof(response),
-         0);
-    proxy_as_client.close_socket_fd();
-    cout << response << endl;
-  }
-}
 // int Server::data_from_client(){
 //   int buffer_size = 10000;
 //   char buffer[buffer_size];

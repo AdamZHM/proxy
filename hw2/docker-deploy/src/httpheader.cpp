@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 char* convertStringToChar(const std::string& s) {
-  char* m_array = (char *) malloc(s.length());
+  char* m_array = (char*)malloc(s.length());
   std::strcpy(m_array, s.c_str());
   return m_array;
 }
@@ -13,9 +13,11 @@ HttpHeader::HttpHeader(const char * buffer) {
   std::string bufferStr(buffer);
   std::istringstream ss(buffer);
   std::string line;
-  int i = -1;
+  int i = 0;
   while (std::getline(ss, line)) {
-    i++;
+    if (line.find("\r") == 0){
+      break;
+    }
     if (i == 0) {
       int startIdx = line.find(' ')+1;
       url = convertStringToChar(line.substr(startIdx, line.find('\r') - startIdx));
@@ -28,16 +30,20 @@ HttpHeader::HttpHeader(const char * buffer) {
       method = convertStringToChar(std::string("CONNECT"));
     } else if (line.find("Host") == 0) {
       int startIdx = line.find(":") + 2;
-      host = convertStringToChar(line.substr(startIdx, line.find("\r") - startIdx));
+      if (strcmp("CONNECT", method) == 0) {
+        host = convertStringToChar(
+            line.substr(startIdx, line.find(":443") - startIdx));
+      } else {
+        host = convertStringToChar(
+            line.substr(startIdx, line.find("\r") - startIdx));
+      }
     } else if(line.find("Cache-Control") == 0){
       int startIdx = line.find(':') + 2;
       cache_control = convertStringToChar(line.substr(startIdx, line.find("\r") - startIdx));
-      // std::cout << "--------------------------------------------------\n";
-      // std::cout << cache_control<<'*';
-      // std::cout <<'\n';
-    } else {
-      continue;
-    }
+      std::cout << "--------------------------------------------------\n";
+      std::cout << cache_control<<'*';
+      std::cout <<'\n';
+    } 
   }
 }
 
