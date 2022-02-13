@@ -2,6 +2,7 @@
 
 #include "client.hpp"
 #include "httpheader.hpp"
+#include "responsehead.hpp"
 
 using namespace std;
 
@@ -107,6 +108,10 @@ void Server::deal_with_get_request(const char *host, const char *port,
     cerr << "Error: recv data from server" << endl;
     exit(EXIT_FAILURE);
   }
+  
+  ResponseHead rph;
+  rph.initResponse(response, bytes_recv);
+
   if (send(this->get_client_connection_fd(), response, buffer_size, 0) < 0) {
     cerr << "Error in send data to client in GET" << endl;
     exit(EXIT_FAILURE);

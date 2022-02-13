@@ -11,11 +11,11 @@ int main(int argc, char* argv[]) {
 
 
   //test
-  std::string s1 = "Date: Sun, 13 Feb 2022 15:51:34 GMT";
-  std::string s2 = "Expires: Sun, 13 Feb 2022 15:59:34 GMT";
+  std::string s1 = "Sun, 13 Feb 2022 15:51:34 GMT";
+  // std::string s2 = "Expires: Sun, 13 Feb 2022 15:59:34 GMT";
   TimeStamp timestamp1(s1);
-  TimeStamp timestamp2(s2);
-  cout << timestamp1.timediff(timestamp2) << endl;
+  // TimeStamp timestamp2(s2);
+  // cout << timestamp1.timediff(timestamp2) << endl;
 
   Server proxy_server;
   proxy_server.create_server(port);
