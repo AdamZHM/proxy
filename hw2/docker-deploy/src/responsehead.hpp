@@ -8,21 +8,8 @@
 #include <vector>
 
 #include "timestamp.hpp"
+#include "helper.hpp"
 
-std::vector<char> convertCharStarToVecChar(const char * buffer, int size) {
-  std::vector<char> ans;
-  for (int i = 0; i < size; i++) {
-    ans.push_back(buffer[i]);
-  }
-  return ans;
-}
-
-void changeHeaderToLower(std::string & line, std::string & temp) {
-  temp = line;
-  std::transform(temp.begin(), temp.end(), temp.begin(), [](unsigned char c) {
-    return std::tolower(c);
-  });
-}
 
 class ResponseHead {
  public:
@@ -79,7 +66,7 @@ class ResponseHead {
         }
         if (line.find("max-age") != std::string::npos) {
           std::string temp(line.substr(line.find("max-age") + 9));
-          max_age = std::stoi(temp);
+          max_age = atoi(temp.c_str());
         }
       }
       else if (lowerLine.find("date") == 0) {

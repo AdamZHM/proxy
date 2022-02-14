@@ -16,5 +16,7 @@
 
 int check_recv(int byte_count);
 int check_send(int byte_count);
+std::vector<char> convertCharStarToVecChar(const char * buffer, int size);
+void changeHeaderToLower(std::string & line, std::string & temp);
 
 #endif

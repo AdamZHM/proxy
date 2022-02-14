@@ -11,7 +11,7 @@ int Server::create_server(const char *port) {
   int socket_fd;
   struct addrinfo host_info;        // hints
   struct addrinfo *host_info_list;  // results
-  const char *hostname = "vcm-24373.vm.duke.edu";
+  const char *hostname = "vcm-24353.vm.duke.edu";
   // const char *hostname = "vcm-24353.vm.duke.edu";
   // const char *port     = "12345";
 
