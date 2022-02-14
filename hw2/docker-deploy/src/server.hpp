@@ -43,11 +43,11 @@ class Server {
 
   // int data_from_client();
   void handle_request();
-  void deal_with_get_request(const char* host, const char* port,
+  void deal_with_get_request(const char* host, const char* port, const char* url,
                              char* buffer);
-  void deal_with_post_request(const char* host, const char* port,
+  void deal_with_post_request(const char* host, const char* port, const char* url,
                               char* buffer) {
-    deal_with_get_request(host, port, buffer);
+    deal_with_get_request(host, port, url, buffer);
   }
   void deal_with_connect_request(const char* host,
                                 const char* port);

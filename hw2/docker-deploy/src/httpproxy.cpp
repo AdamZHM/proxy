@@ -2,7 +2,6 @@
 #include "helper.hpp"
 #include "httpheader.hpp"
 #include "server.hpp"
-#include "LRUCache.hpp"
 
 using namespace std;
 
@@ -17,10 +16,9 @@ int main(int argc, char* argv[]) {
   // ResponseHead res2 = ResponseHead();
   // lruCache.put(url2, res2);
   // string url3 = "www.qq.com";
+  // cout << lruCache.inCache(url3) << endl;
   // ResponseHead res3 = ResponseHead();
   // lruCache.put(url3, res3);
-
-
 
   Server proxy_server;
   proxy_server.create_server(port);

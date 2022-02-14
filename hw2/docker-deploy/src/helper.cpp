@@ -19,10 +19,6 @@ int check_send(int byte_count) {
     cerr << "errors happen when sending data!" << endl;
     exit(EXIT_FAILURE);
   }
-  // if (byte_count != sizeof(buffer)){
-  //   cerr << "Error: send the broken message to the origin server" << endl;
-  //   exit(EXIT_FAILURE);
-  // }
   return byte_count;
 }
 

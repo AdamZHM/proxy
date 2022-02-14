@@ -1,10 +1,12 @@
 #include "server.hpp"
 
+#include "LRUCache.hpp"
 #include "client.hpp"
 #include "httpheader.hpp"
-#include "responsehead.hpp"
 
 using namespace std;
+
+LRUCache lruCache(10);
 
 int Server::create_server(const char *port) {
   int status;
@@ -86,7 +88,7 @@ string Server::accept_connection() {
 void Server::close_client_connection_fd() { close(this->client_connection_fd); }
 
 void Server::deal_with_get_request(const char *host, const char *port,
-                                   char *buffer) {
+                                   const char *url, char *buffer) {
   Client proxy_as_client;
   int buffer_size = 65536;
   char response[buffer_size];
@@ -108,17 +110,39 @@ void Server::deal_with_get_request(const char *host, const char *port,
     cerr << "Error: recv data from server" << endl;
     exit(EXIT_FAILURE);
   }
-  
+  response[bytes_recv] = '\0';
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
+  if (rph.if_chunked) {
+    cout << "__________________data is chunked______________" << endl;
+    // if data is chunked
 
-  if (send(this->get_client_connection_fd(), response, buffer_size, 0) < 0) {
-    cerr << "Error in send data to client in GET" << endl;
-    exit(EXIT_FAILURE);
+    send(this->get_client_connection_fd(), response, bytes_recv, 0);
+    cout << response << endl;
+    while (true) {
+      memset(response, 0, buffer_size);
+      int len_recv =
+          recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
+      // cout << response << endl;
+      if (len_recv <= 0) {
+        cout << "chunked message transferred" << endl;
+        break;
+      } else {
+        response[len_recv] = '\0';
+        send(this->get_client_connection_fd(), response, len_recv, 0);
+      }
+    }
+    cout << "___________chunked data over_________________" << endl;
+  } else {
+    // TODO handle not chunked data
+    if (send(this->get_client_connection_fd(), response, buffer_size, 0) < 0) {
+      cerr << "Error in send data to client in GET" << endl;
+      exit(EXIT_FAILURE);
+    }
+    cout << response << endl;
+    proxy_as_client.close_socket_fd();
+    this->close_client_connection_fd();
   }
-  cout << response << endl;
-  proxy_as_client.close_socket_fd();
-  this->close_client_connection_fd();
 }
 
 void Server::deal_with_connect_request(const char *host, const char *port) {
@@ -131,7 +155,7 @@ void Server::deal_with_connect_request(const char *host, const char *port) {
   int buffer_size = 65536;
   proxy_as_client.createClient(host, port);
   vector<int> fd_vector = {proxy_as_client.get_socket_fd(),
-                      this->get_client_connection_fd()};
+                           this->get_client_connection_fd()};
   fd_set readfds;
   int max_fd =
       fd_vector[0] > fd_vector[1] ? fd_vector[0] + 1 : fd_vector[1] + 1;
@@ -188,12 +212,33 @@ void Server::handle_request() {
   const char *host = httpHeader.get_host();
   const char *method = httpHeader.get_method();
   const char *port = httpHeader.get_port();
+  string url(httpHeader.get_url());
 
   if (strcmp(method, "GET") == 0) {
     std::cout << "_________THIS IS GET______\n" << std::endl;
-    this->deal_with_get_request(host, port, buffer);
+    // url in cache
+    bool canUseCache = false;
+    if (lruCache.inCache(url)) {
+      ResponseHead resp = lruCache.get(url);
+      if (resp.if_cache_control == false) {
+        canUseCache = true;
+      }
+      if (resp.if_no_cache == true || resp.if_must_revalidate == true) {
+        // TODO do revalidation, update expiration
+      }
+      if (resp.max_age != -1 || resp.expires != "") {
+        // TODO do check expiration
+      }
+    }
+    if (canUseCache) {
+      // TODO use cache, update LRU
+    } else {
+      // handle get and check if need save to cache
+      this->deal_with_get_request(host, port, httpHeader.get_url(), buffer);
+    }
+
   } else if (strcmp(method, "POST") == 0) {
-    this->deal_with_post_request(host, port, buffer);
+    this->deal_with_post_request(host, port, httpHeader.get_url(), buffer);
   } else if (strcmp(method, "CONNECT") == 0) {  //
     std::cout << "_________THIS IS CONNECT______\n" << std::endl;
     this->deal_with_connect_request(host, port);

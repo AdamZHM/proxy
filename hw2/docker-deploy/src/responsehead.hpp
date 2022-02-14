@@ -18,8 +18,8 @@ class ResponseHead {
   bool if_cache_control;
   TimeStamp date;  // response time
   std::string etag;
-  TimeStamp last_modified;
-  TimeStamp expires;  // expire time
+  std::string last_modified;
+  std::string expires;  // expire time
   int max_age;
   bool if_chunked;
   bool if_no_store;
@@ -33,8 +33,8 @@ class ResponseHead {
       if_cache_control(false),
       date(TimeStamp()),
       etag(""),
-      last_modified(TimeStamp()),
-      expires(TimeStamp()),
+      last_modified(""),
+      expires(""),
       max_age(-1),
       if_chunked(false),
       if_no_store(false),
@@ -79,11 +79,11 @@ class ResponseHead {
       }
       else if (lowerLine.find("last-modified") == 0) {
         int startIdx = 15;
-        last_modified = TimeStamp(line.substr(startIdx));
+        last_modified = line.substr(startIdx);
       }
       else if (lowerLine.find("expires") == 0) {
         int startIdx = 9;
-        expires = TimeStamp(line.substr(startIdx));
+        expires = line.substr(startIdx);
       }
       else if (lowerLine.find("transfer-encoding") == 0 && lowerLine.find("chunked")) {
         if_chunked = true;
