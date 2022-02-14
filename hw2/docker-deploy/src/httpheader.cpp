@@ -55,7 +55,7 @@ HttpHeader::HttpHeader(const char *buffer) {
         int startIdx = line.find(':') + 2;
         cache_control = line.substr(startIdx, line.find("\r") - startIdx);
         std::cout << "--------------------------------------------------\n";
-        std::cout << cache_control << '*';
+        std::cout << "_____" << cache_control << "____________";
         std::cout << '\n';
       }
     }

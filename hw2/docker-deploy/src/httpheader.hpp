@@ -24,5 +24,5 @@ class HttpHeader {
   const char* get_host() { return host.c_str(); }
   const char* get_method() { return method.c_str(); }
   const char* get_port() { return port.c_str(); }
-  const char* get_url() { return port.c_str(); }
+  const char* get_url() { return url.c_str(); }
 };

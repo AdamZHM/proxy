@@ -113,19 +113,19 @@ void Server::deal_with_get_request(const char *host, const char *port,
   response[bytes_recv] = '\0';
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
+  // cout << "content-length: " << rph.content_length << endl;
   if (rph.if_chunked) {
     cout << "__________________data is chunked______________" << endl;
     // if data is chunked
 
     send(this->get_client_connection_fd(), response, bytes_recv, 0);
-    cout << response << endl;
     while (true) {
       memset(response, 0, buffer_size);
       int len_recv =
           recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
       // cout << response << endl;
       if (len_recv <= 0) {
-        cout << "chunked message transferred" << endl;
+        cout << "no more chunked message" << endl;
         break;
       } else {
         response[len_recv] = '\0';
@@ -134,12 +134,35 @@ void Server::deal_with_get_request(const char *host, const char *port,
     }
     cout << "___________chunked data over_________________" << endl;
   } else {
+    string str_url(url);
     // TODO handle not chunked data
-    if (send(this->get_client_connection_fd(), response, buffer_size, 0) < 0) {
-      cerr << "Error in send data to client in GET" << endl;
-      exit(EXIT_FAILURE);
+    // if no store, we do not put it into cache
+    if (rph.if_no_store) {
+      send(this->get_client_connection_fd(), response, bytes_recv, 0);
+    } else {  // then anything could be put into cache
+      // first check length larger than buffer size?
+      int content_length = rph.content_length;
+      if (content_length > bytes_recv) {
+        while (1) {
+          memset(response, 0, buffer_size);
+          bytes_recv =
+              recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
+          if (bytes_recv <= 0) {
+            cout << "recv long message end" << endl;
+            break;
+          }
+          rph.appendResponse(response, bytes_recv);
+        }
+        send(this->get_client_connection_fd(), rph.response.data(),
+             rph.response.size(), 0);
+      } else {
+        send(this->get_client_connection_fd(), response, bytes_recv, 0);
+      }
+      cout << "__________save in to cache_______________" << endl;
+      // TODO log cache situation
+      lruCache.put(str_url, rph);
     }
-    cout << response << endl;
+    cout << lruCache.get(str_url).response.data() << endl;
     proxy_as_client.close_socket_fd();
     this->close_client_connection_fd();
   }
@@ -217,8 +240,8 @@ void Server::handle_request() {
   if (strcmp(method, "GET") == 0) {
     std::cout << "_________THIS IS GET______\n" << std::endl;
     // url in cache
-    bool canUseCache = false;
     if (lruCache.inCache(url)) {
+      bool canUseCache = false;
       ResponseHead resp = lruCache.get(url);
       if (resp.if_cache_control == false) {
         canUseCache = true;
@@ -229,11 +252,16 @@ void Server::handle_request() {
       if (resp.max_age != -1 || resp.expires != "") {
         // TODO do check expiration
       }
-    }
-    if (canUseCache) {
-      // TODO use cache, update LRU
-    } else {
-      // handle get and check if need save to cache
+      if (canUseCache) {
+        // use cache
+        cout << "_____________use cache______________" << endl;
+
+        send(this->client_connection_fd, resp.response.data(), resp.response.size(), 0);
+      } else {
+        // handle get and check if need save to cache
+        this->deal_with_get_request(host, port, httpHeader.get_url(), buffer);
+      }
+    } else { // not in cache
       this->deal_with_get_request(host, port, httpHeader.get_url(), buffer);
     }
 
