@@ -9,6 +9,7 @@
 // parse request info into first line in log format
 class HttpHeader {
  private:
+  std::string first_line;
   std::string method;  // ("get"/"post"/"connect")
   std::string url;     // the destination web path
   std::string host;  // the destination web server name// using it as pk to find
@@ -25,4 +26,5 @@ class HttpHeader {
   const char* get_method() { return method.c_str(); }
   const char* get_port() { return port.c_str(); }
   const char* get_url() { return url.c_str(); }
+  const char* get_first_line() { return first_line.c_str(); }
 };

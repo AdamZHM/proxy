@@ -19,6 +19,7 @@ HttpHeader::HttpHeader(const char *buffer) {
       break;
     }
     if (i == 0) {  // first line
+      this->first_line = line;
       if (line.find("GET") == 0) {
         method = std::string("GET");
         int startIdx = line.find(' ') + 1;
@@ -55,7 +56,7 @@ HttpHeader::HttpHeader(const char *buffer) {
         int startIdx = line.find(':') + 2;
         cache_control = line.substr(startIdx, line.find("\r") - startIdx);
         std::cout << "--------------------------------------------------\n";
-        std::cout << "_____" << cache_control << "____________";
+        std::cout << "_______________" << cache_control << "____________";
         std::cout << '\n';
       }
     }

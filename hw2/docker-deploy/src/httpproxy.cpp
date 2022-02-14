@@ -1,6 +1,5 @@
 #include "client.hpp"
 #include "helper.hpp"
-#include "httpheader.hpp"
 #include "server.hpp"
 
 using namespace std;

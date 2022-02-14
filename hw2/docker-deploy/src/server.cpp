@@ -1,9 +1,5 @@
 #include "server.hpp"
 
-#include "LRUCache.hpp"
-#include "client.hpp"
-#include "httpheader.hpp"
-
 using namespace std;
 
 LRUCache lruCache(10);
@@ -87,14 +83,14 @@ string Server::accept_connection() {
 
 void Server::close_client_connection_fd() { close(this->client_connection_fd); }
 
-void Server::deal_with_get_request(const char *host, const char *port,
-                                   const char *url, char *buffer) {
-  Client proxy_as_client;
+void Server::deal_with_get_request(Client proxy_as_client, const char *url,
+                                   char *buffer) {
+  // Client proxy_as_client;
+  // proxy_as_client.createClient(host, port);
   int buffer_size = 65536;
   char response[buffer_size];
   memset(response, 0, buffer_size);
   cout << buffer << endl;
-  proxy_as_client.createClient(host, port);
   if (send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0) < 0) {
     cerr << "Error : send data to server in GET" << endl;
     exit(EXIT_FAILURE);
@@ -168,15 +164,13 @@ void Server::deal_with_get_request(const char *host, const char *port,
   }
 }
 
-void Server::deal_with_connect_request(const char *host, const char *port) {
+void Server::deal_with_connect_request(Client proxy_as_client) {
   const char *msg = "HTTP/1.1 200 OK\r\n\r\n";
   if (send(this->get_client_connection_fd(), msg, 19, 0) < 0) {
     cerr << "Error send data in connect " << endl;
     exit(EXIT_FAILURE);
   }
-  Client proxy_as_client;
   int buffer_size = 65536;
-  proxy_as_client.createClient(host, port);
   vector<int> fd_vector = {proxy_as_client.get_socket_fd(),
                            this->get_client_connection_fd()};
   fd_set readfds;
@@ -235,7 +229,15 @@ void Server::handle_request() {
   const char *host = httpHeader.get_host();
   const char *method = httpHeader.get_method();
   const char *port = httpHeader.get_port();
+  const char *first_line = httpHeader.get_first_line();
   string url(httpHeader.get_url());
+  // create proxy as client here
+  Client proxy_as_client;
+  proxy_as_client.createClient(host, port);
+  string str_host(host);
+  proxy_as_client.host = str_host;
+  string str_first_line(first_line);
+  proxy_as_client.first_line = str_first_line;
 
   if (strcmp(method, "GET") == 0) {
     std::cout << "_________THIS IS GET______\n" << std::endl;
@@ -244,33 +246,74 @@ void Server::handle_request() {
       bool canUseCache = false;
       ResponseHead resp = lruCache.get(url);
       if (resp.if_cache_control == false) {
-        canUseCache = true;
-      }
-      if (resp.if_no_cache == true || resp.if_must_revalidate == true) {
+        // canUseCache = false;
+        canUseCache = this->revalidation(resp, proxy_as_client);
+      } else if (resp.if_no_cache == true || resp.if_must_revalidate == true) {
         // TODO do revalidation, update expiration
-      }
-      if (resp.max_age != -1 || resp.expires != "") {
+      } else if (resp.max_age != -1 || resp.expires != "") {
         // TODO do check expiration
       }
       if (canUseCache) {
         // use cache
         cout << "_____________use cache______________" << endl;
-
-        send(this->client_connection_fd, resp.response.data(), resp.response.size(), 0);
+        send(this->client_connection_fd, resp.response.data(),
+             resp.response.size(), 0);
       } else {
         // handle get and check if need save to cache
-        this->deal_with_get_request(host, port, httpHeader.get_url(), buffer);
+        this->deal_with_get_request(proxy_as_client, httpHeader.get_url(),
+                                    buffer);
       }
-    } else { // not in cache
-      this->deal_with_get_request(host, port, httpHeader.get_url(), buffer);
+    } else {  // not in cache
+      this->deal_with_get_request(proxy_as_client, httpHeader.get_url(),
+                                  buffer);
     }
 
   } else if (strcmp(method, "POST") == 0) {
-    this->deal_with_post_request(host, port, httpHeader.get_url(), buffer);
+    this->deal_with_post_request(proxy_as_client, httpHeader.get_url(), buffer);
   } else if (strcmp(method, "CONNECT") == 0) {  //
     std::cout << "_________THIS IS CONNECT______\n" << std::endl;
-    this->deal_with_connect_request(host, port);
+    this->deal_with_connect_request(proxy_as_client);
   } else {
     std::cout << "_________THIS IS NOTHING______\n" << std::endl;
   }
+}
+
+// bool Server::ifExpired() {}
+
+bool Server::revalidation(ResponseHead resp, Client proxy_as_client) {
+  if (resp.etag == "" && resp.last_modified == "") {
+    return true;
+  }
+  cout << "+++++++++" << proxy_as_client.first_line << endl;
+  string send_to_server = "";
+  send_to_server.append("!!" + proxy_as_client.first_line);
+  send_to_server.append("Host: " + proxy_as_client.host + "\r\n");
+
+  // resp.etag = "*";
+  if (resp.etag != "") {
+    send_to_server += "If-None-Match: " + resp.etag + "\r\n";
+  }
+  if (resp.last_modified != "") {
+    send_to_server += "IF-Modified-Since: " + resp.last_modified + "\r\n";
+  }
+  send_to_server += "\r\n";
+  cout << send_to_server << endl;
+  char response[65536];
+  memset(response, 0, 65536);
+  send(proxy_as_client.get_socket_fd(), send_to_server.c_str(), send_to_server.length(), 0);
+  int bytes_recv =
+      recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
+  ResponseHead temp;
+  temp.initResponse(response, bytes_recv);
+  cout << "________revalidation response: \n" << response << endl;
+  if (temp.status.find("304") != string::npos) {
+    cout << "____________check etag or last_modified and data "
+            "fresh_______________"
+         << endl;
+    return true;
+  }
+  cout << "____________check etag or last_modified and data not "
+          "fresh___________"
+       << endl;
+  return false;
 }

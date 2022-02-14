@@ -73,10 +73,10 @@ class ResponseHead {
         date = TimeStamp(line.substr(startIdx));
       } else if (lowerLine.find("etag") == 0) {  // include /r/n
         int startIdx = 6;
-        etag = line.substr(startIdx);
+        etag = line.substr(startIdx, line.find("\r") - 6);
       } else if (lowerLine.find("last-modified") == 0) {
         int startIdx = 15;
-        last_modified = line.substr(startIdx);
+        last_modified = line.substr(startIdx, line.find("\r") - 15);
       } else if (lowerLine.find("expires") == 0) {
         int startIdx = 9;
         expires = line.substr(startIdx);
