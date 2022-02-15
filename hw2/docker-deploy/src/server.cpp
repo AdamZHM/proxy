@@ -1,65 +1,9 @@
 #include "server.hpp"
 using namespace std;
 
-LRUCache lruCache(10);
+LRUCache lruCache(0);
 
-// int Server::create_server(const char *port) {
-//   int status;
-//   int socket_fd;
-//   struct addrinfo host_info;        // hints
-//   struct addrinfo *host_info_list;  // results
-//   const char *hostname = "vcm-24353.vm.duke.edu";
-//   // const char *hostname = "vcm-24353.vm.duke.edu";
-//   // const char *port     = "12345";
-
-//   memset(&host_info, 0, sizeof(host_info));
-
-//   host_info.ai_family = AF_UNSPEC;
-//   host_info.ai_socktype = SOCK_STREAM;
-//   host_info.ai_flags = AI_PASSIVE;
-
-//   status = getaddrinfo(hostname, port, &host_info, &host_info_list);
-//   if (status != 0) {
-//     cerr << "Error: cannot get address info for host" << endl;
-//     cerr << "  (" << hostname << "," << port << ")" << endl;
-//     exit(EXIT_FAILURE);
-//   }
-
-//   // use os randomly assigned port.
-//   if (port == NULL) {
-//     struct sockaddr_in *addr = (struct sockaddr_in
-//     *)(host_info_list->ai_addr); addr->sin_port = 0;
-//   }
-
-//   socket_fd = socket(host_info_list->ai_family, host_info_list->ai_socktype,
-//                      host_info_list->ai_protocol);
-//   if (socket_fd == -1) {
-//     cerr << "Error: cannot create socket" << endl;
-//     cerr << "  (" << hostname << "," << port << ")" << endl;
-//     exit(EXIT_FAILURE);
-//   }  // if
-
-//   int yes = 1;
-//   status = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &yes,
-//   sizeof(int)); status = bind(socket_fd, host_info_list->ai_addr,
-//   host_info_list->ai_addrlen); if (status == -1) {
-//     cerr << "Error: cannot bind socket" << endl;
-//     cerr << "  (" << hostname << "," << port << ")" << endl;
-//     exit(EXIT_FAILURE);
-//   }  // if
-
-//   status = listen(socket_fd, 100);
-//   if (status == -1) {
-//     cerr << "Error: cannot listen on socket" << endl;
-//     cerr << "  (" << hostname << "," << port << ")" << endl;
-//     exit(EXIT_FAILURE);
-//   }  // if
-
-//   // cout << "Waiting for connection on port " << port << endl;
-//   freeaddrinfo(host_info_list);
-//   this->socket_fd = socket_fd;
-//   return socket_fd;
-// }
+mutex mtx;
 
 string Server::accept_connection(int socket_fd, int *client_connection_fd) {
   struct sockaddr_in *socket_addr;
@@ -68,7 +12,7 @@ string Server::accept_connection(int socket_fd, int *client_connection_fd) {
       accept(socket_fd, (struct sockaddr *)&socket_addr, &socket_addr_len);
   if (*client_connection_fd == -1) {
     cerr << "Error: cannot accept connection on socket" << endl;
-    exit(EXIT_FAILURE);
+    return "";
   }  // if
   struct sockaddr_in *pV4Addr = (struct sockaddr_in *)&socket_addr;
   struct in_addr ipAddr = pV4Addr->sin_addr;
@@ -88,7 +32,7 @@ void Server::deal_with_get_request(Client proxy_as_client, const char *url,
   cout << buffer << endl;
   if (send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0) < 0) {
     cerr << "Error : send data to server in GET" << endl;
-    exit(EXIT_FAILURE);
+    return;
   }
   int bytes_recv =
       recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
@@ -100,7 +44,7 @@ void Server::deal_with_get_request(Client proxy_as_client, const char *url,
     return;
   } else if (bytes_recv < 0) {
     cerr << "Error: recv data from server" << endl;
-    exit(EXIT_FAILURE);
+    return;
   }
   response[bytes_recv] = '\0';
   ResponseHead rph;
@@ -147,14 +91,17 @@ void Server::deal_with_get_request(Client proxy_as_client, const char *url,
         }
         send(client->get_socket_fd(), rph.response.data(), rph.response.size(),
              0);
+        cout << "__________" << url << "__________________" << endl;
       } else {
         send(client->get_socket_fd(), response, bytes_recv, 0);
       }
-      cout << "__________save in to cache_______________" << endl;
+      cout << "__________save " << url << " in to cache_______________" << endl;
       // TODO log cache situation
+      mtx.lock();
       lruCache.put(str_url, rph);
+      mtx.unlock();
     }
-    cout << lruCache.get(str_url).response.data() << endl;
+    // cout << lruCache.get(str_url).response.data() << endl;
     proxy_as_client.close_socket_fd();
     client->close_socket_fd();
   }
@@ -180,7 +127,7 @@ void Server::deal_with_connect_request(Client proxy_as_client, Client *client) {
     int status = select(max_fd, &readfds, NULL, NULL, NULL);
     if (status == -1) {
       cerr << "Error in select" << endl;
-      exit(EXIT_FAILURE);
+      return;
     }
     for (int i = 0; i < 2; i++) {
       char buffer[buffer_size];
@@ -206,6 +153,79 @@ void Server::deal_with_connect_request(Client proxy_as_client, Client *client) {
   }
 }
 
+void Server::deal_with_post_request(Client proxy_as_client, const char *url,
+                                    char *buffer, Client *client) {
+  int buffer_size = 65536;
+  char response[buffer_size];
+  memset(response, 0, buffer_size);
+  cout << buffer << endl;
+  if (send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0) < 0) {
+    cerr << "Error : send data to server in POST" << endl;
+    return;
+  }
+  int bytes_recv =
+      recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
+  if (bytes_recv == 0) {
+    cout << "Server shut down the connection" << endl;
+    proxy_as_client.close_socket_fd();
+    client->close_socket_fd();
+    // this->close_client_connection_fd();
+    return;
+  } else if (bytes_recv < 0) {
+    cerr << "Error: recv data from server" << endl;
+    return;
+  }
+  response[bytes_recv] = '\0';
+  ResponseHead rph;
+  rph.initResponse(response, bytes_recv);
+  // cout << "content-length: " << rph.content_length << endl;
+  if (rph.if_chunked) {
+    cout << "__________________data is chunked in post______________" << endl;
+    // if data is chunked
+
+    send(client->get_socket_fd(), response, bytes_recv, 0);
+    while (true) {
+      memset(response, 0, buffer_size);
+      int len_recv =
+          recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
+      // cout << response << endl;
+      if (len_recv <= 0) {
+        cout << "no more chunked message" << endl;
+        break;
+      } else {
+        response[len_recv] = '\0';
+        send(client->get_socket_fd(), response, len_recv, 0);
+      }
+    }
+    cout << "_______________chunked data over_________________" << endl;
+  } else {
+    string str_url(url);
+    // TODO handle not chunked data
+    // if no store, we do not put it into cache
+    int content_length = rph.content_length;
+    // TODO check \r\n\r\n in response, if not, 502
+    if (content_length > bytes_recv) {
+      while (1) {
+        memset(response, 0, buffer_size);
+        bytes_recv =
+            recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
+        if (bytes_recv <= 0) {
+          cout << "_______________recv long message end___________________" << endl;
+          break;
+        }
+        rph.appendResponse(response, bytes_recv);
+      }
+      send(client->get_socket_fd(), rph.response.data(), rph.response.size(),
+           0);
+    } else {
+      send(client->get_socket_fd(), response, bytes_recv, 0);
+    }
+
+    proxy_as_client.close_socket_fd();
+    client->close_socket_fd();
+  }
+}
+
 void Server::handle_request(Client *client) {
   int buffer_size = 65536;
   char buffer[buffer_size];
@@ -224,17 +244,19 @@ void Server::handle_request(Client *client) {
   const char *method = httpHeader.get_method();
   const char *port = httpHeader.get_port();
   const char *first_line = httpHeader.get_first_line();
-  if (strcmp("", method) == 0){
-    std::cout << "_________HTTP 400 Bad Request__________\n" << buffer << std::endl;
-    return ;
+  if (strcmp("", method) == 0) {
+    std::cout << "_________HTTP 400 Bad Request__________\n"
+              << buffer << std::endl;
+    return;
   }
   string url(httpHeader.get_url());
   // create proxy as client here
   Client proxy_as_client;
   int client_fd = proxy_as_client.createClient(host, port);
-  if (client_fd == -1){
-    std::cout << "_________HTTP 400 Bad Request__________\n" << buffer << std::endl;
-    return ;
+  if (client_fd == -1) {
+    std::cout << "_________HTTP 400 Bad Request__________\n"
+              << buffer << std::endl;
+    return;
   }
   string str_host(host);
   proxy_as_client.host = str_host;
@@ -245,18 +267,22 @@ void Server::handle_request(Client *client) {
   if (strcmp(method, "GET") == 0) {
     std::cout << "_________THIS IS GET______\n" << std::endl;
     // url in cache
-    if (lruCache.inCache(url)) {
-      bool canUseCache = false;
+    mtx.lock();
+    bool ifInCache = lruCache.inCache(url); // check if in cache
+    mtx.unlock();
+    if (ifInCache) {
       bool revalidate = true;  // true means revalidate succefully
       bool ifExpire = true;    // true means not expire
+      mtx.lock();
       ResponseHead resp = lruCache.get(url);
+      mtx.unlock();
       // TODO: THis harcode is only for test,delete it later
       if (resp.if_cache_control == false || resp.if_no_cache == true ||
           resp.if_must_revalidate == true || resp.max_age == 0) {
         // TODO do revalidation, update expiration
         revalidate = this->revalidation(resp, proxy_as_client, client);
       } else if (resp.max_age != -1 || resp.expires != "") {
-        // TODO do check expiration
+        ifExpire = this->ifExpired(resp, proxy_as_client, client);
       }
       if (revalidate && ifExpire) {
         // use cache
@@ -346,33 +372,36 @@ bool Server::revalidation(ResponseHead resp, Client proxy_as_client,
   } else {
     send(client->get_socket_fd(), response, bytes_recv, 0);
   }
+  mtx.lock();
   lruCache.put(proxy_as_client.url, rph);
+  mtx.unlock();
   // send(client.get_socket_fd(), )
   return false;
 }
 
-bool Server::ifExpired(ResponseHead resp) {
+bool Server::ifExpired(ResponseHead resp, Client proxy_as_client,
+                       Client *client) {
   time_t t = std::time(0);  // get time now
   tm *now = std::localtime(&t);
   now->tm_year += 1900;
+  bool valid = false;
   if (resp.max_age > 0) {
     TimeStamp responseTime = resp.date;
     double diff = difftime(mktime(now), mktime(responseTime.get_t()));
     if (diff <= resp.max_age) {
       cout << "___________data fresh, no expired by max-age_______" << endl;
-      return true;
-    } else {
-      return false;
+      valid = true;
     }
   } else if (resp.expires != "") {
     TimeStamp expireTime(resp.expires);
     double diff = difftime(mktime(expireTime.get_t()), mktime(now));
     if (diff > 0) {
       cout << "___________data fresh, no expire by expireTime______" << endl;
-      return true;
-    } else {
-      return false;
+      valid = true;
     }
   }
-  return true;
+  if (valid == false) {
+    valid = this->revalidation(resp, proxy_as_client, client);
+  }
+  return valid;
 }

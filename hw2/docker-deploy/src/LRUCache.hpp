@@ -65,6 +65,7 @@ class LRUCache {
         DLinkedNode* removed = removeTail();
         // 删除哈希表中对应的项
         cache.erase(removed->url);
+        cout << "_________evict " << removed->url << " out of cache_______________!" << endl;
         // 防止内存泄漏
         delete removed;
         --size;

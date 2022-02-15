@@ -14,10 +14,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <string>
-#include <vector>
-#include <thread>         // std::thread
 #include <mutex>
+#include <string>
+#include <thread>  // std::thread
+#include <vector>
 
 #include "LRUCache.hpp"
 #include "client.hpp"
@@ -50,20 +50,16 @@ class Server {
   void deal_with_get_request(Client proxy_as_client, const char* url,
                              char* buffer, Client* client);
   void deal_with_post_request(Client proxy_as_client, const char* url,
-                              char* buffer, Client* client) {
-    deal_with_get_request(proxy_as_client, url, buffer, client);
-  }
+                              char* buffer, Client* client);
   void deal_with_connect_request(Client proxy_as_client, Client* client);
 
   // void close_socket_fd() { close(socket_fd); }
   void close_client_connection_fd();
 
   bool revalidation(ResponseHead resp, Client proxy_as_client, Client* client);
-  bool ifExpired(ResponseHead resp);
+  bool ifExpired(ResponseHead resp, Client proxy_as_client, Client* client);
 
-  ~Server() {
-    delete port;
-  }
+  ~Server() { delete port; }
 };
 
 #endif

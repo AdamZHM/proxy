@@ -4,8 +4,6 @@
 
 using namespace std;
 
-mutex mtx;
-
 void thread_task(Server *s, Client *o) {
   s->handle_request(o);
   delete (o);

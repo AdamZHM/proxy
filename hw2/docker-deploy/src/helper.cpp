@@ -5,11 +5,11 @@ using namespace std;
 int check_recv(int byte_count) {
   if (byte_count < 0) {
     cerr << "errors happen when receiving data!" << endl;
-    exit(EXIT_FAILURE);
+    return -1;
   }
   if (byte_count == 0) {  // connection shut down
     cerr << "connection shut down" << endl;
-    exit(EXIT_FAILURE);
+    return 0;
   }
   return byte_count;
 }
@@ -17,7 +17,7 @@ int check_recv(int byte_count) {
 int check_send(int byte_count) {
   if (byte_count == -1) {
     cerr << "errors happen when sending data!" << endl;
-    exit(EXIT_FAILURE);
+    return -1;
   }
   return byte_count;
 }
@@ -43,7 +43,7 @@ string accept_connection(int socket_fd, int *client_connection_fd) {
       socket_fd, (struct sockaddr *)&socket_addr, &socket_addr_len);
   if (*client_connection_fd == -1) {
     cerr << "Error: cannot accept connection on socket" << endl;
-    exit(EXIT_FAILURE);
+    return "";
   }  // if
   struct sockaddr_in *pV4Addr = (struct sockaddr_in *)&socket_addr;
   struct in_addr ipAddr = pV4Addr->sin_addr;
