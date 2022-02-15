@@ -164,7 +164,7 @@ void Server::deal_with_connect_request(Client proxy_as_client, Client *client) {
   const char *msg = "HTTP/1.1 200 OK\r\n\r\n";
   if (send(client->get_socket_fd(), msg, 19, 0) < 0) {
     cerr << "Error send data in connect " << endl;
-    exit(EXIT_FAILURE);
+    return;
   }
   int buffer_size = 65536;
   vector<int> fd_vector = {proxy_as_client.get_socket_fd(),
@@ -193,13 +193,13 @@ void Server::deal_with_connect_request(Client proxy_as_client, Client *client) {
           return;
         } else if (bytes_recv < 0) {
           cerr << "Error : recv data error" << endl;
-          exit(EXIT_FAILURE);
+          return;
         }
         buffer[bytes_recv] = '\0';
 
         if (send(fd_vector[(i + 1) % 2], buffer, bytes_recv, 0) < 0) {
           cerr << "Error : send data error" << endl;
-          exit(EXIT_FAILURE);
+          return;
         }
       }
     }
@@ -224,10 +224,18 @@ void Server::handle_request(Client *client) {
   const char *method = httpHeader.get_method();
   const char *port = httpHeader.get_port();
   const char *first_line = httpHeader.get_first_line();
+  if (strcmp("", method) == 0){
+    std::cout << "_________HTTP 400 Bad Request__________\n" << buffer << std::endl;
+    return ;
+  }
   string url(httpHeader.get_url());
   // create proxy as client here
   Client proxy_as_client;
-  proxy_as_client.createClient(host, port);
+  int client_fd = proxy_as_client.createClient(host, port);
+  if (client_fd == -1){
+    std::cout << "_________HTTP 400 Bad Request__________\n" << buffer << std::endl;
+    return ;
+  }
   string str_host(host);
   proxy_as_client.host = str_host;
   string str_first_line(first_line);

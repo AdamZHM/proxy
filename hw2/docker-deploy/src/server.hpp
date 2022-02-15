@@ -60,6 +60,10 @@ class Server {
 
   bool revalidation(ResponseHead resp, Client proxy_as_client, Client* client);
   bool ifExpired(ResponseHead resp);
+
+  ~Server() {
+    delete port;
+  }
 };
 
 #endif

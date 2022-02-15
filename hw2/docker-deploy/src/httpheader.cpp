@@ -33,6 +33,8 @@ HttpHeader::HttpHeader(const char *buffer) {
       } else if (line.find("CONNECT") == 0) {
         method = std::string("CONNECT");
         typeOfRequest = 'C';
+      } else {
+        method = "";
       }
     } else {
       if (line.find("Host") == 0) {  // The line that starts with Host

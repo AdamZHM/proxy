@@ -22,10 +22,10 @@ int Client::createClient(const char * hostname, const char * port){
   const char * test = "info.cern.ch";
   status = getaddrinfo(hostname, port, &host_info, &host_info_list);
   if (status != 0) {
-    cerr << "Error: cannot get address info for host" << endl;
+    cerr << "Error: cannot get address info for host in client" << endl;
     cerr << "  (" << hostname << "," << port << ")" << endl;
     cerr << port << endl;
-    exit(EXIT_FAILURE);
+    return -1;
   } //if
 
   socket_fd = socket(host_info_list->ai_family, 
@@ -34,7 +34,7 @@ int Client::createClient(const char * hostname, const char * port){
   if (socket_fd == -1) {
     cerr << "Error: cannot create socket" << endl;
     cerr << "  (" << hostname << "," << port << ")" << endl;
-    exit(EXIT_FAILURE);
+    return -1;
   } //if
   
   // cout << "Connecting to " << hostname << " on port " << port << "..." << endl;
@@ -43,7 +43,7 @@ int Client::createClient(const char * hostname, const char * port){
   if (status == -1) {
     cerr << "Error: cannot connect to socket" << endl;
     cerr << "  (" << hostname << "," << port << ")" << endl;
-    exit(EXIT_FAILURE);
+    return -1;
   } //if
   freeaddrinfo(host_info_list);
   this->socket_fd = socket_fd;

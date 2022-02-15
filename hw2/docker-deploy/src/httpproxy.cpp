@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     Server *proxy_server = new Server();
     int client_fd;
     string client_ip = proxy_server->accept_connection(socket_fd, &client_fd);
-    cout << client_fd << endl;
+  
 
     Client *client = new Client();
     // Client *client2 = new Client();
