@@ -19,7 +19,7 @@ HttpHeader::HttpHeader(const char *buffer) {
       break;
     }
     if (i == 0) {  // first line
-      this->first_line = line;
+      this->first_line = line.substr(0,line.find("\r"));
       if (line.find("GET") == 0) {
         method = std::string("GET");
         int startIdx = line.find(' ') + 1;

@@ -9,7 +9,7 @@ int Server::create_server(const char *port) {
   int socket_fd;
   struct addrinfo host_info;        // hints
   struct addrinfo *host_info_list;  // results
-  const char *hostname = "vcm-24353.vm.duke.edu";
+  const char *hostname = "vcm-24373.vm.duke.edu";
   // const char *hostname = "vcm-24353.vm.duke.edu";
   // const char *port     = "12345";
 
@@ -227,6 +227,8 @@ void Server::handle_request() {
   std::cout << "_________THIS IS USER REQUEST_______\n" << buffer << std::endl;
   HttpHeader httpHeader(buffer);
   const char *host = httpHeader.get_host();
+
+  std::cout<<"_______________checking if host name correct here\n"<<host<<'\n';
   const char *method = httpHeader.get_method();
   const char *port = httpHeader.get_port();
   const char *first_line = httpHeader.get_first_line();
@@ -245,8 +247,11 @@ void Server::handle_request() {
     if (lruCache.inCache(url)) {
       bool canUseCache = false;
       ResponseHead resp = lruCache.get(url);
+      //TODO: THis harcode is only for test,delete it later
+      resp.if_cache_control =false;
       if (resp.if_cache_control == false) {
         // canUseCache = false;
+        cout<< "________________check if firstLine here_____"<<proxy_as_client.first_line<<'\n';
         canUseCache = this->revalidation(resp, proxy_as_client);
       } else if (resp.if_no_cache == true || resp.if_must_revalidate == true) {
         // TODO do revalidation, update expiration
