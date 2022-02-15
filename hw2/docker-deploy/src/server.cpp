@@ -3,69 +3,69 @@ using namespace std;
 
 LRUCache lruCache(10);
 
-int Server::create_server(const char *port) {
-  int status;
-  int socket_fd;
-  struct addrinfo host_info;        // hints
-  struct addrinfo *host_info_list;  // results
-  const char *hostname = "vcm-24353.vm.duke.edu";
-  // const char *hostname = "vcm-24353.vm.duke.edu";
-  // const char *port     = "12345";
+// int Server::create_server(const char *port) {
+//   int status;
+//   int socket_fd;
+//   struct addrinfo host_info;        // hints
+//   struct addrinfo *host_info_list;  // results
+//   const char *hostname = "vcm-24353.vm.duke.edu";
+//   // const char *hostname = "vcm-24353.vm.duke.edu";
+//   // const char *port     = "12345";
 
-  memset(&host_info, 0, sizeof(host_info));
+//   memset(&host_info, 0, sizeof(host_info));
 
-  host_info.ai_family = AF_UNSPEC;
-  host_info.ai_socktype = SOCK_STREAM;
-  host_info.ai_flags = AI_PASSIVE;
+//   host_info.ai_family = AF_UNSPEC;
+//   host_info.ai_socktype = SOCK_STREAM;
+//   host_info.ai_flags = AI_PASSIVE;
 
-  status = getaddrinfo(hostname, port, &host_info, &host_info_list);
-  if (status != 0) {
-    cerr << "Error: cannot get address info for host" << endl;
-    cerr << "  (" << hostname << "," << port << ")" << endl;
-    exit(EXIT_FAILURE);
-  }
+//   status = getaddrinfo(hostname, port, &host_info, &host_info_list);
+//   if (status != 0) {
+//     cerr << "Error: cannot get address info for host" << endl;
+//     cerr << "  (" << hostname << "," << port << ")" << endl;
+//     exit(EXIT_FAILURE);
+//   }
 
-  // use os randomly assigned port.
-  if (port == NULL) {
-    struct sockaddr_in *addr = (struct sockaddr_in *)(host_info_list->ai_addr);
-    addr->sin_port = 0;
-  }
+//   // use os randomly assigned port.
+//   if (port == NULL) {
+//     struct sockaddr_in *addr = (struct sockaddr_in
+//     *)(host_info_list->ai_addr); addr->sin_port = 0;
+//   }
 
-  socket_fd = socket(host_info_list->ai_family, host_info_list->ai_socktype,
-                     host_info_list->ai_protocol);
-  if (socket_fd == -1) {
-    cerr << "Error: cannot create socket" << endl;
-    cerr << "  (" << hostname << "," << port << ")" << endl;
-    exit(EXIT_FAILURE);
-  }  // if
+//   socket_fd = socket(host_info_list->ai_family, host_info_list->ai_socktype,
+//                      host_info_list->ai_protocol);
+//   if (socket_fd == -1) {
+//     cerr << "Error: cannot create socket" << endl;
+//     cerr << "  (" << hostname << "," << port << ")" << endl;
+//     exit(EXIT_FAILURE);
+//   }  // if
 
-  int yes = 1;
-  status = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
-  status = bind(socket_fd, host_info_list->ai_addr, host_info_list->ai_addrlen);
-  if (status == -1) {
-    cerr << "Error: cannot bind socket" << endl;
-    cerr << "  (" << hostname << "," << port << ")" << endl;
-    exit(EXIT_FAILURE);
-  }  // if
+//   int yes = 1;
+//   status = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &yes,
+//   sizeof(int)); status = bind(socket_fd, host_info_list->ai_addr,
+//   host_info_list->ai_addrlen); if (status == -1) {
+//     cerr << "Error: cannot bind socket" << endl;
+//     cerr << "  (" << hostname << "," << port << ")" << endl;
+//     exit(EXIT_FAILURE);
+//   }  // if
 
-  status = listen(socket_fd, 100);
-  if (status == -1) {
-    cerr << "Error: cannot listen on socket" << endl;
-    cerr << "  (" << hostname << "," << port << ")" << endl;
-    exit(EXIT_FAILURE);
-  }  // if
+//   status = listen(socket_fd, 100);
+//   if (status == -1) {
+//     cerr << "Error: cannot listen on socket" << endl;
+//     cerr << "  (" << hostname << "," << port << ")" << endl;
+//     exit(EXIT_FAILURE);
+//   }  // if
 
-  // cout << "Waiting for connection on port " << port << endl;
-  freeaddrinfo(host_info_list);
-  this->socket_fd = socket_fd;
-  return socket_fd;
-}
+//   // cout << "Waiting for connection on port " << port << endl;
+//   freeaddrinfo(host_info_list);
+//   this->socket_fd = socket_fd;
+//   return socket_fd;
+// }
 
-string Server::accept_connection(int *client_connection_fd) {
+string Server::accept_connection(int socket_fd, int *client_connection_fd) {
   struct sockaddr_in *socket_addr;
   socklen_t socket_addr_len = sizeof(socket_addr);
-  *client_connection_fd = accept(
-      this->socket_fd, (struct sockaddr *)&socket_addr, &socket_addr_len);
+  *client_connection_fd =
+      accept(socket_fd, (struct sockaddr *)&socket_addr, &socket_addr_len);
   if (*client_connection_fd == -1) {
     cerr << "Error: cannot accept connection on socket" << endl;
     exit(EXIT_FAILURE);
@@ -210,8 +210,6 @@ void Server::handle_request(Client *client) {
   int buffer_size = 65536;
   char buffer[buffer_size];
   memset(buffer, 0, sizeof(buffer));
-  cout << "111" << endl;
-  cout << client->get_socket_fd() << endl;
   int byte_recv = recv(client->get_socket_fd(), buffer, buffer_size, 0);
   if (byte_recv == -1) {
     client->close_socket_fd();
