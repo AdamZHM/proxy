@@ -1,10 +1,7 @@
 #include "server.hpp"
-
 using namespace std;
 
 LRUCache lruCache(10);
-
-
 
 int Server::create_server(const char *port) {
   int status;

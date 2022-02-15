@@ -14,10 +14,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <mutex>
 #include <string>
 #include <vector>
-#include <thread>
+#include <thread>         // std::thread
+#include <mutex>
 
 #include "LRUCache.hpp"
 #include "client.hpp"
@@ -26,7 +26,6 @@
 
 using namespace std;
 // using static initializetion
-// std::mutex mtx;
 
 class Server {
  private:
@@ -35,7 +34,6 @@ class Server {
   int client_connection_fd;
 
  public:
-  void entry();
   int get_socket_fd() { return this->socket_fd; }
   void set_socket_fd(int socket_fd) { this->socket_fd = socket_fd; }
 
@@ -45,11 +43,11 @@ class Server {
   int get_client_connection_fd() { return client_connection_fd; }
   void set_client_connection_fd(int fd) { this->client_connection_fd = fd; }
 
-  int create_server(const char* port);
+  static int create_server(const char* port);
   string accept_connection(int* client_connection_fd);
 
   // int data_from_client();
-void handle_request(Client *client);
+  void handle_request(Client* client);
   void deal_with_get_request(Client proxy_as_client, const char* url,
                              char* buffer, Client* client);
   void deal_with_post_request(Client proxy_as_client, const char* url,
