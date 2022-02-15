@@ -1,32 +1,25 @@
+#include <pthread.h>
+
 #include "client.hpp"
 #include "helper.hpp"
 #include "server.hpp"
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-  const char* port = "12345";
-
-  // LRUCache lruCache(2);
-  // string url1 = "www.google.com";
-  // ResponseHead res1 = ResponseHead();
-  // lruCache.put(url1, res1);
-  // string url2 = "www.baidu.com";
-  // ResponseHead res2 = ResponseHead();
-  // lruCache.put(url2, res2);
-  // string url3 = "www.qq.com";
-  // cout << lruCache.inCache(url3) << endl;
-  // ResponseHead res3 = ResponseHead();
-  // lruCache.put(url3, res3);
-
+int main(int argc, char *argv[]) {
+  const char *port = "12345";
   Server proxy_server;
   proxy_server.create_server(port);
-  // client_ip = proxy_server.accept_connection();
-  // proxy_server.deal_with_get_request(proxy_server);
-  while (1) {
-    proxy_server.handle_request();
-  }
 
+  while (1) {
+    int client_fd;
+    string client_ip = proxy_server.accept_connection(&client_fd);
+    cout << client_fd << endl;
+    // mtx.lock();
+    Client *client = new Client();
+    client->set_socket_fd(client_fd);
+    proxy_server.handle_request(client);
+  }
   proxy_server.close_socket_fd();
   return EXIT_SUCCESS;
 }

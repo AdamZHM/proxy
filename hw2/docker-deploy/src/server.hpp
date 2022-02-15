@@ -14,8 +14,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <mutex>
 #include <string>
 #include <vector>
+#include <thread>
 
 #include "LRUCache.hpp"
 #include "client.hpp"
@@ -23,15 +25,17 @@
 #include "httpheader.hpp"
 
 using namespace std;
+// using static initializetion
+// std::mutex mtx;
 
 class Server {
  private:
   int socket_fd;
   const char* port;
   int client_connection_fd;
-  vector<char> client_request;
 
  public:
+  void entry();
   int get_socket_fd() { return this->socket_fd; }
   void set_socket_fd(int socket_fd) { this->socket_fd = socket_fd; }
 
@@ -42,23 +46,23 @@ class Server {
   void set_client_connection_fd(int fd) { this->client_connection_fd = fd; }
 
   int create_server(const char* port);
-  string accept_connection();
+  string accept_connection(int* client_connection_fd);
 
   // int data_from_client();
-  void handle_request();
+void handle_request(Client *client);
   void deal_with_get_request(Client proxy_as_client, const char* url,
-                             char* buffer);
+                             char* buffer, Client* client);
   void deal_with_post_request(Client proxy_as_client, const char* url,
-                              char* buffer) {
-    deal_with_get_request(proxy_as_client, url, buffer);
+                              char* buffer, Client* client) {
+    deal_with_get_request(proxy_as_client, url, buffer, client);
   }
-  void deal_with_connect_request(Client proxy_as_client);
+  void deal_with_connect_request(Client proxy_as_client, Client* client);
 
   void close_socket_fd() { close(socket_fd); }
   void close_client_connection_fd();
 
-  bool revalidation(ResponseHead resp, Client proxy_as_client);
-  bool ifExpired();
+  bool revalidation(ResponseHead resp, Client proxy_as_client, Client* client);
+  bool ifExpired(ResponseHead resp);
 };
 
 #endif

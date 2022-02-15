@@ -12,17 +12,20 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <string>
 #include <iostream>
+#include <string>
 #include <vector>
 
 using namespace std;
 
 class Client {
  public:
+  int id;
   int socket_fd;
+  string ip;
   string host;
   string first_line;
+  string url;
   int get_socket_fd() { return this->socket_fd; }
   void set_socket_fd(int socket_fd) { this->socket_fd = socket_fd; }
 

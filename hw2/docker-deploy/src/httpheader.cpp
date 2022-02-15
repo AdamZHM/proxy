@@ -55,9 +55,9 @@ HttpHeader::HttpHeader(const char *buffer) {
       } else if (line.find("Cache-Control") == 0) {
         int startIdx = line.find(':') + 2;
         cache_control = line.substr(startIdx, line.find("\r") - startIdx);
-        std::cout << "--------------------------------------------------\n";
-        std::cout << "_______________" << cache_control << "____________";
-        std::cout << '\n';
+        // std::cout << "--------------------------------------------------\n";
+        // std::cout << "_______________" << cache_control << "____________";
+        // std::cout << '\n';
       }
     }
     i++;
