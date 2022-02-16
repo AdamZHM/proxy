@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     Client *client = new Client();
     // Client *client2 = new Client();
     client->set_socket_fd(client_fd);
-
+    // proxy_server->handle_request(client);
     thread t(thread_task, proxy_server, client);
     t.detach();
   }

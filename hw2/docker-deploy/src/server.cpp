@@ -24,7 +24,7 @@ string Server::accept_connection(int socket_fd, int *client_connection_fd) {
   return ans;
 }
 
-void Server::deal_with_get_request(Client proxy_as_client, const char *url,
+void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
                                    char *buffer, Client *client) {
   int buffer_size = 65536;
   char response[buffer_size];
@@ -50,10 +50,10 @@ void Server::deal_with_get_request(Client proxy_as_client, const char *url,
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
   // test
-  // rph.max_age = 0;
+  rph.max_age = 10;
   // rph.etag = "";
   // rph.last_modified = "";
-  rph.expires = "Sun, 13 Feb 2022 15:51:34 GMT";
+  // rph.expires = "Wed, 16 Feb 2022 15:51:34 GMT";
   // test end
 
   // cout << "content-length: " << rph.content_length << endl;
@@ -80,40 +80,39 @@ void Server::deal_with_get_request(Client proxy_as_client, const char *url,
     string str_url(url);
     // TODO handle not chunked data
     // if no store, we do not put it into cache
-    if (rph.if_no_store) {
-      send(client->get_socket_fd(), response, bytes_recv, 0);
-    } else {  // then anything could be put into cache
-      // first check length larger than buffer size?
-      while (true) {
-        memset(response, 0, 65536);
-        int len_recv = recv(proxy_as_client.get_socket_fd(), response,
-                            sizeof(response), 0);
-        if (len_recv <= 0) {
-          cout << "no more data" << endl;
-          break;
-        } else {
-          response[len_recv] = '\0';
-          rph.appendResponse(response, len_recv);
-        }
-      }
-      send(client->get_socket_fd(), rph.response.data(), rph.response.size(),
-           0);
 
-      proxy_as_client.close_socket_fd();
-      client->close_socket_fd();
+    while (true) {
+      memset(response, 0, 65536);
+      int len_recv =
+          recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
+      if (len_recv <= 0) {
+        cout << "no more data" << endl;
+        break;
+      } else {
+        response[len_recv] = '\0';
+        rph.appendResponse(response, len_recv);
+      }
     }
+    send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
+
+    proxy_as_client.close_socket_fd();
+    client->close_socket_fd();
+
     cout << "__________save " << url << " in to cache_______________" << endl;
     // TODO log cache situation
-    mtx.lock();
-    lruCache.put(str_url, rph);
-    mtx.unlock();
+    if (!rph.if_no_store) {
+      mtx.lock();
+      lruCache.put(str_url, rph);
+      mtx.unlock();
+    }
   }
   // cout << lruCache.get(str_url).response.data() << endl;
   proxy_as_client.close_socket_fd();
   client->close_socket_fd();
 }
 
-void Server::deal_with_connect_request(Client proxy_as_client, Client *client) {
+void Server::deal_with_connect_request(Client &proxy_as_client,
+                                       Client *client) {
   const char *msg = "HTTP/1.1 200 OK\r\n\r\n";
   if (send(client->get_socket_fd(), msg, 19, 0) < 0) {
     cerr << "Error send data in connect " << endl;
@@ -159,7 +158,7 @@ void Server::deal_with_connect_request(Client proxy_as_client, Client *client) {
   }
 }
 
-void Server::deal_with_post_request(Client proxy_as_client, const char *url,
+void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
                                     char *buffer, Client *client) {
   int buffer_size = 65536;
   char response[buffer_size];
@@ -277,7 +276,6 @@ void Server::handle_request(Client *client) {
       ResponseHead resp = lruCache.get(url);
       mtx.unlock();
 
-      // cout << "_______max-age:" << resp.max_age << "__________" << endl;
       // TODO: THis harcode is only for test,delete it later
       if (resp.if_cache_control == false || resp.if_no_cache == true ||
           resp.if_must_revalidate == true || resp.max_age == 0) {
@@ -293,11 +291,9 @@ void Server::handle_request(Client *client) {
              resp.response.size(), 0);
       } else {
         cout << "_________cannot use cache___________" << endl;
+        this->deal_with_get_request(proxy_as_client, httpHeader.get_url(),
+                                    buffer, client);
         // if need revalidate, will do send in revalidation
-        if (ifExpire == false) {
-          this->deal_with_get_request(proxy_as_client, httpHeader.get_url(),
-                                      buffer, client);
-        }
       }
     } else {  // not in cache
       cout << "_____________not in cache______________" << endl;
@@ -317,9 +313,7 @@ void Server::handle_request(Client *client) {
   return;
 }
 
-// bool Server::ifExpired() {}
-
-bool Server::revalidation(ResponseHead resp, Client proxy_as_client,
+bool Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
                           Client *client) {
   if (resp.etag == "" && resp.last_modified == "" && resp.max_age == -1) {
     return true;
@@ -345,6 +339,10 @@ bool Server::revalidation(ResponseHead resp, Client proxy_as_client,
   ResponseHead temp;
   temp.initResponse(response, bytes_recv);
   cout << "________revalidation response: \n" << response << endl;
+  resp.date = temp.date;  // update the resp.date
+  mtx.lock();
+  lruCache.put(proxy_as_client.url, resp);
+  mtx.unlock();
   if (temp.status.find("304") != string::npos) {
     cout << "____________check etag or last_modified and data "
             "fresh_______________"
@@ -354,58 +352,45 @@ bool Server::revalidation(ResponseHead resp, Client proxy_as_client,
   cout << "____________check etag or last_modified and data not "
           "fresh___________"
        << endl;
-  ResponseHead rph;
-  rph.initResponse(response, bytes_recv);
-  while (true) {
-    memset(response, 0, 65536);
-    int len_recv =
-        recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
-    if (len_recv <= 0) {
-      cout << "no more data" << endl;
-      break;
-    } else {
-      response[len_recv] = '\0';
-      rph.appendResponse(response, len_recv);
-    }
-  }
-  send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
-  // int content_length = rph.content_length;
-  // if (content_length > bytes_recv) {
-  //   while (1) {
-  //     memset(response, 0, 65536);
-  //     bytes_recv =
-  //         recv(proxy_as_client.get_socket_fd(), response, sizeof(response),
-  //         0);
-  //     if (bytes_recv <= 0) {
-  //       cout << "recv long message end" << endl;
-  //       break;
-  //     }
-  //     rph.appendResponse(response, bytes_recv);
+  // ResponseHead rph;
+  // rph.initResponse(response, bytes_recv);
+
+  // while (true) {
+  //   memset(response, 0, 65536);
+  //   int len_recv =
+  //       recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
+  //   cout << len_recv << endl;
+  //   if (len_recv <= 0 or len_recv < 65536) {
+  //     cout << "no more data" << endl;
+  //     break;
+  //   } else {
+  //     response[len_recv] = '\0';
+  //     rph.appendResponse(response, len_recv);
   //   }
-  //   send(client->get_socket_fd(), rph.response.data(), rph.response.size(),
-  //   0);
-  // } else {
-  //   send(client->get_socket_fd(), response, bytes_recv, 0);
   // }
-  mtx.lock();
-  lruCache.put(proxy_as_client.url, rph);
-  mtx.unlock();
-  // send(client.get_socket_fd(), )
+  // send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
+  // mtx.lock();
+  // lruCache.put(proxy_as_client.url, rph);
+  // mtx.unlock();
   return false;
 }
 
-bool Server::ifExpired(ResponseHead resp, Client proxy_as_client,
+bool Server::ifExpired(ResponseHead &resp, Client &proxy_as_client,
                        Client *client) {
   time_t t = std::time(0);  // get time now
-  tm *now = std::localtime(&t);
+  tm *now = gmtime(&t);
+  // tm *now = std::localtime(&t);
   now->tm_year += 1900;
   bool valid = false;
   if (resp.max_age > 0) {
     TimeStamp responseTime = resp.date;
     double diff = difftime(mktime(now), mktime(responseTime.get_t()));
+    // cout << diff << endl;
     if (diff <= resp.max_age) {
       cout << "___________data fresh, no expired by max-age_______" << endl;
       valid = true;
+    } else {
+      cout << "___________data not fresh, expired by max-age_______" << endl;
     }
   } else if (resp.expires != "") {
     TimeStamp expireTime(resp.expires);
@@ -413,6 +398,8 @@ bool Server::ifExpired(ResponseHead resp, Client proxy_as_client,
     if (diff > 0) {
       cout << "___________data fresh, no expire by expireTime______" << endl;
       valid = true;
+    } else {
+      cout << "___________data not fresh, expired by expireTime______" << endl;
     }
   }
   if (valid == false) {
