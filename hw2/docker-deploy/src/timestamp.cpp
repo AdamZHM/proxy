@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "timemap.hpp"
+#include "timemap.cpp"
 
 // int tm_sec;   // seconds of minutes from 0 to 61
 //   int tm_min;   // minutes of hour from 0 to 59

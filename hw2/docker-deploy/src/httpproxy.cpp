@@ -12,17 +12,20 @@ void thread_task(Server *s, Client *o) {
 
 int main(int argc, char *argv[]) {
   const char *port = "12345";
+  int id = 1;
   int socket_fd = create_server(port);
 
   while (1) {
     Server *proxy_server = new Server();
     int client_fd;
     string client_ip = proxy_server->accept_connection(socket_fd, &client_fd);
-  
 
     Client *client = new Client();
     // Client *client2 = new Client();
     client->set_socket_fd(client_fd);
+    client->ip = client_ip;
+    client->id = id;
+    id += 1;
     // proxy_server->handle_request(client);
     thread t(thread_task, proxy_server, client);
     t.detach();

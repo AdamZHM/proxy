@@ -39,8 +39,8 @@ void changeHeaderToLower(std::string &line, std::string &temp) {
 string accept_connection(int socket_fd, int *client_connection_fd) {
   struct sockaddr_in *socket_addr;
   socklen_t socket_addr_len = sizeof(socket_addr);
-  *client_connection_fd = accept(
-      socket_fd, (struct sockaddr *)&socket_addr, &socket_addr_len);
+  *client_connection_fd =
+      accept(socket_fd, (struct sockaddr *)&socket_addr, &socket_addr_len);
   if (*client_connection_fd == -1) {
     cerr << "Error: cannot accept connection on socket" << endl;
     return "";
@@ -110,4 +110,65 @@ int create_server(const char *port) {
   // cout << "Waiting for connection on port " << port << endl;
   freeaddrinfo(host_info_list);
   return socket_fd;
+}
+
+//"GET www.bbc.co.uk/ HTTP/1.1" from 1.2.3.4 @ Sun Jan 1 22:58:17 2017
+void printRequest(std::ofstream &fout, Client *client, std::string url) {
+  std::stringstream logLine;
+  time_t t = time(0);
+  struct tm *tm = gmtime(&t);
+  std::string time = std::string(asctime(tm));
+  time.pop_back();
+  fout << client->id << ": \"" << url << "\" from " << client->ip << " @ "
+       << time << endl;
+}
+
+void printNotInCache(std::ofstream &fout, Client *client) {
+  fout << client->id << ": not in cache" << endl;
+}
+
+void printContactServer(std::ofstream &fout, Client *client) {
+  fout << client->id << ": Requesting \"" << client->first_line << "\" from "
+       << client->url << endl;
+}
+
+void printInCacheValid(std::ofstream &fout, Client *client) {
+  fout << client->id << ": in cache, valid" << endl;
+}
+
+void printInCacheReVal(std::ofstream &fout, Client *client) {
+  fout << client->id << ": in cache, requires validation" << endl;
+}
+
+void printInCacheButExpired(std::ofstream &fout, Client *client, TimeStamp date,
+                            std::string expires, int max_age) {
+  if (expires != "") {
+    TimeStamp expireTime(expires);
+    time_t t = mktime(expireTime.get_t());
+    struct tm *tm = gmtime(&t);
+    std::string time = std::string(asctime(tm));
+    time.pop_back();
+    fout << client->id << ": in cache, but expired at " << time << endl;
+  } else if (max_age > 0) {
+    time_t t = mktime(date.get_t());
+    t += max_age;
+    struct tm *tm = gmtime(&t);
+    std::string time = std::string(asctime(tm));
+    time.pop_back();
+    fout << client->id << ": in cache, but expired at " << time << endl;
+  }
+}
+
+void printReceive(std::ofstream &fout, Client *client, std::string response) {
+  fout << client->id << ": Received \"" << response << "\" from " << client->url
+       << endl;
+}
+
+void printResponding(std::ofstream &fout, Client *client,
+                     std::string response) {
+  fout << client->id << ": Responding \"" << response << endl;
+}
+
+void printCloseTunnel(std::ofstream &fout, Client *client) {
+  fout << client->id << ": Tunnel closed" << endl;
 }

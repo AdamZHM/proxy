@@ -2,7 +2,7 @@
 using namespace std;
 
 LRUCache lruCache(2);
-
+ofstream fout("/home/hz223/ece568/hw2/docker-deploy/src/proxy.log");
 mutex mtx;
 
 string Server::accept_connection(int socket_fd, int *client_connection_fd) {
@@ -50,13 +50,16 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
   // test
-  rph.max_age = 10;
+  // rph.max_age = 10;
   // rph.etag = "";
   // rph.last_modified = "";
   // rph.expires = "Wed, 16 Feb 2022 15:51:34 GMT";
   // test end
 
   // cout << "content-length: " << rph.content_length << endl;
+  mtx.lock();
+  printContactServer(fout, client);
+  mtx.unlock();
   if (rph.if_chunked) {
     cout << "__________________data is chunked______________" << endl;
     // if data is chunked
@@ -106,6 +109,9 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
       mtx.unlock();
     }
   }
+  mtx.lock();
+  printReceive(fout, client, rph.status);
+  mtx.unlock();
   // cout << lruCache.get(str_url).response.data() << endl;
   proxy_as_client.close_socket_fd();
   client->close_socket_fd();
@@ -263,11 +269,15 @@ void Server::handle_request(Client *client) {
   proxy_as_client.first_line = str_first_line;
   proxy_as_client.url = url;
 
+  client->first_line = httpHeader.get_first_line();
+  client->url = url;
+
   if (strcmp(method, "GET") == 0) {
     std::cout << "_________THIS IS GET______\n" << std::endl;
     // url in cache
     mtx.lock();
     bool ifInCache = lruCache.inCache(url);  // check if in cache
+    printRequest(fout, client, httpHeader.get_first_line());
     mtx.unlock();
     if (ifInCache) {
       bool revalidate = true;  // true means revalidate succefully
@@ -286,27 +296,46 @@ void Server::handle_request(Client *client) {
       }
       if (revalidate && ifExpire) {
         // use cache
+        mtx.lock();
+        printInCacheValid(fout, client);
+        mtx.unlock();
         cout << "_____________use cache______________" << endl;
         send(client->get_socket_fd(), resp.response.data(),
              resp.response.size(), 0);
       } else {
+        mtx.lock();
+        if (!revalidate) {
+          printInCacheReVal(fout, client);
+        } else {
+          printInCacheButExpired(fout, client, resp.date, resp.expires,
+                                 resp.max_age);
+        }
+        mtx.unlock();
         cout << "_________cannot use cache___________" << endl;
         this->deal_with_get_request(proxy_as_client, httpHeader.get_url(),
                                     buffer, client);
         // if need revalidate, will do send in revalidation
       }
+      // mtx.lock();
+      // printResponding(fout, client, resp.status);
+      // mtx.lock();
     } else {  // not in cache
       cout << "_____________not in cache______________" << endl;
       this->deal_with_get_request(proxy_as_client, httpHeader.get_url(), buffer,
                                   client);
+      mtx.lock();
+      printNotInCache(fout, client);
+      mtx.unlock();
     }
-
   } else if (strcmp(method, "POST") == 0) {
     this->deal_with_post_request(proxy_as_client, httpHeader.get_url(), buffer,
                                  client);
   } else if (strcmp(method, "CONNECT") == 0) {  //
     std::cout << "_________THIS IS CONNECT______\n" << std::endl;
     this->deal_with_connect_request(proxy_as_client, client);
+    mtx.lock();
+    printCloseTunnel(fout, client);
+    mtx.unlock();
   } else {
     std::cout << "_________THIS IS NOTHING______\n" << std::endl;
   }
@@ -352,26 +381,6 @@ bool Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
   cout << "____________check etag or last_modified and data not "
           "fresh___________"
        << endl;
-  // ResponseHead rph;
-  // rph.initResponse(response, bytes_recv);
-
-  // while (true) {
-  //   memset(response, 0, 65536);
-  //   int len_recv =
-  //       recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
-  //   cout << len_recv << endl;
-  //   if (len_recv <= 0 or len_recv < 65536) {
-  //     cout << "no more data" << endl;
-  //     break;
-  //   } else {
-  //     response[len_recv] = '\0';
-  //     rph.appendResponse(response, len_recv);
-  //   }
-  // }
-  // send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
-  // mtx.lock();
-  // lruCache.put(proxy_as_client.url, rph);
-  // mtx.unlock();
   return false;
 }
 

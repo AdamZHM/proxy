@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "helper.hpp"
-#include "timestamp.hpp"
 
 class ResponseHead {
  public:
@@ -52,7 +51,7 @@ class ResponseHead {
       std::string lowerLine;
       changeHeaderToLower(line, lowerLine);
       if (lowerLine.find("http/1.1") == 0) {
-        status = line;
+        status = line.substr(0, line.find("\r"));
       } else if (lowerLine.find("cache-control") == 0) {
         if_cache_control = true;
         if (line.find("no-store") != std::string::npos) {

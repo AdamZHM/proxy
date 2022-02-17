@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <mutex>
 #include <string>
@@ -47,17 +48,18 @@ class Server {
   string accept_connection(int socket_fd, int* client_connection_fd);
 
   void handle_request(Client* client);
-  void deal_with_get_request(Client &proxy_as_client, const char* url,
+  void deal_with_get_request(Client& proxy_as_client, const char* url,
                              char* buffer, Client* client);
-  void deal_with_post_request(Client &proxy_as_client, const char* url,
+  void deal_with_post_request(Client& proxy_as_client, const char* url,
                               char* buffer, Client* client);
-  void deal_with_connect_request(Client &proxy_as_client, Client* client);
+  void deal_with_connect_request(Client& proxy_as_client, Client* client);
 
   // void close_socket_fd() { close(socket_fd); }
   void close_client_connection_fd();
 
-  bool revalidation(ResponseHead &resp, Client &proxy_as_client, Client* client);
-  bool ifExpired(ResponseHead &resp, Client &proxy_as_client, Client* client);
+  bool revalidation(ResponseHead& resp, Client& proxy_as_client,
+                    Client* client);
+  bool ifExpired(ResponseHead& resp, Client& proxy_as_client, Client* client);
 
   ~Server() { delete port; }
 };

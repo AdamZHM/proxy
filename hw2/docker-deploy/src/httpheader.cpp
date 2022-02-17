@@ -1,7 +1,5 @@
 #include "httpheader.hpp"
 
-#include <iostream>
-#include <string>
 // char *convertStringToChar(const std::string &s) {
 //   char *m_array = (char *)malloc(s.length());
 //   std::strcpy(m_array, s.c_str());
