@@ -26,11 +26,12 @@ string Server::accept_connection(int socket_fd, int *client_connection_fd) {
 
 void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
                                    char *buffer, Client *client) {
-  int buffer_size = 65536;
+  int buffer_size = 100000;
   char response[buffer_size];
   memset(response, 0, buffer_size);
+  string str_buffer(buffer);
   cout << buffer << endl;
-  if (send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0) < 0) {
+  if (send(proxy_as_client.get_socket_fd(), buffer, str_buffer.find("\r\n\r\n") + 4, 0) < 0) {
     cerr << "Error : send data to server in GET" << endl;
     return;
   }
@@ -46,7 +47,6 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
     cerr << "Error: recv data from server" << endl;
     return;
   }
-  response[bytes_recv] = '\0';
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
   // test
@@ -79,21 +79,24 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
     }
     cout << "___________chunked data over_________________" << endl;
   } else {
+    int responseLength = rph.totalLength();
     string str_url(url);
     // TODO handle not chunked data
     // if no store, we do not put it into cache
-
-    while (true) {
-      memset(response, 0, 65536);
+    while (rph.response.size() < responseLength) {
       int len_recv =
           recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
-      if (len_recv <= 0) {
-        cout << "no more data" << endl;
-        break;
+      if (len_recv == 0) {
+        cerr << "502" << endl;
+        return;
+      } else if (len_recv == -1) {
+        perror("recv error in get");
+        return;
       } else {
         rph.appendResponse(response, len_recv);
       }
     }
+
     send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
 
     proxy_as_client.close_socket_fd();
@@ -167,8 +170,9 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
   int buffer_size = 65536;
   char response[buffer_size];
   memset(response, 0, buffer_size);
+  string str_buffer(buffer);
   cout << buffer << endl;
-  if (send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0) < 0) {
+  if (send(proxy_as_client.get_socket_fd(), buffer, str_buffer.find("\r\n\r\n") + 4, 0) < 0) {
     cerr << "Error : send data to server in POST" << endl;
     return;
   }
@@ -228,7 +232,7 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
 }
 
 void Server::handle_request(Client *client) {
-  int buffer_size = 65536;
+  int buffer_size = 100000;
   char buffer[buffer_size];
   memset(buffer, 0, sizeof(buffer));
   int byte_recv = recv(client->get_socket_fd(), buffer, buffer_size, 0);

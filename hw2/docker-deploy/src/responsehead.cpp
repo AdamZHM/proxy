@@ -84,6 +84,7 @@ class ResponseHead {
         if_chunked = true;
       } else if (lowerLine.find("content-length") == 0) {
         content_length = atoi(line.substr(line.find(" ") + 1).c_str());
+        std::cout << content_length << std::endl;
       }
     }
   }

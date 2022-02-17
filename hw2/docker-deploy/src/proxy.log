@@ -1,113 +1,39 @@
-6: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:30:32 2022
-6: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from http://www.columbia.edu/~fdc/sample.html
-6: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/sample.html
-6: not in cache
-7: "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:30:32 2022
-7: Requesting "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from http://www.columbia.edu/~fdc/picture-of-something.jpg
-7: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/picture-of-something.jpg
+3: "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:41 2022
+3: Requesting "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from http://global.go.com/stat/dolWebAnalytics.js
+3: Received "HTTP/1.1 200 OK" from http://global.go.com/stat/dolWebAnalytics.js
+3: not in cache
+1: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:42 2022
+4: Tunnel closed
+1: Requesting "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from http://a.dilcdn.com/g/domains/go.com.js
+1: Received "HTTP/1.1 200 OK" from http://a.dilcdn.com/g/domains/go.com.js
+1: not in cache
+7: "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s79552219522140?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2016%3A39%3A44%204%20300&fid=76F70B5549C770A0-37CCAD7752FBEEA9&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645133984305-2291550159774&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645133520727-5181685705738&c75=1645133520727-5181685705738&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1 HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:43 2022
+7: Requesting "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s79552219522140?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2016%3A39%3A44%204%20300&fid=76F70B5549C770A0-37CCAD7752FBEEA9&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645133984305-2291550159774&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645133520727-5181685705738&c75=1645133520727-5181685705738&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1 HTTP/1.1" from http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s79552219522140?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2016%3A39%3A44%204%20300&fid=76F70B5549C770A0-37CCAD7752FBEEA9&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645133984305-2291550159774&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645133520727-5181685705738&c75=1645133520727-5181685705738&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1
+7: Received "HTTP/1.1 302 Found" from http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s79552219522140?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2016%3A39%3A44%204%20300&fid=76F70B5549C770A0-37CCAD7752FBEEA9&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645133984305-2291550159774&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645133520727-5181685705738&c75=1645133520727-5181685705738&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1
 7: not in cache
-8: "GET http://www.columbia.edu/favicon.ico HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:30:32 2022
-8: Requesting "GET http://www.columbia.edu/favicon.ico HTTP/1.1" from http://www.columbia.edu/favicon.ico
-8: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/favicon.ico
-8: not in cache
-3: Tunnel closed
-1: Tunnel closed
-5: Tunnel closed
-9: Tunnel closed
-12: Tunnel closed
-10: Tunnel closed
-14: Tunnel closed
-13: Tunnel closed
-15: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:38:15 2022
-15: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from http://www.columbia.edu/~fdc/sample.html
-15: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/sample.html
-15: not in cache
-16: "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:38:15 2022
-16: Requesting "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from http://www.columbia.edu/~fdc/picture-of-something.jpg
-16: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/picture-of-something.jpg
+14: "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:43 2022
+13: "GET http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:43 2022
+14: Requesting "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from http://b.scorecardresearch.com/c2/15592703/cs.js
+14: Received "HTTP/1.1 302 Found" from http://b.scorecardresearch.com/c2/15592703/cs.js
+14: not in cache
+13: Requesting "GET http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+13: Received "HTTP/1.1 302 Found" from http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+13: not in cache
+16: "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645133984340&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:43 2022
+17: "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:43 2022
+16: Requesting "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645133984340&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645133984340&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9=
+16: Received "HTTP/1.1 204 No Content" from http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645133984340&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9=
 16: not in cache
-17: Tunnel closed
-18: Tunnel closed
-19: Tunnel closed
-20: Tunnel closed
-22: "GET http://www.njrsks.net/ HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:17 2022
-22: Requesting "GET http://www.njrsks.net/ HTTP/1.1" from http://www.njrsks.net/
-22: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/
-22: not in cache
-27: "GET http://www.njrsks.net/Scripts/jquery.floatDiv.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
-28: "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
-24: "GET http://www.njrsks.net/Css/index.css HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
-25: "GET http://www.njrsks.net/Scripts/popWindow.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
-26: "GET http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
-27: Requesting "GET http://www.njrsks.net/Scripts/jquery.floatDiv.js HTTP/1.1" from http://www.njrsks.net/Scripts/jquery.floatDiv.js
-28: Requesting "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
-24: Requesting "GET http://www.njrsks.net/Css/index.css HTTP/1.1" from http://www.njrsks.net/Css/index.css
-25: Requesting "GET http://www.njrsks.net/Scripts/popWindow.js HTTP/1.1" from http://www.njrsks.net/Scripts/popWindow.js
-26: Requesting "GET http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js HTTP/1.1" from http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js
-27: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Scripts/jquery.floatDiv.js
-27: not in cache
-28: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
-28: not in cache
-24: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Css/index.css
-24: not in cache
-25: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Scripts/popWindow.js
-25: not in cache
-26: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js
-26: not in cache
-29: "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
-29: Requesting "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
-29: Received "HTTP/1.1 206 Partial Content" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
-29: not in cache
-30: "GET http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:19 2022
-30: in cache, valid
-21: Tunnel closed
-23: Tunnel closed
-36: "GET http://go.com/ HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:25 2022
-36: Requesting "GET http://go.com/ HTTP/1.1" from http://go.com/
-36: Received "HTTP/1.1 200 OK" from http://go.com/
-36: not in cache
-41: "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:25 2022
-41: Requesting "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from http://global.go.com/stat/dolWebAnalytics.js
-44: Tunnel closed
-46: Tunnel closed
-43: Tunnel closed
-41: Received "HTTP/1.1 200 OK" from http://global.go.com/stat/dolWebAnalytics.js
-41: not in cache
-42: Tunnel closed
-45: Tunnel closed
-38: Tunnel closed
-40: Tunnel closed
-48: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:26 2022
-48: Requesting "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from http://a.dilcdn.com/g/domains/go.com.js
-48: Received "HTTP/1.1 200 OK" from http://a.dilcdn.com/g/domains/go.com.js
-48: not in cache
-51: "GET http://www.googletagservices.com/tag/js/gpt.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:26 2022
-51: Requesting "GET http://www.googletagservices.com/tag/js/gpt.js HTTP/1.1" from http://www.googletagservices.com/tag/js/gpt.js
-51: Received "HTTP/1.1 200 OK" from http://www.googletagservices.com/tag/js/gpt.js
-51: not in cache
-52: "GET http://go.com/ HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:36 2022
-52: Requesting "GET http://go.com/ HTTP/1.1" from http://go.com/
-52: Received "HTTP/1.1 200 OK" from http://go.com/
-52: not in cache
-53: "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:37 2022
-53: Requesting "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from http://global.go.com/stat/dolWebAnalytics.js
-53: Received "HTTP/1.1 200 OK" from http://global.go.com/stat/dolWebAnalytics.js
-53: not in cache
-54: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:37 2022
-54: Requesting "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from http://a.dilcdn.com/g/domains/go.com.js
-54: Received "HTTP/1.1 304 Not Modified" from http://a.dilcdn.com/g/domains/go.com.js
-54: not in cache
-55: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:37 2022
-55: in cache, valid
-31: Tunnel closed
-39: Tunnel closed
-50: Tunnel closed
-37: Tunnel closed
-49: Tunnel closed
-33: Tunnel closed
-35: Tunnel closed
-32: Tunnel closed
-47: Tunnel closed
-34: Tunnel closed
-56: Tunnel closed
-57: Tunnel closed
+17: Requesting "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3
+17: Received "HTTP/1.1 200 OK" from http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3
+17: not in cache
+18: "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645133984505 HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:43 2022
+18: Requesting "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645133984505 HTTP/1.1" from http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645133984505
+18: Received "HTTP/1.1 301 Moved Permanently" from http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645133984505
+18: not in cache
+21: "GET http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 21:39:43 2022
+21: Requesting "GET http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+21: Received "HTTP/1.1 200 OK" from http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5945941589&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+21: not in cache
+2: Tunnel closed
+6: Tunnel closed
