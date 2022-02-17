@@ -2,6 +2,58 @@
 
 using namespace std;
 
+bool daemonize() {
+  int fd;
+  int status;
+  int pid;
+
+  switch (fork()) {
+    case -1:
+      cout << "fork failed" << endl;
+      return false;
+    case 0:
+      break;
+    default:
+      cout << "father process exit" << endl;
+      exit(EXIT_SUCCESS);
+  }
+
+  status = setsid();
+  if (status == -1) {
+    cout << "setsid failed" << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  switch (fork()) {
+    case -1:
+      cout << "fork failed" << endl;
+      return false;
+    case 0:
+      break;
+    default:
+      cout << "father process exit" << endl;
+      exit(EXIT_SUCCESS);
+  }
+  umask(0);
+  chdir("/");
+
+  fd = open("/dev/null", O_RDWR);
+  if (fd == -1){
+    cout << "open(dev/null failed" << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  if (dup2(fd, STDIN_FILENO) == -1 || dup2(fd, STDOUT_FILENO) == -1 || dup2(fd, STDERR_FILENO) == 1){
+    exit(EXIT_FAILURE);
+  }
+
+  if (fd > STDERR_FILENO && close(fd) == -1){
+    exit(EXIT_FAILURE);
+  }
+
+  return true;
+}
+
 int check_recv(int byte_count) {
   if (byte_count < 0) {
     cerr << "errors happen when receiving data!" << endl;

@@ -2,10 +2,13 @@
 #define __HELPER_HPP__
 
 #include <arpa/inet.h>
+#include <fcntl.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <sys/epoll.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include <algorithm>
@@ -22,6 +25,7 @@
 #include "client.hpp"
 #include "timestamp.cpp"
 
+bool daemonize();
 int check_recv(int byte_count);
 int check_send(int byte_count);
 std::vector<char> convertCharStarToVecChar(const char *buffer, int size);

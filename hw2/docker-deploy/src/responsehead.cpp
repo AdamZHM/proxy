@@ -93,4 +93,10 @@ class ResponseHead {
       response.push_back(buffer[i]);
     }
   }
+
+  int totalLength(){
+    std::string str_response(response.data());
+    int headerLength = str_response.find("\r\n\r\n") + 4;
+    return headerLength + content_length;
+  }
 };

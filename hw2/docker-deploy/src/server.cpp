@@ -74,7 +74,6 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
         cout << "no more chunked message" << endl;
         break;
       } else {
-        response[len_recv] = '\0';
         send(client->get_socket_fd(), response, len_recv, 0);
       }
     }
@@ -92,7 +91,6 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
         cout << "no more data" << endl;
         break;
       } else {
-        response[len_recv] = '\0';
         rph.appendResponse(response, len_recv);
       }
     }
@@ -204,7 +202,6 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
         cout << "no more chunked message" << endl;
         break;
       } else {
-        response[len_recv] = '\0';
         send(client->get_socket_fd(), response, len_recv, 0);
       }
     }
@@ -220,7 +217,6 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
         cout << "no more data" << endl;
         break;
       } else {
-        response[len_recv] = '\0';
         rph.appendResponse(response, len_recv);
       }
     }
@@ -250,7 +246,7 @@ void Server::handle_request(Client *client) {
   const char *port = httpHeader.get_port();
   const char *first_line = httpHeader.get_first_line();
   if (strcmp("", method) == 0) {
-    std::cout << "_________HTTP 400 Bad Request__________\n"
+    std::cout << "_________HTTP/1.1 400 Bad Request__________\n"
               << buffer << std::endl;
     return;
   }

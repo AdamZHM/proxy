@@ -1,64 +1,113 @@
-1: "GET http://info.cern.ch/hypertext/WWW/WhatIs.html HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:34:44 2022
-1: Requesting "GET http://info.cern.ch/hypertext/WWW/WhatIs.html HTTP/1.1" from http://info.cern.ch/hypertext/WWW/WhatIs.html
-1: Received "HTTP/1.1 304 Not Modified" from http://info.cern.ch/hypertext/WWW/WhatIs.html
-1: not in cache
-2: "GET http://info.cern.ch/hypertext/WWW/WhatIs.html HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:34:47 2022
-2: in cache, valid
-3: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:34:50 2022
-3: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from http://www.columbia.edu/~fdc/sample.html
-3: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/sample.html
-3: not in cache
-4: "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:34:50 2022
-4: Requesting "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from http://www.columbia.edu/~fdc/picture-of-something.jpg
-4: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/picture-of-something.jpg
-4: not in cache
-5: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:34:52 2022
-5: in cache, requires validation
-5: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from http://www.columbia.edu/~fdc/sample.html
-5: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/sample.html
-6: "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:34:53 2022
-6: in cache, requires validation
-6: Requesting "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from http://www.columbia.edu/~fdc/picture-of-something.jpg
-6: Received "" from http://www.columbia.edu/~fdc/picture-of-something.jpg
-10: Tunnel closed
-12: Tunnel closed
-8: Tunnel closed
-13: Tunnel closed
-11: Tunnel closed
-15: "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:35:00 2022
-15: Requesting "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from http://detectportal.firefox.com/canonical.html
-15: Received "HTTP/1.1 200 OK" from http://detectportal.firefox.com/canonical.html
-15: not in cache
+6: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:30:32 2022
+6: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from http://www.columbia.edu/~fdc/sample.html
+6: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/sample.html
+6: not in cache
+7: "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:30:32 2022
+7: Requesting "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from http://www.columbia.edu/~fdc/picture-of-something.jpg
+7: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/picture-of-something.jpg
+7: not in cache
+8: "GET http://www.columbia.edu/favicon.ico HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:30:32 2022
+8: Requesting "GET http://www.columbia.edu/favicon.ico HTTP/1.1" from http://www.columbia.edu/favicon.ico
+8: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/favicon.ico
+8: not in cache
+3: Tunnel closed
+1: Tunnel closed
+5: Tunnel closed
 9: Tunnel closed
-17: "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:35:00 2022
-17: Requesting "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from http://detectportal.firefox.com/success.txt?ipv4
-17: Received "HTTP/1.1 200 OK" from http://detectportal.firefox.com/success.txt?ipv4
-17: not in cache
-21: "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:35:00 2022
-21: in cache, requires validation
-21: Requesting "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from http://detectportal.firefox.com/canonical.html
-21: Received "HTTP/1.1 200 OK" from http://detectportal.firefox.com/canonical.html
-23: "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:35:00 2022
-16: Tunnel closed
+12: Tunnel closed
+10: Tunnel closed
 14: Tunnel closed
-23: in cache, requires validation
-23: Requesting "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from http://detectportal.firefox.com/success.txt?ipv4
-23: Received "HTTP/1.1 200 OK" from http://detectportal.firefox.com/success.txt?ipv4
-24: "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:35:00 2022
-24: in cache, requires validation
-25: "GET http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:35:00 2022
-24: Requesting "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from http://detectportal.firefox.com/canonical.html
-24: Received "HTTP/1.1 200 OK" from http://detectportal.firefox.com/canonical.html
-25: Requesting "GET http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G HTTP/1.1" from http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G
-25: Received "HTTP/1.1 302 Found" from http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G
-25: not in cache
-19: Tunnel closed
+13: Tunnel closed
+15: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:38:15 2022
+15: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from http://www.columbia.edu/~fdc/sample.html
+15: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/sample.html
+15: not in cache
+16: "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:38:15 2022
+16: Requesting "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from http://www.columbia.edu/~fdc/picture-of-something.jpg
+16: Received "HTTP/1.1 200 OK" from http://www.columbia.edu/~fdc/picture-of-something.jpg
+16: not in cache
+17: Tunnel closed
 18: Tunnel closed
+19: Tunnel closed
 20: Tunnel closed
-22: Tunnel closed
-27: "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from 71.70.231.208 @ Thu Feb 17 05:35:00 2022
-27: Requesting "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from http://detectportal.firefox.com/success.txt?ipv4
-27: Received "HTTP/1.1 200 OK" from http://detectportal.firefox.com/success.txt?ipv4
+22: "GET http://www.njrsks.net/ HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:17 2022
+22: Requesting "GET http://www.njrsks.net/ HTTP/1.1" from http://www.njrsks.net/
+22: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/
+22: not in cache
+27: "GET http://www.njrsks.net/Scripts/jquery.floatDiv.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
+28: "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
+24: "GET http://www.njrsks.net/Css/index.css HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
+25: "GET http://www.njrsks.net/Scripts/popWindow.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
+26: "GET http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
+27: Requesting "GET http://www.njrsks.net/Scripts/jquery.floatDiv.js HTTP/1.1" from http://www.njrsks.net/Scripts/jquery.floatDiv.js
+28: Requesting "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
+24: Requesting "GET http://www.njrsks.net/Css/index.css HTTP/1.1" from http://www.njrsks.net/Css/index.css
+25: Requesting "GET http://www.njrsks.net/Scripts/popWindow.js HTTP/1.1" from http://www.njrsks.net/Scripts/popWindow.js
+26: Requesting "GET http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js HTTP/1.1" from http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js
+27: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Scripts/jquery.floatDiv.js
 27: not in cache
-7: Tunnel closed
-26: Tunnel closed
+28: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
+28: not in cache
+24: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Css/index.css
+24: not in cache
+25: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Scripts/popWindow.js
+25: not in cache
+26: Received "HTTP/1.1 200 OK" from http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js
+26: not in cache
+29: "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:18 2022
+29: Requesting "GET http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js HTTP/1.1" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
+29: Received "HTTP/1.1 206 Partial Content" from http://www.njrsks.net/scripts/jquery.SuperSlide.2.1.1.js
+29: not in cache
+30: "GET http://www.njrsks.net/Scripts/Common/jquery-1.7.1.min.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:46:19 2022
+30: in cache, valid
+21: Tunnel closed
+23: Tunnel closed
+36: "GET http://go.com/ HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:25 2022
+36: Requesting "GET http://go.com/ HTTP/1.1" from http://go.com/
+36: Received "HTTP/1.1 200 OK" from http://go.com/
+36: not in cache
+41: "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:25 2022
+41: Requesting "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from http://global.go.com/stat/dolWebAnalytics.js
+44: Tunnel closed
+46: Tunnel closed
+43: Tunnel closed
+41: Received "HTTP/1.1 200 OK" from http://global.go.com/stat/dolWebAnalytics.js
+41: not in cache
+42: Tunnel closed
+45: Tunnel closed
+38: Tunnel closed
+40: Tunnel closed
+48: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:26 2022
+48: Requesting "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from http://a.dilcdn.com/g/domains/go.com.js
+48: Received "HTTP/1.1 200 OK" from http://a.dilcdn.com/g/domains/go.com.js
+48: not in cache
+51: "GET http://www.googletagservices.com/tag/js/gpt.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:26 2022
+51: Requesting "GET http://www.googletagservices.com/tag/js/gpt.js HTTP/1.1" from http://www.googletagservices.com/tag/js/gpt.js
+51: Received "HTTP/1.1 200 OK" from http://www.googletagservices.com/tag/js/gpt.js
+51: not in cache
+52: "GET http://go.com/ HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:36 2022
+52: Requesting "GET http://go.com/ HTTP/1.1" from http://go.com/
+52: Received "HTTP/1.1 200 OK" from http://go.com/
+52: not in cache
+53: "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:37 2022
+53: Requesting "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from http://global.go.com/stat/dolWebAnalytics.js
+53: Received "HTTP/1.1 200 OK" from http://global.go.com/stat/dolWebAnalytics.js
+53: not in cache
+54: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:37 2022
+54: Requesting "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from http://a.dilcdn.com/g/domains/go.com.js
+54: Received "HTTP/1.1 304 Not Modified" from http://a.dilcdn.com/g/domains/go.com.js
+54: not in cache
+55: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 10.197.223.113 @ Thu Feb 17 17:49:37 2022
+55: in cache, valid
+31: Tunnel closed
+39: Tunnel closed
+50: Tunnel closed
+37: Tunnel closed
+49: Tunnel closed
+33: Tunnel closed
+35: Tunnel closed
+32: Tunnel closed
+47: Tunnel closed
+34: Tunnel closed
+56: Tunnel closed
+57: Tunnel closed
