@@ -2,7 +2,7 @@
 using namespace std;
 
 LRUCache lruCache(2);
-ofstream fout("/home/hz223/ece568/hw2/docker-deploy/src/proxy.log");
+ofstream fout("./proxy.log");
 mutex mtx;
 
 string Server::accept_connection(int socket_fd, int *client_connection_fd) {
@@ -31,7 +31,8 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
   memset(response, 0, buffer_size);
   string str_buffer(buffer);
   cout << buffer << endl;
-  if (send(proxy_as_client.get_socket_fd(), buffer, str_buffer.find("\r\n\r\n") + 4, 0) < 0) {
+  if (send(proxy_as_client.get_socket_fd(), buffer,
+           str_buffer.find("\r\n\r\n") + 4, 0) < 0) {
     cerr << "Error : send data to server in GET" << endl;
     return;
   }
@@ -125,7 +126,7 @@ void Server::deal_with_connect_request(Client &proxy_as_client,
     cerr << "Error send data in connect " << endl;
     return;
   }
-  int buffer_size = 65536;
+  int buffer_size = 100000;
   vector<int> fd_vector = {proxy_as_client.get_socket_fd(),
                            client->get_socket_fd()};
   fd_set readfds;
@@ -167,15 +168,17 @@ void Server::deal_with_connect_request(Client &proxy_as_client,
 
 void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
                                     char *buffer, Client *client) {
-  int buffer_size = 65536;
-  char response[buffer_size];
-  memset(response, 0, buffer_size);
+  int buffer_size = 100000;
   string str_buffer(buffer);
   cout << buffer << endl;
-  if (send(proxy_as_client.get_socket_fd(), buffer, str_buffer.find("\r\n\r\n") + 4, 0) < 0) {
+  cout << str_buffer.find("\r\n\r\n") + 4 << endl;
+  if (send(proxy_as_client.get_socket_fd(), buffer,
+           buffer_size, 0) < 0) {
     cerr << "Error : send data to server in POST" << endl;
     return;
   }
+  char response[buffer_size];
+  memset(response, 0, buffer_size);
   int bytes_recv =
       recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
   if (bytes_recv == 0) {
@@ -192,43 +195,24 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
   // cout << "content-length: " << rph.content_length << endl;
-  if (rph.if_chunked) {
-    cout << "__________________data is chunked in post______________" << endl;
-    // if data is chunked
 
-    send(client->get_socket_fd(), response, bytes_recv, 0);
-    while (true) {
-      memset(response, 0, buffer_size);
-      int len_recv =
-          recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
-      // cout << response << endl;
-      if (len_recv <= 0) {
-        cout << "no more chunked message" << endl;
-        break;
-      } else {
-        send(client->get_socket_fd(), response, len_recv, 0);
-      }
+  string str_url(url);
+  // TODO check \r\n\r\n in response, if not, 502
+  while (true) {
+    memset(response, 0, 100000);
+    int len_recv =
+        recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
+    if (len_recv <= 0) {
+      cout << "no more data" << endl;
+      break;
+    } else {
+      rph.appendResponse(response, len_recv);
     }
-    cout << "_______________chunked data over_________________" << endl;
-  } else {
-    string str_url(url);
-    // TODO check \r\n\r\n in response, if not, 502
-    while (true) {
-      memset(response, 0, 65536);
-      int len_recv =
-          recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
-      if (len_recv <= 0) {
-        cout << "no more data" << endl;
-        break;
-      } else {
-        rph.appendResponse(response, len_recv);
-      }
-    }
-    send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
-
-    proxy_as_client.close_socket_fd();
-    client->close_socket_fd();
   }
+  send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
+
+  proxy_as_client.close_socket_fd();
+  client->close_socket_fd();
 }
 
 void Server::handle_request(Client *client) {
@@ -359,8 +343,8 @@ bool Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
   }
   send_to_server += "\r\n";
   cout << send_to_server << endl;
-  char response[65536];
-  memset(response, 0, 65536);
+  char response[100000];
+  memset(response, 0, 100000);
   send(proxy_as_client.get_socket_fd(), send_to_server.c_str(),
        send_to_server.length(), 0);
   int bytes_recv =
