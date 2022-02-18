@@ -91,7 +91,7 @@ class ResponseHead {
       }
       else if (lowerLine.find("content-length") == 0) {
         content_length = atoi(line.substr(line.find(" ") + 1).c_str());
-        std::cout << content_length << std::endl;
+        // std::cout << content_length << std::endl;
       }
     }
   }
@@ -121,7 +121,7 @@ class ResponseHead {
     }
     //first check if expires is empty or not then check max_age
     else if (this->expires != "") {
-      fout << client->id << ": cached, expires at" << this->expires << '\n';
+      fout << client->id << ": cached, expires at " << this->expires << '\n';
     }
     else if (this->max_age != -1) {
       time_t t = std::time(0);  // get time now

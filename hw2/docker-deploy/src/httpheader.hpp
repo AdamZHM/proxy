@@ -18,6 +18,7 @@ class HttpHeader {
   std::string port;
   std::string if_modified_since;
   std::string if_node_match;
+  int content_length;
 
  public:
   explicit HttpHeader(const char* buffer);
@@ -27,4 +28,5 @@ class HttpHeader {
   const char* get_port() { return port.c_str(); }
   const char* get_url() { return url.c_str(); }
   const char* get_first_line() { return first_line.c_str(); }
+  int get_content_length() {return content_length;}
 };

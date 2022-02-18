@@ -42,7 +42,6 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
     cout << "Server shut down the connection" << endl;
     proxy_as_client.close_socket_fd();
     client->close_socket_fd();
-    // this->close_client_connection_fd();
     return;
   } else if (bytes_recv < 0) {
     cerr << "Error: recv data from server" << endl;
@@ -50,14 +49,6 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
   }
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
-  // test
-  // rph.max_age = 10;
-  // rph.etag = "";
-  // rph.last_modified = "";
-  // rph.expires = "Wed, 16 Feb 2022 15:51:34 GMT";
-  // test end
-
-  // cout << "content-length: " << rph.content_length << endl;
   mtx.lock();
   printContactServer(fout, client);
   mtx.unlock();
@@ -97,7 +88,7 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
         rph.appendResponse(response, len_recv);
       }
     }
-    rph.printCacheReponseToGetReq(fout,client);
+    rph.printCacheReponseToGetReq(fout, client);
     send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
 
     proxy_as_client.close_socket_fd();
@@ -167,13 +158,11 @@ void Server::deal_with_connect_request(Client &proxy_as_client,
 }
 
 void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
-                                    char *buffer, Client *client) {
+                                    int content_length, char *buffer,
+                                    Client *client) {
   int buffer_size = 100000;
   string str_buffer(buffer);
-  cout << buffer << endl;
-  cout << str_buffer.find("\r\n\r\n") + 4 << endl;
-  if (send(proxy_as_client.get_socket_fd(), buffer,
-           buffer_size, 0) < 0) {
+  if (send(proxy_as_client.get_socket_fd(), buffer, buffer_size, 0) < 0) {
     cerr << "Error : send data to server in POST" << endl;
     return;
   }
@@ -195,7 +184,9 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
   // cout << "content-length: " << rph.content_length << endl;
-
+  mtx.lock();
+  printContactServer(fout, client);
+  mtx.unlock();
   string str_url(url);
   // TODO check \r\n\r\n in response, if not, 502
   while (true) {
@@ -210,7 +201,9 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
     }
   }
   send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
-
+  mtx.lock();
+  printReceive(fout, client, rph.status);
+  mtx.unlock();
   proxy_as_client.close_socket_fd();
   client->close_socket_fd();
 }
@@ -311,7 +304,11 @@ void Server::handle_request(Client *client) {
       mtx.unlock();
     }
   } else if (strcmp(method, "POST") == 0) {
-    this->deal_with_post_request(proxy_as_client, httpHeader.get_url(), buffer,
+    mtx.lock();
+    printRequest(fout, client, httpHeader.get_first_line());
+    mtx.unlock();
+    this->deal_with_post_request(proxy_as_client, httpHeader.get_url(),
+                                 httpHeader.get_content_length(), buffer,
                                  client);
   } else if (strcmp(method, "CONNECT") == 0) {  //
     std::cout << "_________THIS IS CONNECT______\n" << std::endl;

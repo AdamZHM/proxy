@@ -58,6 +58,8 @@ HttpHeader::HttpHeader(const char *buffer) {
         // std::cout << "--------------------------------------------------\n";
         // std::cout << "_______________" << cache_control << "____________";
         // std::cout << '\n';
+      } else if (line.find("Content-Length") == 0){
+        content_length = atoi(line.substr(line.find(" ") + 1).c_str());
       }
     }
     i++;

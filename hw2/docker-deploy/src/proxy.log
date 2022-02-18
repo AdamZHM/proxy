@@ -1,60 +1,97 @@
+2: "GET http://go.com/ HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:09 2022
+2: Requesting "GET http://go.com/ HTTP/1.1" from http://go.com/
+2: in cache, expires at Fri Feb 18 04:34:41 2022
+2: Received "HTTP/1.1 304 Not Modified" from http://go.com/
+2: not in cache
+3: "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:09 2022
+3: Requesting "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from http://global.go.com/stat/dolWebAnalytics.js
+3: cached, expires at Fri, 18 Feb 2022 06:21:09 GMT
+3: Received "HTTP/1.1 200 OK" from http://global.go.com/stat/dolWebAnalytics.js
+3: not in cache
+6: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:09 2022
+6: Requesting "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from http://a.dilcdn.com/g/domains/go.com.js
+6: cached, expires at Fri, 18 Feb 2022 06:23:18 GMT
+6: Received "HTTP/1.1 200 OK" from http://a.dilcdn.com/g/domains/go.com.js
+6: not in cache
+8: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:09 2022
+8: in cache, valid
+13: "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s94960668667967?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2023%3A21%3A11%204%20300&fid=150217375F5C9C34-3D7964E70D003335&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645158071219-3170339610352&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645143443815-7837222773262&c75=1645157618304-9198659341992&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1 HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:10 2022
+13: Requesting "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s94960668667967?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2023%3A21%3A11%204%20300&fid=150217375F5C9C34-3D7964E70D003335&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645158071219-3170339610352&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645143443815-7837222773262&c75=1645157618304-9198659341992&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1 HTTP/1.1" from http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s94960668667967?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2023%3A21%3A11%204%20300&fid=150217375F5C9C34-3D7964E70D003335&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645158071219-3170339610352&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645143443815-7837222773262&c75=1645157618304-9198659341992&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1
+13: not cacheable because Cache-control: no_store
+13: Received "HTTP/1.1 302 Found" from http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s94960668667967?AQB=1&ndh=1&pf=1&t=17%2F1%2F2022%2023%3A21%3A11%204%20300&fid=150217375F5C9C34-3D7964E70D003335&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645158071219-3170339610352&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645143443815-7837222773262&c75=1645157618304-9198659341992&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=925&bh=703&AQE=1
+13: not in cache
+14: "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+15: "GET http://secure-us.imrworldwide.com/novms/js/2/ggcmb390.js HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+14: Requesting "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from http://b.scorecardresearch.com/c2/15592703/cs.js
+14: cached, but requires re-validation 
+14: Received "HTTP/1.1 302 Found" from http://b.scorecardresearch.com/c2/15592703/cs.js
+14: not in cache
+16: "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645158071320&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+15: Requesting "GET http://secure-us.imrworldwide.com/novms/js/2/ggcmb390.js HTTP/1.1" from http://secure-us.imrworldwide.com/novms/js/2/ggcmb390.js
+15: cached, but requires re-validation 
+15: Received "HTTP/1.1 301 Moved Permanently" from http://secure-us.imrworldwide.com/novms/js/2/ggcmb390.js
+15: not in cache
+17: "GET http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+18: "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645158071507 HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+16: Requesting "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645158071320&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645158071320&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9=
+16: cached, but requires re-validation 
+16: Received "HTTP/1.1 204 No Content" from http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645158071320&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9=
+16: not in cache
+19: "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+17: Requesting "GET http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+17: cached, but requires re-validation 
+17: Received "HTTP/1.1 302 Found" from http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+17: not in cache
+18: Requesting "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645158071507 HTTP/1.1" from http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645158071507
+18: cached, but requires re-validation 
+18: Received "HTTP/1.1 301 Moved Permanently" from http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645158071507
+18: not in cache
+19: Requesting "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3
+19: not cacheable because Cache-control: no_store
+19: Received "HTTP/1.1 200 OK" from http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3
+19: not in cache
+20: "GET http://b.scorecardresearch.com/internal-c2/15592703/cs.js HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+20: Requesting "GET http://b.scorecardresearch.com/internal-c2/15592703/cs.js HTTP/1.1" from http://b.scorecardresearch.com/internal-c2/15592703/cs.js
+20: cached, but requires re-validation 
+20: Received "HTTP/1.1 304 Not Modified" from http://b.scorecardresearch.com/internal-c2/15592703/cs.js
+20: not in cache
+22: "GET http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+22: Requesting "GET http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+22: cached, but requires re-validation 
+22: Received "HTTP/1.1 200 OK" from http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=1054426357&d.t=page&d.u=http%3A%2F%2Fgo.com%2F
+22: not in cache
+23: "POST http://ocsp.digicert.com/ HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:11 2022
+23: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from http://ocsp.digicert.com/
+23: Received "HTTP/1.1 200 OK" from http://ocsp.digicert.com/
+28: "GET http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:27 2022
+28: Requesting "GET http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G HTTP/1.1" from http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G
+28: cached, expires at Fri, 18 Feb 2022 04:26:27 GMT
+28: Received "HTTP/1.1 302 Found" from http://www.gravatar.com/avatar/c40ade7d2eaa519364f006e8a9ca87ed.jpg?d=https%3A//h2020.myspecies.info/sites/all/modules/contrib/gravatar/avatar.png&s=100&r=G
+28: not in cache
+26: Tunnel closed
+5: Tunnel closed
 4: Tunnel closed
-7: Tunnel closed
-11: Tunnel closed
 10: Tunnel closed
-9: Tunnel closed
-8: Tunnel closed
-21: Tunnel closed
-20: Tunnel closed
-23: Tunnel closed
-17: Tunnel closed
-14: Tunnel closed
-18: Tunnel closed
-15: Tunnel closed
+33: "GET http://httpbin.org/post HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:32 2022
+33: Requesting "GET http://httpbin.org/post HTTP/1.1" from http://httpbin.org/post
+33: cached, but requires re-validation 
+33: Received "HTTP/1.1 405 METHOD NOT ALLOWED" from http://httpbin.org/post
+33: not in cache
+24: Tunnel closed
+27: Tunnel closed
 25: Tunnel closed
-16: Tunnel closed
-22: Tunnel closed
-87: Tunnel closed
-82: Tunnel closed
-54: Tunnel closed
-56: Tunnel closed
-61: Tunnel closed
-109: Tunnel closed
-116: Tunnel closed
-115: Tunnel closed
-113: Tunnel closed
-114: Tunnel closed
-118: Tunnel closed
-120: Tunnel closed
-119: Tunnel closed
-133: Tunnel closed
-134: Tunnel closed
-135: Tunnel closed
-96: Tunnel closed
-143: Tunnel closed
-102: Tunnel closed
-144: Tunnel closed
-145: Tunnel closed
-110: Tunnel closed
-111: Tunnel closed
-149: Tunnel closed
-84: Tunnel closed
-123: Tunnel closed
-128: Tunnel closed
-126: Tunnel closed
-125: Tunnel closed
-124: Tunnel closed
-127: Tunnel closed
-151: Tunnel closed
-48: Tunnel closed
-68: Tunnel closed
-117: Tunnel closed
-58: Tunnel closed
-89: Tunnel closed
-103: Tunnel closed
-131: Tunnel closed
-137: Tunnel closed
-129: Tunnel closed
-121: Tunnel closed
-141: Tunnel closed
-6: Tunnel closed
+29: Tunnel closed
+30: Tunnel closed
+37: "POST http://r3.o.lencr.org/ HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:40 2022
+37: Requesting "POST http://r3.o.lencr.org/ HTTP/1.1" from http://r3.o.lencr.org/
+37: Received "HTTP/1.1 200 OK" from http://r3.o.lencr.org/
+7: Tunnel closed
+40: "POST http://ocsp.pki.goog/gts1c3 HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:41 2022
+40: Requesting "POST http://ocsp.pki.goog/gts1c3 HTTP/1.1" from http://ocsp.pki.goog/gts1c3
+40: Received "HTTP/1.1 200 OK" from http://ocsp.pki.goog/gts1c3
+43: "POST http://ocsp.pki.goog/gts1c3 HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:42 2022
+43: Requesting "POST http://ocsp.pki.goog/gts1c3 HTTP/1.1" from http://ocsp.pki.goog/gts1c3
+43: Received "HTTP/1.1 200 OK" from http://ocsp.pki.goog/gts1c3
+51: "POST http://ocsp.digicert.com/ HTTP/1.1" from 71.70.231.208 @ Fri Feb 18 04:21:55 2022
+51: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from http://ocsp.digicert.com/
+51: Received "HTTP/1.1 200 OK" from http://ocsp.digicert.com/

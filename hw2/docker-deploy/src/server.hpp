@@ -50,7 +50,7 @@ class Server {
   void handle_request(Client* client);
   void deal_with_get_request(Client& proxy_as_client, const char* url,
                              char* buffer, Client* client);
-  void deal_with_post_request(Client& proxy_as_client, const char* url,
+  void deal_with_post_request(Client& proxy_as_client, const char* url, int content_length,
                               char* buffer, Client* client);
   void deal_with_connect_request(Client& proxy_as_client, Client* client);
 
