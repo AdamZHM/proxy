@@ -118,6 +118,7 @@ class ResponseHead {
       TimeStamp expireTime(expires);
       time_t t = mktime(expireTime.get_t());
       struct tm *tm = gmtime(&t);
+      tm->tm_year -= 1900;
       std::string time = std::string(asctime(tm));
       time.pop_back();
       fout << client->id << ": cached, expires at " << time << endl;

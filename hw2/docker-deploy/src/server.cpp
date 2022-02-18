@@ -1,7 +1,7 @@
 #include "server.hpp"
 using namespace std;
 
-LRUCache lruCache(100);
+LRUCache lruCache(10);
 ofstream fout("./proxy.log");
 mutex mtx;
 
@@ -62,9 +62,15 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
       int len_recv =
           recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
       // cout << response << endl;
-      if (len_recv <= 0) {
+      if (len_recv == 0) {
         cout << "no more chunked message" << endl;
         break;
+      } else if (len_recv < 0) {
+        string resp502 = "HTTP/1.1 502 Bad Gateway";
+        mtx.lock();
+        printResponding(fout, client, resp502);
+        mtx.unlock();
+        return;
       } else {
         send(client->get_socket_fd(), response, len_recv, 0);
       }
@@ -78,10 +84,11 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
     while (rph.response.size() < responseLength) {
       int len_recv =
           recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
-      if (len_recv == 0) {
-        cerr << "502" << endl;
-        return;
-      } else if (len_recv == -1) {
+      if (len_recv <= 0) {
+        string resp502 = "HTTP/1.1 502 Bad Gateway";
+        mtx.lock();
+        printResponding(fout, client, resp502);
+        mtx.unlock();
         perror("recv error in get");
         return;
       } else {
@@ -98,7 +105,7 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
     // TODO log cache situation
     if (!rph.if_no_store) {
       mtx.lock();
-      lruCache.put(str_url, rph);
+      lruCache.put(fout, str_url, rph);
       mtx.unlock();
     }
   }
@@ -229,6 +236,9 @@ void Server::handle_request(Client *client) {
   const char *port = httpHeader.get_port();
   const char *first_line = httpHeader.get_first_line();
   if (strcmp("", method) == 0) {
+    mtx.lock();
+    printRequest(fout, client, httpHeader.get_first_line());
+    mtx.unlock();
     string resp400 = "HTTP/1.1 400 Bad Request";
     std::cout << "_________HTTP/1.1 400 Bad Request__________\n"
               << buffer << std::endl;
@@ -357,7 +367,7 @@ bool Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
   cout << "________revalidation response: \n" << response << endl;
   resp.date = temp.date;  // update the resp.date
   mtx.lock();
-  lruCache.put(proxy_as_client.url, resp);
+  lruCache.put(fout, proxy_as_client.url, resp);
   mtx.unlock();
   if (temp.status.find("304") != string::npos) {
     cout << "____________check etag or last_modified and data "

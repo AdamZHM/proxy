@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <fstream>
 
 #include "responsehead.cpp"
 
@@ -52,7 +53,7 @@ class LRUCache {
     return node->response;
   }
 
-  void put(string& key, ResponseHead value) {
+  void put(ofstream &fout, string& key, ResponseHead value) {
     if (!cache.count(key)) {
       // 如果 key 不存在，创建一个新的节点
       DLinkedNode* node = new DLinkedNode(key, value);
@@ -66,7 +67,7 @@ class LRUCache {
         DLinkedNode* removed = removeTail();
         // 删除哈希表中对应的项
         cache.erase(removed->url);
-        cout << "_________evict " << removed->url << " out of cache_______________!" << endl;
+        fout << "(no-id): NOTE evicted " << removed->url << " from cache" << endl;
         // 防止内存泄漏
         delete removed;
         --size;
