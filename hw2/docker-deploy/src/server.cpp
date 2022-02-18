@@ -229,8 +229,12 @@ void Server::handle_request(Client *client) {
   const char *port = httpHeader.get_port();
   const char *first_line = httpHeader.get_first_line();
   if (strcmp("", method) == 0) {
+    string resp400 = "HTTP/1.1 400 Bad Request";
     std::cout << "_________HTTP/1.1 400 Bad Request__________\n"
               << buffer << std::endl;
+    mtx.lock();
+    printResponding(fout, client, resp400);
+    mtx.unlock();
     return;
   }
   string url(httpHeader.get_url());
