@@ -2,7 +2,7 @@
 using namespace std;
 
 LRUCache lruCache(2);
-ofstream fout("/home/hz223/ece568/hw2/docker-deploy/src/proxy.log");
+ofstream fout("./proxy.log");
 mutex mtx;
 
 string Server::accept_connection(int socket_fd, int *client_connection_fd) {
@@ -96,7 +96,7 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
         rph.appendResponse(response, len_recv);
       }
     }
-
+    rph.printCacheReponseToGetReq(fout,client);
     send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
 
     proxy_as_client.close_socket_fd();
@@ -286,7 +286,6 @@ void Server::handle_request(Client *client) {
       ResponseHead resp = lruCache.get(url);
       mtx.unlock();
 
-      // TODO: THis harcode is only for test,delete it later
       if (resp.if_cache_control == false || resp.if_no_cache == true ||
           resp.if_must_revalidate == true || resp.max_age == 0) {
         // TODO do revalidation, update expiration
