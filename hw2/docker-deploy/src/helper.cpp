@@ -218,7 +218,7 @@ void printReceive(std::ofstream &fout, Client *client, std::string response) {
 
 void printResponding(std::ofstream &fout, Client *client,
                      std::string response) {
-  fout << client->id << ": Responding \"" << response << endl;
+  fout << client->id << ": Responding \"" << response << "\"" << endl;
 }
 
 void printCloseTunnel(std::ofstream &fout, Client *client) {

@@ -11,7 +11,7 @@ void thread_task(Server *s, Client *o) {
 }
 
 int main(int argc, char *argv[]) {
-  daemonize();
+  // daemonize();
   const char *port = "12345";
   int id = 1;
   int socket_fd = create_server(port);

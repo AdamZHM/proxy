@@ -26,35 +26,33 @@ class ResponseHead {
   bool if_must_revalidate;
 
  public:
-  ResponseHead() :
-      response(std::vector<char>()),
-      status(""),
-      if_cache_control(false),
-      date(TimeStamp()),
-      etag(""),
-      last_modified(""),
-      expires(""),
-      content_length(-1),
-      max_age(-1),
-      if_chunked(false),
-      if_no_store(false),
-      if_no_cache(false),
-      if_must_revalidate(false) {}
+  ResponseHead()
+      : response(std::vector<char>()),
+        status(""),
+        if_cache_control(false),
+        date(TimeStamp()),
+        etag(""),
+        last_modified(""),
+        expires(""),
+        content_length(-1),
+        max_age(-1),
+        if_chunked(false),
+        if_no_store(false),
+        if_no_cache(false),
+        if_must_revalidate(false) {}
 
-  void initResponse(const char * buffer, int size) {
+  void initResponse(const char *buffer, int size) {
     response = convertCharStarToVecChar(buffer, size);
     std::string bufferStr(buffer);
     std::istringstream ss(buffer);
     std::string line;
     while (getline(ss, line)) {
-      if (line.find('\r') == 0)
-        break;
+      if (line.find('\r') == 0) break;
       std::string lowerLine;
       changeHeaderToLower(line, lowerLine);
       if (lowerLine.find("http/1.1") == 0) {
         status = line.substr(0, line.find("\r"));
-      }
-      else if (lowerLine.find("cache-control") == 0) {
+      } else if (lowerLine.find("cache-control") == 0) {
         if_cache_control = true;
         if (line.find("no-store") != std::string::npos) {
           if_no_store = true;
@@ -69,34 +67,29 @@ class ResponseHead {
           std::string temp(line.substr(line.find("max-age") + 9));
           max_age = atoi(temp.c_str());
         }
-      }
-      else if (lowerLine.find("date") == 0) {
+      } else if (lowerLine.find("date") == 0) {
         int startIdx = 6;
         date = TimeStamp(line.substr(startIdx));
-      }
-      else if (lowerLine.find("etag") == 0) {  // include /r/n
+      } else if (lowerLine.find("etag") == 0) {  // include /r/n
         int startIdx = 6;
         etag = line.substr(startIdx, line.find("\r") - 6);
-      }
-      else if (lowerLine.find("last-modified") == 0) {
+      } else if (lowerLine.find("last-modified") == 0) {
         int startIdx = 15;
         last_modified = line.substr(startIdx, line.find("\r") - 15);
-      }
-      else if (lowerLine.find("expires") == 0) {
+      } else if (lowerLine.find("expires") == 0) {
         int startIdx = 9;
         expires = line.substr(startIdx);
-      }
-      else if (lowerLine.find("transfer-encoding") == 0 && lowerLine.find("chunked")) {
+      } else if (lowerLine.find("transfer-encoding") == 0 &&
+                 lowerLine.find("chunked")) {
         if_chunked = true;
-      }
-      else if (lowerLine.find("content-length") == 0) {
+      } else if (lowerLine.find("content-length") == 0) {
         content_length = atoi(line.substr(line.find(" ") + 1).c_str());
         // std::cout << content_length << std::endl;
       }
     }
   }
 
-  void appendResponse(const char * buffer, int size) {
+  void appendResponse(const char *buffer, int size) {
     for (int i = 0; i < size; i++) {
       response.push_back(buffer[i]);
     }
@@ -109,31 +102,35 @@ class ResponseHead {
   }
 
   // this will print out
-  //ID: not cacheable becauseREASON
-  //ID: cached, expires atEXPIRES
-  //ID: cached, but requires re-validation
-  void printCacheReponseToGetReq(std::ofstream & fout, Client * client) {
+  // ID: not cacheable becauseREASON
+  // ID: cached, expires atEXPIRES
+  // ID: cached, but requires re-validation
+  void printCacheReponseToGetReq(std::ofstream &fout, Client *client) {
     if (this->if_chunked) {
-      fout << client->id << ": not cacheable because the data is chunked" << '\n';
+      fout << client->id << ": not cacheable because the data is chunked"
+           << endl;
+    } else if (this->if_no_store) {
+      fout << client->id << ": not cacheable because Cache-control: no_store"
+           << endl;
     }
-    else if (this->if_no_store) {
-      fout << client->id << ": not cacheable because Cache-control: no_store" << '\n';
-    }
-    //first check if expires is empty or not then check max_age
+    // first check if expires is empty or not then check max_age
     else if (this->expires != "") {
-      fout << client->id << ": cached, expires at " << this->expires << '\n';
-    }
-    else if (this->max_age != -1) {
-      time_t t = std::time(0);  // get time now
-      t += max_age;
-      struct tm * tm = gmtime(&t);
+      TimeStamp expireTime(expires);
+      time_t t = mktime(expireTime.get_t());
+      struct tm *tm = gmtime(&t);
       std::string time = std::string(asctime(tm));
       time.pop_back();
-      fout << client->id << ": in cache, expires at " << time << '\n';
-    }
-    else if (this->if_cache_control == false || this->if_no_cache == true ||
-             this->if_must_revalidate == true || this->max_age == 0) {
-      fout << client->id << ": cached, but requires re-validation " << '\n';
+      fout << client->id << ": cached, expires at " << time << endl;
+    } else if (this->max_age != -1) {
+      time_t t = std::time(0);  // get time now
+      t += max_age;
+      struct tm *tm = gmtime(&t);
+      std::string time = std::string(asctime(tm));
+      time.pop_back();
+      fout << client->id << ": in cache, expires at " << time << endl;
+    } else if (this->if_cache_control == false || this->if_no_cache == true ||
+               this->if_must_revalidate == true || this->max_age == 0) {
+      fout << client->id << ": cached, but requires re-validation " << endl;
     }
   }
 };

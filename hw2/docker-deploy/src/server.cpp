@@ -1,7 +1,7 @@
 #include "server.hpp"
 using namespace std;
 
-LRUCache lruCache(2);
+LRUCache lruCache(100);
 ofstream fout("./proxy.log");
 mutex mtx;
 
@@ -104,6 +104,7 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
   }
   mtx.lock();
   printReceive(fout, client, rph.status);
+  printResponding(fout, client, rph.status);
   mtx.unlock();
   // cout << lruCache.get(str_url).response.data() << endl;
   proxy_as_client.close_socket_fd();
@@ -203,6 +204,7 @@ void Server::deal_with_post_request(Client &proxy_as_client, const char *url,
   send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
   mtx.lock();
   printReceive(fout, client, rph.status);
+  printResponding(fout, client, rph.status);
   mtx.unlock();
   proxy_as_client.close_socket_fd();
   client->close_socket_fd();
@@ -274,6 +276,7 @@ void Server::handle_request(Client *client) {
         // use cache
         mtx.lock();
         printInCacheValid(fout, client);
+        printResponding(fout, client, resp.status);
         mtx.unlock();
         cout << "_____________use cache______________" << endl;
         send(client->get_socket_fd(), resp.response.data(),
