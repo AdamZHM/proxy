@@ -43,7 +43,7 @@ bool daemonize() {
     exit(EXIT_FAILURE);
   }
 
-  if (dup2(fd, STDIN_FILENO) == -1 || dup2(fd, STDOUT_FILENO) == -1 || dup2(fd, STDERR_FILENO) == 1){
+  if (dup2(fd, STDIN_FILENO) == -1 || dup2(fd, STDOUT_FILENO) == -1 || dup2(fd, STDERR_FILENO) == -1){
     exit(EXIT_FAILURE);
   }
 
