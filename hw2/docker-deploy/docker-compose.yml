@@ -1,0 +1,9 @@
+version: "3"
+services:
+  proxy: #self-defined service name
+    image: httpproxy:latest
+    ports:
+      - 12345:12345
+    build: ./src #location of Dockerfile
+    volumes:
+      - ./src:/var/log/erss

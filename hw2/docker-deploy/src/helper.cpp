@@ -112,7 +112,7 @@ int create_server(const char *port) {
   int socket_fd;
   struct addrinfo host_info;        // hints
   struct addrinfo *host_info_list;  // results
-  const char *hostname = "vcm-24353.vm.duke.edu";
+  const char *hostname = "0.0.0.0";
   // const char *hostname = "vcm-24353.vm.duke.edu";
   // const char *port     = "12345";
 
@@ -138,7 +138,7 @@ int create_server(const char *port) {
   socket_fd = socket(host_info_list->ai_family, host_info_list->ai_socktype,
                      host_info_list->ai_protocol);
   if (socket_fd == -1) {
-    cerr << "Error: cannot create socket" << endl;
+    perror("Error: cannot create socket");
     cerr << "  (" << hostname << "," << port << ")" << endl;
     exit(EXIT_FAILURE);
   }  // if
@@ -147,7 +147,7 @@ int create_server(const char *port) {
   status = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
   status = bind(socket_fd, host_info_list->ai_addr, host_info_list->ai_addrlen);
   if (status == -1) {
-    cerr << "Error: cannot bind socket" << endl;
+    perror("Error: cannot bind socket");
     cerr << "  (" << hostname << "," << port << ")" << endl;
     exit(EXIT_FAILURE);
   }  // if
