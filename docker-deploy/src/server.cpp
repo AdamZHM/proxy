@@ -47,12 +47,23 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
     cerr << "Error: recv data from server" << endl;
     return;
   }
+  string str_response(response);
+  if (str_response.find("\r\n\r\n") == string::npos) {
+    string resp502 = "HTTP/1.1 502 Bad Gateway";
+    mtx.lock();
+    printResponding(fout, client, resp502);
+    mtx.unlock();
+    return;
+  }
   ResponseHead rph;
   rph.initResponse(response, bytes_recv);
   mtx.lock();
   printContactServer(fout, client);
   mtx.unlock();
   if (rph.if_chunked) {
+    mtx.lock();
+    rph.printCacheReponseToGetReq(fout, client);
+    mtx.unlock();
     cout << "__________________data is chunked______________" << endl;
     // if data is chunked
 
@@ -61,16 +72,9 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
       memset(response, 0, buffer_size);
       int len_recv =
           recv(proxy_as_client.get_socket_fd(), response, buffer_size, 0);
-      // cout << response << endl;
-      if (len_recv == 0) {
+      if (len_recv <= 0) {
         cout << "no more chunked message" << endl;
         break;
-      } else if (len_recv < 0) {
-        string resp502 = "HTTP/1.1 502 Bad Gateway";
-        mtx.lock();
-        printResponding(fout, client, resp502);
-        mtx.unlock();
-        return;
       } else {
         send(client->get_socket_fd(), response, len_recv, 0);
       }
@@ -111,13 +115,14 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
   }
   mtx.lock();
   printReceive(fout, client, rph.status);
-  if (rph.etag != ""){
+  if (rph.etag != "") {
     fout << client->id << ": NOTE ETag: " << rph.etag << endl;
   }
-  if (rph.last_modified != ""){
-    fout << client->id << ": NOTE Last_Modified: \"" << rph.last_modified << "\"" << endl;
+  if (rph.last_modified != "") {
+    fout << client->id << ": NOTE Last_Modified: \"" << rph.last_modified
+         << "\"" << endl;
   }
-  if (rph.max_age != -1){
+  if (rph.max_age != -1) {
     fout << client->id << ": NOTE max_age: " << rph.max_age << endl;
   }
   printResponding(fout, client, rph.status);

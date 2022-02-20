@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     client->ip = client_ip;
     client->id = id;
     id += 1;
+    id %= 2147483647;
     // proxy_server->handle_request(client);
     thread t(thread_task, proxy_server, client);
     t.detach();

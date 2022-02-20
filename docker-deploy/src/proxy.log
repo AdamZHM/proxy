@@ -1,139 +1,130 @@
-1: "CONNECT msgstore.www.notion.so:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:11:59 2022
-1: Requesting "CONNECT msgstore.www.notion.so:443 HTTP/1.1" from msgstore.www.notion.so
+1: "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:03:45 2022
+1: Requesting "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from www.httpwatch.com
+1: not cacheable because the data is chunked
+1: Received "HTTP/1.1 200 OK" from www.httpwatch.com
 1: Responding "HTTP/1.1 200 OK"
-2: "CONNECT neat-iodine-05e.notion.site:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:01 2022
-2: Requesting "CONNECT neat-iodine-05e.notion.site:443 HTTP/1.1" from neat-iodine-05e.notion.site
+1: not in cache
+2: "CONNECT contile.services.mozilla.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:03 2022
+2: Requesting "CONNECT contile.services.mozilla.com:443 HTTP/1.1" from contile.services.mozilla.com
 2: Responding "HTTP/1.1 200 OK"
-6: "CONNECT tredir.go.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:02 2022
-6: Requesting "CONNECT tredir.go.com:443 HTTP/1.1" from tredir.go.com
-6: Responding "HTTP/1.1 200 OK"
-4: "CONNECT static-mh.content.disney.io:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:02 2022
-4: Requesting "CONNECT static-mh.content.disney.io:443 HTTP/1.1" from static-mh.content.disney.io
+3: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:14 2022
+3: Requesting "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from incoming.telemetry.mozilla.org
+3: Responding "HTTP/1.1 200 OK"
+4: "CONNECT contile-images.services.mozilla.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:14 2022
+4: Requesting "CONNECT contile-images.services.mozilla.com:443 HTTP/1.1" from contile-images.services.mozilla.com
 4: Responding "HTTP/1.1 200 OK"
-4: Tunnel closed
-8: "CONNECT js-agent.newrelic.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:02 2022
-8: Requesting "CONNECT js-agent.newrelic.com:443 HTTP/1.1" from js-agent.newrelic.com
+5: "CONNECT img-getpocket.cdn.mozilla.net:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:14 2022
+5: Requesting "CONNECT img-getpocket.cdn.mozilla.net:443 HTTP/1.1" from img-getpocket.cdn.mozilla.net
+5: Responding "HTTP/1.1 200 OK"
+8: "CONNECT static-mh.content.disney.io:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:15 2022
+8: Requesting "CONNECT static-mh.content.disney.io:443 HTTP/1.1" from static-mh.content.disney.io
 8: Responding "HTTP/1.1 200 OK"
-10: "CONNECT adservice.google.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:02 2022
-10: Requesting "CONNECT adservice.google.com:443 HTTP/1.1" from adservice.google.com
-10: Responding "HTTP/1.1 200 OK"
-11: "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:02 2022
-11: Requesting "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from di-dtaectolog-us-prod-1.appspot.com
-11: Responding "HTTP/1.1 200 OK"
-12: "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:02 2022
-12: Requesting "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from di-dtaectolog-us-prod-1.appspot.com
-12: Responding "HTTP/1.1 200 OK"
-3: "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s93319730528192?AQB=1&ndh=1&pf=1&t=20%2F1%2F2022%2011%3A12%3A4%200%20300&fid=2082B8AA3C9AE7CF-106A6243129469A0&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645373523950-9031052937716&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645372207004-7028781469299&c75=1645372207004-7028781469299&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=1536&bh=703&AQE=1 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:02 2022
-3: Requesting "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s93319730528192?AQB=1&ndh=1&pf=1&t=20%2F1%2F2022%2011%3A12%3A4%200%20300&fid=2082B8AA3C9AE7CF-106A6243129469A0&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645373523950-9031052937716&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645372207004-7028781469299&c75=1645372207004-7028781469299&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=1536&bh=703&AQE=1 HTTP/1.1" from w88.go.com
-3: not cacheable because Cache-control: no_store
-3: Received "HTTP/1.1 302 Found" from w88.go.com
-3: NOTE ETag: 3533412735229820928-4619628886392934858
-3: NOTE Last_Modified: "Mon, 21 Feb 2022 16:12:02 GMT"
-3: NOTE max_age: 0
-3: Responding "HTTP/1.1 302 Found"
-3: not in cache
-7: "CONNECT securepubads.g.doubleclick.net:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-7: Requesting "CONNECT securepubads.g.doubleclick.net:443 HTTP/1.1" from securepubads.g.doubleclick.net
+8: Tunnel closed
+7: "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:15 2022
+9: "CONNECT fast.fonts.net:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:15 2022
+9: Requesting "CONNECT fast.fonts.net:443 HTTP/1.1" from fast.fonts.net
+9: Responding "HTTP/1.1 200 OK"
+7: Requesting "GET http://global.go.com/stat/dolWebAnalytics.js HTTP/1.1" from global.go.com
+7: cached, expires at Mon Feb 20 18:55:06 2022
+7: Received "HTTP/1.1 200 OK" from global.go.com
+7: NOTE ETag: W/"7146d450d99cbcfbb7cbc35749bc9748"
+7: NOTE Last_Modified: "Mon, 25 Oct 2021 15:34:59 GMT"
+7: NOTE max_age: 411
 7: Responding "HTTP/1.1 200 OK"
-13: "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-13: Requesting "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from pagead2.googlesyndication.com
-13: Responding "HTTP/1.1 200 OK"
-14: "CONNECT 79ed7a3fd42d5c68ad795b6f4ef8b28f.safeframe.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-14: Requesting "CONNECT 79ed7a3fd42d5c68ad795b6f4ef8b28f.safeframe.googlesyndication.com:443 HTTP/1.1" from 79ed7a3fd42d5c68ad795b6f4ef8b28f.safeframe.googlesyndication.com
-14: Responding "HTTP/1.1 200 OK"
-17: "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645373523977&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-15: "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-16: "GET http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5644996916&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-16: Requesting "GET http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5644996916&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from b.scorecardresearch.com
-16: cached, but requires re-validation 
-16: Received "HTTP/1.1 302 Found" from b.scorecardresearch.com
-16: Responding "HTTP/1.1 302 Found"
-16: not in cache
-15: Requesting "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from b.scorecardresearch.com
-15: cached, but requires re-validation 
-15: Received "HTTP/1.1 302 Found" from b.scorecardresearch.com
-15: Responding "HTTP/1.1 302 Found"
-15: not in cache
-17: Requesting "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645373523977&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from b.scorecardresearch.com
-17: cached, but requires re-validation 
-17: Received "HTTP/1.1 204 No Content" from b.scorecardresearch.com
-17: NOTE ETag: W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"
-17: Responding "HTTP/1.1 204 No Content"
-17: not in cache
-19: "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-20: "CONNECT bam-cell.nr-data.net:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-20: Requesting "CONNECT bam-cell.nr-data.net:443 HTTP/1.1" from bam-cell.nr-data.net
-20: Responding "HTTP/1.1 200 OK"
-21: "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-21: Requesting "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from pagead2.googlesyndication.com
-21: Responding "HTTP/1.1 200 OK"
-19: Requesting "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from tag.researchnow.com
-19: not cacheable because Cache-control: no_store
-19: Received "HTTP/1.1 200 OK" from tag.researchnow.com
+7: not in cache
+10: "CONNECT tredir.go.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:15 2022
+10: Requesting "CONNECT tredir.go.com:443 HTTP/1.1" from tredir.go.com
+10: Responding "HTTP/1.1 200 OK"
+6: "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:15 2022
+6: Requesting "GET http://a.dilcdn.com/g/domains/go.com.js HTTP/1.1" from a.dilcdn.com
+6: cached, expires at Mon Feb 20 18:00:56 2022
+6: Received "HTTP/1.1 200 OK" from a.dilcdn.com
+6: NOTE ETag: W/"d17c233f747c8cf360fef04d56d28f1f"
+6: NOTE max_age: 7330
+6: Responding "HTTP/1.1 200 OK"
+6: not in cache
+14: "GET http://www.googletagservices.com/tag/js/gpt.js HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:16 2022
+14: Requesting "GET http://www.googletagservices.com/tag/js/gpt.js HTTP/1.1" from www.googletagservices.com
+14: cached, expires at Mon Feb 20 17:08:16 2022
+14: Received "HTTP/1.1 304 Not Modified" from www.googletagservices.com
+14: NOTE ETag: "1137 / 76 of 1000 / last-modified: 1645225517"
+14: NOTE max_age: 0
+14: Responding "HTTP/1.1 304 Not Modified"
+14: not in cache
+18: "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:16 2022
+18: Requesting "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from di-dtaectolog-us-prod-1.appspot.com
+18: Responding "HTTP/1.1 200 OK"
+19: "CONNECT adservice.google.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:16 2022
+19: Requesting "CONNECT adservice.google.com:443 HTTP/1.1" from adservice.google.com
 19: Responding "HTTP/1.1 200 OK"
-19: not in cache
-18: "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645373524052 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-18: Requesting "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645373524052 HTTP/1.1" from secure-us.imrworldwide.com
-18: cached, but requires re-validation 
-18: Received "HTTP/1.1 301 Moved Permanently" from secure-us.imrworldwide.com
-18: Responding "HTTP/1.1 301 Moved Permanently"
-18: not in cache
-22: "GET http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5644996916&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-22: Requesting "GET http://b.scorecardresearch.com/r2?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=5644996916&d.t=page&d.u=http%3A%2F%2Fgo.com%2F HTTP/1.1" from b.scorecardresearch.com
-22: cached, but requires re-validation 
-22: Received "HTTP/1.1 200 OK" from b.scorecardresearch.com
-22: NOTE ETag: W/"30-K3w/+rPqfRuZ+eZGax9xsuNr3hM"
+20: "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:16 2022
+20: Requesting "CONNECT di-dtaectolog-us-prod-1.appspot.com:443 HTTP/1.1" from di-dtaectolog-us-prod-1.appspot.com
+20: Responding "HTTP/1.1 200 OK"
+21: "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s94425439671413?AQB=1&ndh=1&pf=1&t=20%2F1%2F2022%2012%3A8%3A17%200%20300&fid=70DBD6B99F97BCFE-22FA8E343D69377A&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645376897319-9611282975649&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645375264110-7782371494504&c75=1645375264110-7782371494504&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=1536&bh=703&AQE=1 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:16 2022
+17: "CONNECT securepubads.g.doubleclick.net:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:16 2022
+17: Requesting "CONNECT securepubads.g.doubleclick.net:443 HTTP/1.1" from securepubads.g.doubleclick.net
+17: Responding "HTTP/1.1 200 OK"
+22: "CONNECT ebc8fcc591fa27fb99ff670ddd94365e.safeframe.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:16 2022
+22: Requesting "CONNECT ebc8fcc591fa27fb99ff670ddd94365e.safeframe.googlesyndication.com:443 HTTP/1.1" from ebc8fcc591fa27fb99ff670ddd94365e.safeframe.googlesyndication.com
 22: Responding "HTTP/1.1 200 OK"
-22: not in cache
-24: "CONNECT tpc.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-24: Requesting "CONNECT tpc.googlesyndication.com:443 HTTP/1.1" from tpc.googlesyndication.com
-24: Responding "HTTP/1.1 200 OK"
-24: Tunnel closed
-25: "CONNECT secure-us.imrworldwide.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:03 2022
-25: Requesting "CONNECT secure-us.imrworldwide.com:443 HTTP/1.1" from secure-us.imrworldwide.com
-25: Responding "HTTP/1.1 200 OK"
-5: "" from 71.70.231.208 @ Sun Feb 20 16:12:08 2022
-5: Responding "HTTP/1.1 400 Bad Request"
-9: "" from 71.70.231.208 @ Sun Feb 20 16:12:08 2022
-9: Responding "HTTP/1.1 400 Bad Request"
-23: "" from 71.70.231.208 @ Sun Feb 20 16:12:09 2022
-23: Responding "HTTP/1.1 400 Bad Request"
-26: "GET http://www.njrsks.net/ HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:19 2022
-26: Requesting "GET http://www.njrsks.net/ HTTP/1.1" from www.njrsks.net
-26: Received "HTTP/1.1 200 OK" from www.njrsks.net
+24: "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645376897514 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:17 2022
+23: "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:17 2022
+25: "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645376897368&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:17 2022
+26: "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:17 2022
+24: Requesting "GET http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-505916h&cg=0&cc=1&si=http%3A//go.com/&rp=&ts=compact&rnd=1645376897514 HTTP/1.1" from secure-us.imrworldwide.com
+24: cached, but requires re-validation 
+24: Received "HTTP/1.1 301 Moved Permanently" from secure-us.imrworldwide.com
+24: Responding "HTTP/1.1 301 Moved Permanently"
+24: not in cache
+23: Requesting "GET http://b.scorecardresearch.com/c2/15592703/cs.js HTTP/1.1" from b.scorecardresearch.com
+23: cached, but requires re-validation 
+23: Received "HTTP/1.1 302 Found" from b.scorecardresearch.com
+23: Responding "HTTP/1.1 302 Found"
+23: not in cache
+25: Requesting "GET http://b.scorecardresearch.com/b?c1=2&c2=15592703&&ns__t=1645376897368&ns_c=UTF-8&c8=Go.com%20%7C%20The%20Walt%20Disney%20Company%C2%A0&c7=http%3A%2F%2Fgo.com%2F&c9= HTTP/1.1" from b.scorecardresearch.com
+25: cached, but requires re-validation 
+25: Received "HTTP/1.1 204 No Content" from b.scorecardresearch.com
+25: NOTE ETag: W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"
+25: Responding "HTTP/1.1 204 No Content"
+25: not in cache
+26: Requesting "GET http://tag.researchnow.com/t/beacon?pr=2701&si=go.com&eid=dfam:goc:homepage:homepage&ca=&adn=3&tt=3 HTTP/1.1" from tag.researchnow.com
+26: not cacheable because Cache-control: no_store
+26: Received "HTTP/1.1 200 OK" from tag.researchnow.com
 26: Responding "HTTP/1.1 200 OK"
 26: not in cache
-29: "GET http://www.njrsks.net/favicon.ico HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:22 2022
-29: Requesting "GET http://www.njrsks.net/favicon.ico HTTP/1.1" from www.njrsks.net
-29: cached, but requires re-validation 
-29: Received "HTTP/1.1 200 OK" from www.njrsks.net
-29: NOTE ETag: "69b64764f8afd01:0"
-29: NOTE Last_Modified: "Fri, 26 Jun 2015 10:10:56 GMT"
-29: Responding "HTTP/1.1 200 OK"
-29: not in cache
-28: "" from 71.70.231.208 @ Sun Feb 20 16:12:26 2022
-28: Responding "HTTP/1.1 400 Bad Request"
-30: "" from 71.70.231.208 @ Sun Feb 20 16:12:26 2022
-30: Responding "HTTP/1.1 400 Bad Request"
-6: Tunnel closed
-31: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:35 2022
-31: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from www.columbia.edu
-31: cached, but requires re-validation 
-31: Received "HTTP/1.1 200 OK" from www.columbia.edu
-31: NOTE Last_Modified: "Fri, 17 Sep 2021 19:26:14 GMT"
-31: Responding "HTTP/1.1 200 OK"
-31: not in cache
-32: "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:35 2022
-32: Requesting "GET http://www.columbia.edu/~fdc/picture-of-something.jpg HTTP/1.1" from www.columbia.edu
-32: cached, but requires re-validation 
-32: Received "HTTP/1.1 200 OK" from www.columbia.edu
-32: NOTE Last_Modified: "Mon, 14 Jul 2003 16:52:39 GMT"
+28: "CONNECT secure-us.imrworldwide.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:17 2022
+28: Requesting "CONNECT secure-us.imrworldwide.com:443 HTTP/1.1" from secure-us.imrworldwide.com
+28: Responding "HTTP/1.1 200 OK"
+15: "" from 71.70.231.208 @ Sun Feb 20 17:08:21 2022
+16: "" from 71.70.231.208 @ Sun Feb 20 17:08:21 2022
+15: Responding "HTTP/1.1 400 Bad Request"
+16: Responding "HTTP/1.1 400 Bad Request"
+12: "" from 71.70.231.208 @ Sun Feb 20 17:08:21 2022
+11: "" from 71.70.231.208 @ Sun Feb 20 17:08:21 2022
+13: "" from 71.70.231.208 @ Sun Feb 20 17:08:21 2022
+12: Responding "HTTP/1.1 400 Bad Request"
+11: Responding "HTTP/1.1 400 Bad Request"
+13: Responding "HTTP/1.1 400 Bad Request"
+27: "" from 71.70.231.208 @ Sun Feb 20 17:08:22 2022
+27: Responding "HTTP/1.1 400 Bad Request"
+21: Requesting "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s94425439671413?AQB=1&ndh=1&pf=1&t=20%2F1%2F2022%2012%3A8%3A17%200%20300&fid=70DBD6B99F97BCFE-22FA8E343D69377A&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645376897319-9611282975649&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645375264110-7782371494504&c75=1645375264110-7782371494504&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=1536&bh=703&AQE=1 HTTP/1.1" from w88.go.com
+21: cached, but requires re-validation 
+21: Received "HTTP/1.1 408 Request Timeout" from w88.go.com
+21: Responding "HTTP/1.1 408 Request Timeout"
+21: not in cache
+29: "GET http://w88.go.com/b/ss/wdgdsec,wdgdolgoc,wdgdolfamsec/1/JS-2.10.0/s94425439671413?AQB=1&ndh=1&pf=1&t=20%2F1%2F2022%2012%3A8%3A17%200%20300&fid=70DBD6B99F97BCFE-22FA8E343D69377A&ce=UTF-8&ns=dol&cdp=2&pageName=dfam%3Agoc%3Ahomepage%3Ahomepage&g=http%3A%2F%2Fgo.com%2F&cc=USD&c1=goc&h1=homepage&v10=goc&c12=dfam%3Agoc%3Ahomepage%3Ahomepage&c14=dfam&c28=http%3A%2F%2Fgo.com%2F&c34=goc&c37=flash_version%3A-1&c39=dfam%3Agoc%3Ahomepage%3Ahomepage&v40=dfam%3Agoc%3Ahomepage%3Ahomepage&c47=dfam%3Agoc%3Ahomepage%3Ahomepage&c49=cto-1645376897319-9611282975649&c61=go.com&v61=go.com&c62=go.com&v62=go.com&c63=go.com&v63=go.com&c64=homepage&v64=homepage&v65=http%3A%2F%2Fgo.com%2F&c66=%2F21783347309%2Fgoc%2Fhomepage&v66=%2F21783347309%2Fgoc%2Fhomepage&c67=924x545&c68=na&v68=na&c69=trackpage&c70=gocom%2Cmatterhorn&c72=4.5.66&c74=1645375264110-7782371494504&c75=1645375264110-7782371494504&v76=not-detected&s=1536x864&c=24&j=1.6&v=N&k=Y&bw=1536&bh=703&AQE=1 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:26 2022
+29: in cache, valid
+29: Responding "HTTP/1.1 408 Request Timeout"
+30: "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:26 2022
+30: Requesting "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from pagead2.googlesyndication.com
+30: Responding "HTTP/1.1 200 OK"
+32: "CONNECT www.google.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:26 2022
+32: Requesting "CONNECT www.google.com:443 HTTP/1.1" from www.google.com
 32: Responding "HTTP/1.1 200 OK"
-32: not in cache
-33: "GET http://www.columbia.edu/favicon.ico HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 16:12:35 2022
-33: Requesting "GET http://www.columbia.edu/favicon.ico HTTP/1.1" from www.columbia.edu
-33: cached, but requires re-validation 
-33: Received "HTTP/1.1 200 OK" from www.columbia.edu
-33: NOTE Last_Modified: "Tue, 09 Jan 2018 21:37:22 GMT"
+31: "CONNECT tpc.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:27 2022
+31: Requesting "CONNECT tpc.googlesyndication.com:443 HTTP/1.1" from tpc.googlesyndication.com
+31: Responding "HTTP/1.1 200 OK"
+31: Tunnel closed
+33: "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from 71.70.231.208 @ Sun Feb 20 17:08:27 2022
+33: Requesting "CONNECT pagead2.googlesyndication.com:443 HTTP/1.1" from pagead2.googlesyndication.com
 33: Responding "HTTP/1.1 200 OK"
-33: not in cache
