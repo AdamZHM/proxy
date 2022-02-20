@@ -1,4 +1,0 @@
-1) In case that there are too many connections, we have the ID do the mod operation so that ID would not be bigger than the limit, which would bring some weird result to the proxy.
-2) At the very beginning, we used a fixed size of char array to receive the response. However there are some websites which would send millions of bytes, so we first calculated the size of response head and plus that to the content length. Then we used a while loop with vector<char> to receive the response.
-3) Our proxy make a strong exception guarantee. Whenever there is a copy-delete operation, we would first copy that value and make sure it successful, then we delete the object, so there would be no dangling pointer or changed value after an unsuccessful operation. Also we would not let the proxy terminate when receiving an invalid request, we just have the thread exited while the process is still there.
-
