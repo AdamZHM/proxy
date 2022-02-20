@@ -111,6 +111,15 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
   }
   mtx.lock();
   printReceive(fout, client, rph.status);
+  if (rph.etag != ""){
+    fout << client->id << ": NOTE ETag: " << rph.etag << endl;
+  }
+  if (rph.last_modified != ""){
+    fout << client->id << ": NOTE Last_Modified: \"" << rph.last_modified << "\"" << endl;
+  }
+  if (rph.max_age != -1){
+    fout << client->id << ": NOTE max_age: " << rph.max_age << endl;
+  }
   printResponding(fout, client, rph.status);
   mtx.unlock();
   // cout << lruCache.get(str_url).response.data() << endl;
@@ -121,6 +130,7 @@ void Server::deal_with_get_request(Client &proxy_as_client, const char *url,
 void Server::deal_with_connect_request(Client &proxy_as_client,
                                        Client *client) {
   const char *msg = "HTTP/1.1 200 OK\r\n\r\n";
+  string str_msg(msg, 15);
   if (send(client->get_socket_fd(), msg, 19, 0) < 0) {
     cerr << "Error send data in connect " << endl;
     return;
@@ -131,6 +141,10 @@ void Server::deal_with_connect_request(Client &proxy_as_client,
   fd_set readfds;
   int max_fd =
       fd_vector[0] > fd_vector[1] ? fd_vector[0] + 1 : fd_vector[1] + 1;
+  mtx.lock();
+  printContactServer(fout, client);
+  printResponding(fout, client, str_msg);
+  mtx.unlock();
   while (1) {
     FD_ZERO(&readfds);
     for (int i = 0; i < 2; i++) {
@@ -231,7 +245,6 @@ void Server::handle_request(Client *client) {
   std::cout << "_________THIS IS USER REQUEST_______\n" << buffer << std::endl;
   HttpHeader httpHeader(buffer);
   const char *host = httpHeader.get_host();
-
   const char *method = httpHeader.get_method();
   const char *port = httpHeader.get_port();
   const char *first_line = httpHeader.get_first_line();
@@ -264,6 +277,7 @@ void Server::handle_request(Client *client) {
 
   client->first_line = httpHeader.get_first_line();
   client->url = url;
+  client->host = httpHeader.get_host();
 
   if (strcmp(method, "GET") == 0) {
     std::cout << "_________THIS IS GET______\n" << std::endl;
@@ -329,6 +343,9 @@ void Server::handle_request(Client *client) {
                                  client);
   } else if (strcmp(method, "CONNECT") == 0) {  //
     std::cout << "_________THIS IS CONNECT______\n" << std::endl;
+    mtx.lock();
+    printRequest(fout, client, httpHeader.get_first_line());
+    mtx.unlock();
     this->deal_with_connect_request(proxy_as_client, client);
     mtx.lock();
     printCloseTunnel(fout, client);

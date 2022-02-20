@@ -181,7 +181,7 @@ void printNotInCache(std::ofstream &fout, Client *client) {
 
 void printContactServer(std::ofstream &fout, Client *client) {
   fout << client->id << ": Requesting \"" << client->first_line << "\" from "
-       << client->url << endl;
+       << client->host << endl;
 }
 
 void printInCacheValid(std::ofstream &fout, Client *client) {
@@ -212,7 +212,7 @@ void printInCacheButExpired(std::ofstream &fout, Client *client, TimeStamp date,
 }
 
 void printReceive(std::ofstream &fout, Client *client, std::string response) {
-  fout << client->id << ": Received \"" << response << "\" from " << client->url
+  fout << client->id << ": Received \"" << response << "\" from " << client->host
        << endl;
 }
 
