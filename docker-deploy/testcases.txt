@@ -1,0 +1,174 @@
+**********************************************
+testcase: Cache-Control: no_store
+GET "http://httpbin.org/response-headers?freeform=Cache-Control%3A%20no-store"
+**********************************************
+
+1: "GET http://httpbin.org/response-headers?freeform=Cache-Control%3A%20no-store HTTP/1.1" from 67.159.88.44 @ Sun Feb 20 23:03:03 2022
+1: Requesting "GET http://httpbin.org/response-headers?freeform=Cache-Control%3A%20no-store HTTP/1.1" from httpbin.org
+1: not cacheable because Cache-control: no_store
+1: Received "HTTP/1.1 200 OK" from httpbin.org
+1: Responding "HTTP/1.1 200 OK"
+1: not in cache
+2: "GET http://httpbin.org/response-headers?freeform=Cache-Control%3A%20no-store HTTP/1.1" from 67.159.88.44 @ Sun Feb 20 23:03:34 2022
+2: Requesting "GET http://httpbin.org/response-headers?freeform=Cache-Control%3A%20no-store HTTP/1.1" from httpbin.org
+2: not cacheable because Cache-control: no_store
+2: Received "HTTP/1.1 200 OK" from httpbin.org
+2: Responding "HTTP/1.1 200 OK"
+2: not in cache
+
+**********************************************
+testcase: Cache-Control: max-age=10
+GET "http://httpbin.org/cache/10"
+**********************************************
+
+4: "GET http://httpbin.org/cache/10 HTTP/1.1" from 67.159.88.44 @ Sun Feb 20 23:23:26 2022
+4: Requesting "GET http://httpbin.org/cache/10 HTTP/1.1" from httpbin.org
+4: in cache, expires at Sun Feb 20 23:23:36 2022
+4: Received "HTTP/1.1 200 OK" from httpbin.org
+4: NOTE max_age: 10
+4: Responding "HTTP/1.1 200 OK"
+4: not in cache
+5: "GET http://httpbin.org/cache/10 HTTP/1.1" from 67.159.88.44 @ Sun Feb 20 23:23:29 2022
+5: in cache, valid
+5: Responding "HTTP/1.1 200 OK"
+6: "GET http://httpbin.org/cache/10 HTTP/1.1" from 67.159.88.44 @ Sun Feb 20 23:23:37 2022
+6: in cache, but expired at Mon Feb 20 23:23:47 3922
+6: Requesting "GET http://httpbin.org/cache/10 HTTP/1.1" from httpbin.org
+6: in cache, expires at Sun Feb 20 23:23:47 2022
+6: Received "HTTP/1.1 200 OK" from httpbin.org
+6: NOTE max_age: 10
+6: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase: Cache-Control: max-age=0
+GET "http://httpbin.org/cache/0"
+**********************************************
+
+5: "GET http://httpbin.org/cache/0 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 02:34:03 2022
+5: Requesting "GET http://httpbin.org/cache/0 HTTP/1.1" from httpbin.org
+5: in cache, expires at Mon Feb 21 02:34:03 2022
+5: Received "HTTP/1.1 200 OK" from httpbin.org
+5: NOTE max_age: 0
+5: Responding "HTTP/1.1 200 OK"
+5: not in cache
+6: "GET http://httpbin.org/cache/0 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 02:34:07 2022
+6: in cache, requires validation
+6: Requesting "GET http://httpbin.org/cache/0 HTTP/1.1" from httpbin.org
+6: in cache, expires at Mon Feb 21 02:34:07 2022
+6: Received "HTTP/1.1 200 OK" from httpbin.org
+6: NOTE max_age: 0
+6: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase: CONNECT
+CONNECT "www.google.com"
+**********************************************
+
+3: "CONNECT www.gstatic.com:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:19 2022
+3: Requesting "CONNECT www.gstatic.com:443 HTTP/1.1" from www.gstatic.com
+3: Responding "HTTP/1.1 200 OK"
+4: "CONNECT ogs.google.com:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:19 2022
+4: Requesting "CONNECT ogs.google.com:443 HTTP/1.1" from ogs.google.com
+4: Responding "HTTP/1.1 200 OK"
+5: "CONNECT apis.google.com:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:19 2022
+5: Requesting "CONNECT apis.google.com:443 HTTP/1.1" from apis.google.com
+5: Responding "HTTP/1.1 200 OK"
+6: "POST http://ocsp.pki.goog/gts1c3 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:19 2022
+6: Requesting "POST http://ocsp.pki.goog/gts1c3 HTTP/1.1" from ocsp.pki.goog
+6: Received "HTTP/1.1 200 OK" from ocsp.pki.goog
+6: Responding "HTTP/1.1 200 OK"
+7: "CONNECT fonts.gstatic.com:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:19 2022
+7: Requesting "CONNECT fonts.gstatic.com:443 HTTP/1.1" from fonts.gstatic.com
+7: Responding "HTTP/1.1 200 OK"
+8: "CONNECT play.google.com:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:20 2022
+8: Requesting "CONNECT play.google.com:443 HTTP/1.1" from play.google.com
+8: Responding "HTTP/1.1 200 OK"
+9: "CONNECT play.google.com:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:20 2022
+9: Requesting "CONNECT play.google.com:443 HTTP/1.1" from play.google.com
+9: Responding "HTTP/1.1 200 OK"
+10: "CONNECT adservice.google.com:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:20 2022
+10: Requesting "CONNECT adservice.google.com:443 HTTP/1.1" from adservice.google.com
+10: Responding "HTTP/1.1 200 OK"
+11: "CONNECT googleads.g.doubleclick.net:443 HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:34:20 2022
+11: Requesting "CONNECT googleads.g.doubleclick.net:443 HTTP/1.1" from googleads.g.doubleclick.net
+11: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase: POST
+POST "http://httpbin.org/post"
+**********************************************
+
+1: "GET http://httpbin.org/forms/post HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:37:27 2022
+1: Requesting "GET http://httpbin.org/forms/post HTTP/1.1" from httpbin.org
+1: cached, but requires re-validation 
+1: Received "HTTP/1.1 200 OK" from httpbin.org
+1: Responding "HTTP/1.1 200 OK"
+1: not in cache
+2: "GET http://httpbin.org/favicon.ico HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:37:27 2022
+2: Requesting "GET http://httpbin.org/favicon.ico HTTP/1.1" from httpbin.org
+2: cached, but requires re-validation 
+2: Received "HTTP/1.1 404 NOT FOUND" from httpbin.org
+2: Responding "HTTP/1.1 404 NOT FOUND"
+2: not in cache
+3: "POST http://httpbin.org/post HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 01:37:42 2022
+3: Requesting "POST http://httpbin.org/post HTTP/1.1" from httpbin.org
+3: Received "HTTP/1.1 200 OK" from httpbin.org
+3: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase: GET chunked data
+GET "http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx"
+**********************************************
+155: "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 02:02:52 2022
+155: Requesting "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from www.httpwatch.com
+155: not cacheable because the data is chunked
+155: Received "HTTP/1.1 200 OK" from www.httpwatch.com
+155: Responding "HTTP/1.1 200 OK"
+155: not in cache
+160: "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 02:05:29 2022
+160: Requesting "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from www.httpwatch.com
+160: not cacheable because the data is chunked
+
+**********************************************
+testcase: GET data with tag "expires"
+GET "http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT"
+**********************************************
+15: "GET http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:12:32 2022
+15: Requesting "GET http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT HTTP/1.1" from httpbin.org
+15: cached, expires at Mon Feb 21 03:12:45 2022
+15: Received "HTTP/1.1 200 OK" from httpbin.org
+15: Responding "HTTP/1.1 200 OK"
+15: not in cache
+16: "GET http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:12:39 2022
+16: in cache, valid
+16: Responding "HTTP/1.1 200 OK"
+17: "GET http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:12:50 2022
+17: in cache, but expired at Tue Feb 21 03:12:45 3922
+17: Requesting "GET http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT HTTP/1.1" from httpbin.org
+17: cached, expires at Mon Feb 21 03:12:45 2022
+17: Received "HTTP/1.1 200 OK" from httpbin.org
+17: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase: 400 Bad Request
+GET ""
+**********************************************
+90: "" from 71.70.231.208 @ Mon Feb 21 03:19:39 2022
+90: Responding "HTTP/1.1 400 Bad Request"
+
+
+**********************************************
+testcase: GET data with ETag
+GET "http://info.cern.ch/"
+**********************************************
+5: "GET http://info.cern.ch/ HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:21:02 2022
+5: Requesting "GET http://info.cern.ch/ HTTP/1.1" from info.cern.ch
+5: cached, but requires re-validation 
+5: Received "HTTP/1.1 200 OK" from info.cern.ch
+5: NOTE ETag: "286-4f1aadb3105c0"
+5: NOTE Last_Modified: "Wed, 05 Feb 2014 16:00:31 GMT"
+5: Responding "HTTP/1.1 200 OK"
+5: not in cache
+8: "GET http://info.cern.ch/ HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:21:26 2022
+8: in cache, valid
+8: Responding "HTTP/1.1 200 OK"

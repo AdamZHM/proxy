@@ -42,6 +42,8 @@ class ResponseHead {
         if_must_revalidate(false) {}
 
   void initResponse(const char *buffer, int size) {
+    std::string str_buffer(buffer, 300);
+    std::cout << str_buffer << std::endl;
     response = convertCharStarToVecChar(buffer, size);
     std::string bufferStr(buffer);
     std::istringstream ss(buffer);
@@ -52,9 +54,9 @@ class ResponseHead {
       changeHeaderToLower(line, lowerLine);
       if (lowerLine.find("http/1.1") == 0) {
         status = line.substr(0, line.find("\r"));
-      } else if (lowerLine.find("cache-control") == 0) {
+      } else if (lowerLine.find("cache-control") != std::string::npos) {
         if_cache_control = true;
-        if (line.find("no-store") != std::string::npos) {
+        if (line.find("no-store") != std::string::npos || line.find("private") != std::string::npos) {
           if_no_store = true;
         }
         if (line.find("no-cache") != std::string::npos) {
@@ -64,20 +66,21 @@ class ResponseHead {
           if_must_revalidate = true;
         }
         if (line.find("max-age") != std::string::npos) {
-          std::string temp(line.substr(line.find("max-age") + 9));
+          std::string temp(line.substr(line.find("max-age") + 8));
           max_age = atoi(temp.c_str());
+          std::cout << max_age << std::endl;
         }
       } else if (lowerLine.find("date") == 0) {
         int startIdx = 6;
         date = TimeStamp(line.substr(startIdx));
-      } else if (lowerLine.find("etag") == 0) {  // include /r/n
+      } else if (lowerLine.find("etag") == 0) { 
         int startIdx = 6;
         etag = line.substr(startIdx, line.find("\r") - 6);
       } else if (lowerLine.find("last-modified") == 0) {
         int startIdx = 15;
         last_modified = line.substr(startIdx, line.find("\r") - 15);
       } else if (lowerLine.find("expires") == 0) {
-        int startIdx = 9;
+        int startIdx = lowerLine.find("expires") + 9;
         expires = line.substr(startIdx);
       } else if (lowerLine.find("transfer-encoding") == 0 &&
                  lowerLine.find("chunked")) {
@@ -115,10 +118,12 @@ class ResponseHead {
     }
     // first check if expires is empty or not then check max_age
     else if (this->expires != "") {
+      std::cout << "________this expires " << this->expires << endl;
       TimeStamp expireTime(expires);
       time_t t = mktime(expireTime.get_t());
       struct tm *tm = gmtime(&t);
       tm->tm_year -= 1900;
+      tm->tm_wday -= 1;
       std::string time = std::string(asctime(tm));
       time.pop_back();
       fout << client->id << ": cached, expires at " << time << endl;

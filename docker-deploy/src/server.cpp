@@ -298,12 +298,14 @@ void Server::handle_request(Client *client) {
       ResponseHead resp = lruCache.get(url);
       mtx.unlock();
 
-      if (resp.if_cache_control == false || resp.if_no_cache == true ||
+      if ((resp.if_cache_control == false && resp.expires == "") || resp.if_no_cache == true ||
           resp.if_must_revalidate == true || resp.max_age == 0) {
         // TODO do revalidation, update expiration
         revalidate = this->revalidation(resp, proxy_as_client, client);
       } else if (resp.max_age != -1 || resp.expires != "") {
+        // cout << "11111111111111111111111111" << endl;
         ifExpire = this->ifExpired(resp, proxy_as_client, client);
+        cout << ifExpire << endl;
       }
       if (revalidate && ifExpire) {
         // use cache
@@ -370,14 +372,16 @@ bool Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
   send_to_server.append(proxy_as_client.first_line + "\r\n");
   send_to_server.append("Host: " + proxy_as_client.host + "\r\n");
 
+  resp.etag = "1";
   if (resp.etag != "") {
     send_to_server += "If-None-Match: " + resp.etag + "\r\n";
   }
+  resp.last_modified = "";
   if (resp.last_modified != "") {
     send_to_server += "IF-Modified-Since: " + resp.last_modified + "\r\n";
   }
   send_to_server += "\r\n";
-  cout << send_to_server << endl;
+  cout << send_to_server << "\n_______send to server end" <<endl;
   char response[100000];
   memset(response, 0, 100000);
   send(proxy_as_client.get_socket_fd(), send_to_server.c_str(),
@@ -386,7 +390,6 @@ bool Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
       recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
   ResponseHead temp;
   temp.initResponse(response, bytes_recv);
-  cout << "________revalidation response: \n" << response << endl;
   resp.date = temp.date;  // update the resp.date
   mtx.lock();
   lruCache.put(fout, proxy_as_client.url, resp);
@@ -413,7 +416,7 @@ bool Server::ifExpired(ResponseHead &resp, Client &proxy_as_client,
   if (resp.max_age > 0) {
     TimeStamp responseTime = resp.date;
     double diff = difftime(mktime(now), mktime(responseTime.get_t()));
-    // cout << diff << endl;
+    cout << "____________________" << diff << endl;
     if (diff <= resp.max_age) {
       cout << "___________data fresh, no expired by max-age_______" << endl;
       valid = true;
@@ -428,9 +431,10 @@ bool Server::ifExpired(ResponseHead &resp, Client &proxy_as_client,
       valid = true;
     } else {
       cout << "___________data not fresh, expired by expireTime______" << endl;
+      valid = false;
     }
   }
-  if (valid == false) {
+  if (valid == false && (resp.etag != "" || resp.last_modified != "")) {
     valid = this->revalidation(resp, proxy_as_client, client);
   }
   return valid;
