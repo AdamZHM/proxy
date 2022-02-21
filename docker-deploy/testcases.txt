@@ -17,6 +17,10 @@ GET "http://httpbin.org/response-headers?freeform=Cache-Control%3A%20no-store"
 2: not in cache
 
 **********************************************
+testcase END
+**********************************************
+
+**********************************************
 testcase: Cache-Control: max-age=10
 GET "http://httpbin.org/cache/10"
 **********************************************
@@ -40,6 +44,10 @@ GET "http://httpbin.org/cache/10"
 6: Responding "HTTP/1.1 200 OK"
 
 **********************************************
+testcase END
+**********************************************
+
+**********************************************
 testcase: Cache-Control: max-age=0
 GET "http://httpbin.org/cache/0"
 **********************************************
@@ -58,6 +66,10 @@ GET "http://httpbin.org/cache/0"
 6: Received "HTTP/1.1 200 OK" from httpbin.org
 6: NOTE max_age: 0
 6: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase END
+**********************************************
 
 **********************************************
 testcase: CONNECT
@@ -94,6 +106,10 @@ CONNECT "www.google.com"
 11: Responding "HTTP/1.1 200 OK"
 
 **********************************************
+testcase END
+**********************************************
+
+**********************************************
 testcase: POST
 POST "http://httpbin.org/post"
 **********************************************
@@ -116,9 +132,14 @@ POST "http://httpbin.org/post"
 3: Responding "HTTP/1.1 200 OK"
 
 **********************************************
+testcase END
+**********************************************
+
+**********************************************
 testcase: GET chunked data
 GET "http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx"
 **********************************************
+
 155: "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 02:02:52 2022
 155: Requesting "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from www.httpwatch.com
 155: not cacheable because the data is chunked
@@ -130,9 +151,14 @@ GET "http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx"
 160: not cacheable because the data is chunked
 
 **********************************************
+testcase END
+**********************************************
+
+**********************************************
 testcase: GET data with tag "expires"
 GET "http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT"
 **********************************************
+
 15: "GET http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:12:32 2022
 15: Requesting "GET http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb%202022%2003%3A12%3A45%20GMT HTTP/1.1" from httpbin.org
 15: cached, expires at Mon Feb 21 03:12:45 2022
@@ -150,17 +176,26 @@ GET "http://httpbin.org/response-headers?freeform=Expires%3A%20Mon%2C%2021%20Feb
 17: Responding "HTTP/1.1 200 OK"
 
 **********************************************
+testcase END
+**********************************************
+
+**********************************************
 testcase: 400 Bad Request
 GET ""
 **********************************************
+
 90: "" from 71.70.231.208 @ Mon Feb 21 03:19:39 2022
 90: Responding "HTTP/1.1 400 Bad Request"
 
+**********************************************
+testcase END
+**********************************************
 
 **********************************************
 testcase: GET data with ETag
 GET "http://info.cern.ch/"
 **********************************************
+
 5: "GET http://info.cern.ch/ HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:21:02 2022
 5: Requesting "GET http://info.cern.ch/ HTTP/1.1" from info.cern.ch
 5: cached, but requires re-validation 
@@ -172,3 +207,54 @@ GET "http://info.cern.ch/"
 8: "GET http://info.cern.ch/ HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 03:21:26 2022
 8: in cache, valid
 8: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase END
+**********************************************
+
+**********************************************
+testcase: GET data, valid cache
+GET "http://info.cern.ch/"
+**********************************************
+
+114: "GET http://info.cern.ch/favicon.ico HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 04:38:59 2022
+114: Requesting "GET http://info.cern.ch/favicon.ico HTTP/1.1" from info.cern.ch
+114: cached, but requires re-validation 
+(no-id): NOTE evicted http://b.scorecardresearch.com/r?c2=6035140&d.c=gif&d.o=wdgdolfamsec&d.x=4231770268&d.t=page&d.u=http%3A%2F%2Fgo.com%2F from cache
+114: Received "HTTP/1.1 200 OK" from info.cern.ch
+114: NOTE ETag: "57e-44400c31d2ac0"
+114: NOTE Last_Modified: "Fri, 18 Jan 2008 15:26:11 GMT"
+114: Responding "HTTP/1.1 200 OK"
+114: not in cache
+115: "GET http://info.cern.ch/ HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 04:39:28 2022
+115: Requesting "GET http://info.cern.ch/ HTTP/1.1" from info.cern.ch
+115: in cache, valid
+115: Responding "HTTP/1.1 200 OK"
+
+**********************************************
+testcase END
+**********************************************
+
+**********************************************
+testcase: GET data with Last-Modified tag
+GET "http://www.columbia.edu/~fdc/sample.html/"
+**********************************************
+
+1: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 04:51:39 2022
+1: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from www.columbia.edu
+1: cached, but requires re-validation 
+1: Received "HTTP/1.1 200 OK" from www.columbia.edu
+1: NOTE Last_Modified: "Fri, 17 Sep 2021 19:26:14 GMT"
+1: Responding "HTTP/1.1 200 OK"
+1: not in cache
+5: "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from 71.70.231.208 @ Mon Feb 21 04:51:44 2022
+5: Requesting "GET http://www.columbia.edu/~fdc/sample.html HTTP/1.1" from www.columbia.edu
+5: cached, but requires re-validation 
+5: Received "HTTP/1.1 200 OK" from www.columbia.edu
+5: NOTE Last_Modified: "Fri, 17 Sep 2021 19:26:14 GMT"
+5: Responding "HTTP/1.1 200 OK"
+5: in cache, requires validation
+
+**********************************************
+testcase END
+**********************************************

@@ -57,7 +57,7 @@ class Server {
   // void close_socket_fd() { close(socket_fd); }
   void close_client_connection_fd();
 
-  bool revalidation(ResponseHead& resp, Client& proxy_as_client,
+  string revalidation(ResponseHead& resp, Client& proxy_as_client,
                     Client* client);
   bool ifExpired(ResponseHead& resp, Client& proxy_as_client, Client* client);
 

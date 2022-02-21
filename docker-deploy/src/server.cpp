@@ -292,14 +292,15 @@ void Server::handle_request(Client *client) {
     printRequest(fout, client, httpHeader.get_first_line());
     mtx.unlock();
     if (ifInCache) {
-      bool revalidate = true;  // true means revalidate succefully
-      bool ifExpire = true;    // true means not expire
+      string revalidate = "304";  // true means revalidate succefully
+      bool ifExpire = true;       // true means not expire
       mtx.lock();
       ResponseHead resp = lruCache.get(url);
       mtx.unlock();
 
-      if ((resp.if_cache_control == false && resp.expires == "") || resp.if_no_cache == true ||
-          resp.if_must_revalidate == true || resp.max_age == 0) {
+      if ((resp.if_cache_control == false && resp.expires == "") ||
+          resp.if_no_cache == true || resp.if_must_revalidate == true ||
+          resp.max_age == 0) {
         // TODO do revalidation, update expiration
         revalidate = this->revalidation(resp, proxy_as_client, client);
       } else if (resp.max_age != -1 || resp.expires != "") {
@@ -307,7 +308,14 @@ void Server::handle_request(Client *client) {
         ifExpire = this->ifExpired(resp, proxy_as_client, client);
         cout << ifExpire << endl;
       }
-      if (revalidate && ifExpire) {
+      if (revalidate == "502"){
+        return;
+      }
+      if (revalidate == "200") {
+        mtx.lock();
+        printInCacheReVal(fout, client);
+        mtx.unlock();
+      } else if (revalidate == "304" && ifExpire) {
         // use cache
         mtx.lock();
         printInCacheValid(fout, client);
@@ -318,7 +326,7 @@ void Server::handle_request(Client *client) {
              resp.response.size(), 0);
       } else {
         mtx.lock();
-        if (!revalidate) {
+        if ("304" != revalidate) {
           printInCacheReVal(fout, client);
         } else {
           printInCacheButExpired(fout, client, resp.date, resp.expires,
@@ -363,47 +371,97 @@ void Server::handle_request(Client *client) {
   return;
 }
 
-bool Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
-                          Client *client) {
+string Server::revalidation(ResponseHead &resp, Client &proxy_as_client,
+                            Client *client) {
   if (resp.etag == "" && resp.last_modified == "" && resp.max_age == -1) {
-    return true;
+    return "304";
   }
   string send_to_server = "";
   send_to_server.append(proxy_as_client.first_line + "\r\n");
   send_to_server.append("Host: " + proxy_as_client.host + "\r\n");
 
-  resp.etag = "1";
+  // resp.etag = "1";
   if (resp.etag != "") {
     send_to_server += "If-None-Match: " + resp.etag + "\r\n";
   }
-  resp.last_modified = "";
+  // resp.last_modified = "";
   if (resp.last_modified != "") {
     send_to_server += "IF-Modified-Since: " + resp.last_modified + "\r\n";
   }
   send_to_server += "\r\n";
-  cout << send_to_server << "\n_______send to server end" <<endl;
-  char response[100000];
-  memset(response, 0, 100000);
+  cout << send_to_server << "\n_______send to server end" << endl;
+  int buffer_size = 100000;
+  char response[buffer_size];
+  memset(response, 0, buffer_size);
   send(proxy_as_client.get_socket_fd(), send_to_server.c_str(),
        send_to_server.length(), 0);
   int bytes_recv =
       recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
-  ResponseHead temp;
-  temp.initResponse(response, bytes_recv);
-  resp.date = temp.date;  // update the resp.date
+  ResponseHead rph;
+  rph.initResponse(response, bytes_recv);
+  resp.date = rph.date;  // update the resp.date
   mtx.lock();
+  printContactServer(fout, client);
   lruCache.put(fout, proxy_as_client.url, resp);
   mtx.unlock();
-  if (temp.status.find("304") != string::npos) {
+  if (rph.status.find("304") != string::npos) {
     cout << "____________check etag or last_modified and data "
             "fresh_______________"
          << endl;
-    return true;
+    return "304";
   }
-  cout << "____________check etag or last_modified and data not "
-          "fresh___________"
-       << endl;
-  return false;
+  if (rph.status.find("200") != string::npos) {
+    int responseLength = rph.totalLength();
+    string str_url(proxy_as_client.url);
+    // TODO handle not chunked data
+    // if no store, we do not put it into cache
+    while (rph.response.size() < responseLength) {
+      int len_recv =
+          recv(proxy_as_client.get_socket_fd(), response, sizeof(response), 0);
+      if (len_recv <= 0) {
+        string resp502 = "HTTP/1.1 502 Bad Gateway";
+        mtx.lock();
+        printResponding(fout, client, resp502);
+        mtx.unlock();
+        perror("recv error in get");
+        return "502";
+      } else {
+        rph.appendResponse(response, len_recv);
+      }
+    }
+    rph.printCacheReponseToGetReq(fout, client);
+    send(client->get_socket_fd(), rph.response.data(), rph.response.size(), 0);
+
+    proxy_as_client.close_socket_fd();
+    client->close_socket_fd();
+
+    // TODO log cache situation
+    if (!rph.if_no_store) {
+      mtx.lock();
+      lruCache.put(fout, str_url, rph);
+      mtx.unlock();
+    }
+
+    mtx.lock();
+    printReceive(fout, client, rph.status);
+    if (rph.etag != "") {
+      fout << client->id << ": NOTE ETag: " << rph.etag << endl;
+    }
+    if (rph.last_modified != "") {
+      fout << client->id << ": NOTE Last_Modified: \"" << rph.last_modified
+           << "\"" << endl;
+    }
+    if (rph.max_age != -1) {
+      fout << client->id << ": NOTE max_age: " << rph.max_age << endl;
+    }
+    printResponding(fout, client, rph.status);
+    mtx.unlock();
+    // cout << lruCache.get(str_url).response.data() << endl;
+    proxy_as_client.close_socket_fd();
+    client->close_socket_fd();
+    return "200";
+  }
+  return "invalid";
 }
 
 bool Server::ifExpired(ResponseHead &resp, Client &proxy_as_client,
@@ -435,7 +493,9 @@ bool Server::ifExpired(ResponseHead &resp, Client &proxy_as_client,
     }
   }
   if (valid == false && (resp.etag != "" || resp.last_modified != "")) {
-    valid = this->revalidation(resp, proxy_as_client, client);
+    if (this->revalidation(resp, proxy_as_client, client) == "304") {
+      valid = true;
+    }
   }
   return valid;
 }

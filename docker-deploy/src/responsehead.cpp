@@ -42,8 +42,7 @@ class ResponseHead {
         if_must_revalidate(false) {}
 
   void initResponse(const char *buffer, int size) {
-    std::string str_buffer(buffer, 300);
-    std::cout << str_buffer << std::endl;
+    std::cout << buffer << std::endl;
     response = convertCharStarToVecChar(buffer, size);
     std::string bufferStr(buffer);
     std::istringstream ss(buffer);
@@ -54,7 +53,7 @@ class ResponseHead {
       changeHeaderToLower(line, lowerLine);
       if (lowerLine.find("http/1.1") == 0) {
         status = line.substr(0, line.find("\r"));
-      } else if (lowerLine.find("cache-control") != std::string::npos) {
+      } else if (lowerLine.find("cache-control:") != std::string::npos) {
         if_cache_control = true;
         if (line.find("no-store") != std::string::npos || line.find("private") != std::string::npos) {
           if_no_store = true;
@@ -70,16 +69,16 @@ class ResponseHead {
           max_age = atoi(temp.c_str());
           std::cout << max_age << std::endl;
         }
-      } else if (lowerLine.find("date") == 0) {
+      } else if (lowerLine.find("date:") == 0) {
         int startIdx = 6;
         date = TimeStamp(line.substr(startIdx));
-      } else if (lowerLine.find("etag") == 0) { 
+      } else if (lowerLine.find("etag:") == 0) { 
         int startIdx = 6;
         etag = line.substr(startIdx, line.find("\r") - 6);
-      } else if (lowerLine.find("last-modified") == 0) {
+      } else if (lowerLine.find("last-modified:") == 0) {
         int startIdx = 15;
         last_modified = line.substr(startIdx, line.find("\r") - 15);
-      } else if (lowerLine.find("expires") == 0) {
+      } else if (lowerLine.find("expires:") != std::string::npos && expires == "") {
         int startIdx = lowerLine.find("expires") + 9;
         expires = line.substr(startIdx);
       } else if (lowerLine.find("transfer-encoding") == 0 &&
