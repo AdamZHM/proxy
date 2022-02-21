@@ -7,11 +7,16 @@ weird result to the proxy.
 response. However there are some websites which would send millions of bytes,
 so we first calculated the size of response head and plus that to the content
 length. Then we used a while loop with vector<char> to receive the response.
-4) Our proxy make a strong exception guarantee. Whenever there is a copy-delete
+4) Our proxy follow the rule of three handshakes and four waves, using TCP
+connection so that it would not receive the duplicated request, which might lead
+to some wired behavior.
+5) When the ETag or Last_Modified was checked not valid, we first would just let
+the proxy request the origin server again, but there is some weired behavior. Later
+we figured out that while doing the revalidation, if the revalidation responds 
+status code "200", it would also respond the respond body so there should not be
+another request to the origin server.
+6) Our proxy make a strong exception guarantee. Whenever there is a copy-delete
 operation, we would first copy that value and make sure it successful, then we
 delete the object, so there would be no dangling pointer or changed value after
 an unsuccessful operation. Also we would not let the proxy terminate when receiving
 an invalid request, we just have the thread exited while the process is still there.
-5) Our proxy follow the rule of three handshakes and four waves, using TCP
-connection so that it would not receive the duplicated request, which might lead
-to some wired behavior.
